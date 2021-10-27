@@ -2,3 +2,8 @@ __include__:
   - '.black-settings'
   - '../platform.android.black-settings'
   - '../properties.android.black-settings'
+
+# Other components this one depends on. Only component names allowed.
+references:
+  - 'black.core'
+  - 'black.jni'

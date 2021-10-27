@@ -2,8 +2,3 @@ __include__:
   - '.black-settings'
   - '../platform.windows.black-settings'
   - '../properties.windows.black-settings'
-
-# Other components this one depends on. Only component names allowed.
-references:
-  - 'black.core'
-  - 'black.jni'

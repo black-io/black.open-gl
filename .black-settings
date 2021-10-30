@@ -13,7 +13,7 @@ includes:
 
 # Additional, private paths of component/ Visible only for this component.
 private-includes:
-  - '{component/path}/include'
+  - '{component/path}/source'
 
 # List of all C++ files the component consists of. Folder or file paths are accepted.
 files:

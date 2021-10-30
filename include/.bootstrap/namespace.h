@@ -5,7 +5,7 @@
 namespace Black
 {
 // OpenGL bindings library.
-inline namespace Core
+inline namespace OpenGl
 {
 // Internal layer of OpenGL Library.
 namespace Internal

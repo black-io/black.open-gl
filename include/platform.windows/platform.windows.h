@@ -18,3 +18,7 @@ inline namespace WindowsDesktop
 }
 }
 }
+
+
+// Include related platform-specific stuff.
+#include "generic-types.h"

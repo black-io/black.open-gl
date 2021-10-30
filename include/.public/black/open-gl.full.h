@@ -5,7 +5,7 @@
 #include "../../.prologue.h"
 
 // Hosted subsystems.
-#include "../../es-3.0/es-3.0.h"
+#include "../../gl-es-3.0/gl-es-3.0.h"
 
 // The epilogue of library.
 #include "../../.epilogue.h"

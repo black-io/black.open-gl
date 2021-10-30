@@ -24,3 +24,6 @@ namespace Internal
 // Most fundamental definitions.
 
 // Generated headers.
+#include "constants.h"
+#include "aliases.h"
+#include "functions.h"

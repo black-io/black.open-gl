@@ -17,6 +17,7 @@ inline namespace Platform
 	{
 	// Construction and initialization.
 	public:
+		RhiAdapter( const RhiAdapter& ) = default;
 		explicit RhiAdapter( const ConstructionArguments& arguments );
 		~RhiAdapter() = default;
 

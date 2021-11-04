@@ -24,7 +24,7 @@ namespace PlatformSpecific
 	// Public inner types.
 	public:
 		// Construction arguments.
-		using ConstructionArguments = std::tuple<size32_t, ::DXGI_ADAPTER_DESC1>;
+		using ConstructionArguments = std::tuple<::DXGI_ADAPTER_DESC1, size32_t>;
 
 	// Platform-specific interface.
 	public:

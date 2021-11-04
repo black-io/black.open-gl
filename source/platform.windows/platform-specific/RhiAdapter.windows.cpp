@@ -17,8 +17,8 @@ namespace
 
 
 	RhiAdapter<Black::PlatformType::WindowsDesktop>::RhiAdapter( const ConstructionArguments& arguments )
-		: m_description{ std::get<1>( arguments ) }
-		, m_index{ std::get<0>( arguments ) }
+		: m_description{ std::get<0>( arguments ) }
+		, m_index{ std::get<1>( arguments ) }
 	{
 	}
 }

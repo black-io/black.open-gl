@@ -43,6 +43,9 @@ namespace Internal
 		inline const size32_t GetAspectRatio() const	{ return m_aspect; };
 
 
+		// Whether the video mode is suitable for purposes of OpenGL.
+		inline const bool IsOpenGlCompatible() const	{ return m_is_compatible; };
+
 		// Whether the video mode may be used as full-screen display mode.
 		inline const bool HasFullscreenSupport() const	{ return m_allow_fullscreen; };
 
@@ -63,6 +66,7 @@ namespace Internal
 
 			struct
 			{
+				bool	m_is_compatible		: 1;	// Whether the video format is suitable enough to be used for OpenGL.
 				bool	m_allow_fullscreen	: 1;	// Whether the video mode may be used as full-screen display mode.
 				bool	m_allow_windowed	: 1;	// Whether the video mode may be used for window while display in windowed mode.
 			};

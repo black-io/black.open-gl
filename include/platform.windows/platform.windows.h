@@ -28,11 +28,11 @@ inline namespace WindowsDesktop
 #include "generic-types.h"
 
 // Second layer of platform-agnostic types. Platform-specific declarations.
-#include "platform-specific/RhiAdapter.windows.h"
-#include "platform-specific/RhiDisplay.windows.h"
-#include "platform-specific/RhiVideoMode.windows.h"
+#include "platform-specific/GlRhiAdapter.windows.h"
+#include "platform-specific/GlRhiDisplay.windows.h"
+#include "platform-specific/GlRhiVideoMode.windows.h"
 
 #include "platform-specific/GlConfiguration.windows.h"
 #include "platform-specific/GlContext.windows.h"
 
-#include "platform-specific/RhiConnection.windows.h"
+#include "platform-specific/GlRhiConnection.windows.h"

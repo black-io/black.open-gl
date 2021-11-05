@@ -61,13 +61,13 @@ namespace PlatformSpecific
 #endif
 
 // Third layer of platform-agnostic types. Public platform-agnostic definitions.
-#include "RhiAdapter.h"
-#include "RhiDisplay.h"
-#include "RhiVideoMode.h"
+#include "GlRhiAdapter.h"
+#include "GlRhiDisplay.h"
+#include "GlRhiVideoMode.h"
 
 #include "GlConfiguration.h"
 #include "GlContext.h"
 
-#include "RhiConnection.h"
+#include "GlRhiConnection.h"
 
 // Deferred implementations.

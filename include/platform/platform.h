@@ -33,14 +33,14 @@ namespace PlatformSpecific
 #include "forwards.h"
 
 // First layer of platform-agnostic types. Cross-platform basic definitions.
-#include "internal/BasicRhiAdapter.h"
-#include "internal/BasicRhiDisplay.h"
-#include "internal/BasicRhiVideoMode.h"
+#include "internal/BasicGlRhiAdapter.h"
+#include "internal/BasicGlRhiDisplay.h"
+#include "internal/BasicGlRhiVideoMode.h"
 
 #include "internal/BasicGlConfiguration.h"
 #include "internal/BasicGlContext.h"
 
-#include "internal/BasicRhiConnection.h"
+#include "internal/BasicGlRhiConnection.h"
 
 // Second layer of platform-agnostic types. Platform-specific declarations.
 #include "platform-specific/forwards.h"

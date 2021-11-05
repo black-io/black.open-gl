@@ -18,7 +18,7 @@ inline namespace Platform
 	// Construction and initialization.
 	public:
 		RhiAdapter( const RhiAdapter& ) = default;
-		explicit RhiAdapter( const ConstructionArguments& arguments );
+		explicit RhiAdapter( const ConstructionInfo& info );
 		~RhiAdapter() = default;
 
 	// Contracts of public API.

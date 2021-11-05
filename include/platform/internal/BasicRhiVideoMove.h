@@ -17,14 +17,8 @@ namespace Internal
 		This type implements the first layer of platform-agnostic RHI video mode type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicRhiVideoMode : private Black::NonMovable
+	class BasicRhiVideoMode
 	{
-	// Heirs construction and initialization.
-	protected:
-		BasicRhiVideoMode()								= default;
-		BasicRhiVideoMode( const BasicRhiVideoMode& )	= default;
-		~BasicRhiVideoMode()							= default;
-
 	// Public interface.
 	public:
 		// Get the width of resolution.
@@ -51,6 +45,18 @@ namespace Internal
 
 		// Whether the video mode may be used for window while display in windowed mode.
 		inline const bool HasWindowSupport() const		{ return m_allow_windowed; };
+
+	// Heirs construction and initialization.
+	protected:
+		BasicRhiVideoMode()								= default;
+		BasicRhiVideoMode( const BasicRhiVideoMode& )	= default;
+		BasicRhiVideoMode( BasicRhiVideoMode&& )		= default;
+		~BasicRhiVideoMode()							= default;
+
+	// Heirs interface.
+	protected:
+		// Swap the state with given instance.
+		void Swap( BasicRhiVideoMode& other );
 
 	// Heirs state.
 	protected:

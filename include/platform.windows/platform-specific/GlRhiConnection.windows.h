@@ -16,7 +16,7 @@ namespace PlatformSpecific
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class GlRhiConnection<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiConnection
+	class GlRhiConnection<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlRhiConnection
 	{
 	// Public inner types.
 	public:

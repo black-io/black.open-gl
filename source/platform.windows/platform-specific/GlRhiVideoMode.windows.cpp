@@ -34,7 +34,7 @@ namespace
 	{
 		using std::swap;
 
-		BasicRhiVideoMode::Swap( other );
+		BasicGlRhiVideoMode::Swap( other );
 		swap( m_mode_desc, other.m_mode_desc );
 	}
 }

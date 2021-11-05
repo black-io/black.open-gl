@@ -19,7 +19,7 @@ namespace PlatformSpecific
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class GlRhiAdapter<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiAdapter
+	class GlRhiAdapter<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlRhiAdapter
 	{
 	// Public inner types.
 	public:

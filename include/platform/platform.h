@@ -1,6 +1,10 @@
 #pragma once
 
 
+// External dependencies.
+#include <optional>
+
+
 namespace Black
 {
 inline namespace OpenGl
@@ -26,8 +30,22 @@ namespace PlatformSpecific
 
 
 // Include most fundamental platform stuff.
+#include "forwards.h"
 
-// Select the implementation of platform-specific code.
+// First layer of platform-agnostic types. Cross-platform basic definitions.
+#include "internal/BasicRhiAdapter.h"
+#include "internal/BasicRhiDisplay.h"
+#include "internal/BasicRhiVideoMove.h"
+
+#include "internal/BasicGlConfiguration.h"
+#include "internal/BasicGlContext.h"
+
+#include "internal/BasicRhiConnection.h"
+
+// Second layer of platform-agnostic types. Platform-specific declarations.
+#include "platform-specific/forwards.h"
+
+// Select the definitions of platform-specific code for second layer.
 #if( BLACK_WINDOWS_DESKTOP_PLATFORM )
 	#include "../platform.windows/platform.windows.h"
 #elif( BLACK_MAC_OS_PLATFORM )
@@ -41,5 +59,15 @@ namespace PlatformSpecific
 #else
 	#error Current platform is unspecified or not defined
 #endif
+
+// Third layer of platform-agnostic types. Public platform-agnostic definitions.
+#include "RhiAdapter.h"
+#include "RhiDisplay.h"
+#include "RhiVideoMode.h"
+
+#include "GlConfiguration.h"
+#include "GlContext.h"
+
+#include "RhiConnection.h"
 
 // Deferred implementations.

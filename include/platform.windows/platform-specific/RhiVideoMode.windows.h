@@ -36,10 +36,14 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		RhiVideoMode()						= delete;
-		RhiVideoMode( const RhiVideoMode& )	= default;
+		using BasicRhiVideoMode::BasicRhiVideoMode;
 		explicit RhiVideoMode( const ConstructionInfo& info );
 		~RhiVideoMode() = default;
+
+	// Heirs interface.
+	protected:
+		// Swap the state with given instance.
+		void Swap( RhiVideoMode<Black::PlatformType::WindowsDesktop>& other );
 
 	// Private state.
 	private:

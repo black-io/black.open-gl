@@ -17,13 +17,13 @@ namespace Internal
 		This type implements the first layer of platform-agnostic RHI Adapter type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicRhiAdapter : private Black::NonMovable
+	class BasicGlRhiAdapter : private Black::NonMovable
 	{
 	// Heirs construction and initialization.
 	protected:
-		BasicRhiAdapter()							= default;
-		BasicRhiAdapter( const BasicRhiAdapter& )	= default;
-		~BasicRhiAdapter()							= default;
+		BasicGlRhiAdapter()								= default;
+		BasicGlRhiAdapter( const BasicGlRhiAdapter& )	= default;
+		~BasicGlRhiAdapter()							= default;
 	};
 }
 }

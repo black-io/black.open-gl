@@ -9,7 +9,7 @@ inline namespace Platform
 {
 namespace Internal
 {
-	void BasicRhiVideoMode::Swap( BasicRhiVideoMode& other )
+	void BasicGlRhiVideoMode::Swap( BasicGlRhiVideoMode& other )
 	{
 		using std::swap;
 

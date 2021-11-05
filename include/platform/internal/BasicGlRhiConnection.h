@@ -18,13 +18,13 @@ namespace Internal
 		This type implements the first layer of platform-agnostic RHI connection type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicRhiConnection : private Black::NonTransferable
+	class BasicGlRhiConnection : private Black::NonTransferable
 	{
 	// Heirs construction and initialization.
 	protected:
-		BasicRhiConnection()							= default;
-		BasicRhiConnection( const BasicRhiConnection& )	= default;
-		~BasicRhiConnection()							= default;
+		BasicGlRhiConnection()								= default;
+		BasicGlRhiConnection( const BasicGlRhiConnection& )	= default;
+		~BasicGlRhiConnection()								= default;
 	};
 }
 }

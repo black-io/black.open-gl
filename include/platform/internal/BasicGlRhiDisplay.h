@@ -18,13 +18,13 @@ namespace Internal
 		This type implements the first layer of platform-agnostic RHI display type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicRhiDisplay : private Black::NonMovable
+	class BasicGlRhiDisplay : private Black::NonMovable
 	{
 	// Heirs construction and initialization.
 	protected:
-		BasicRhiDisplay()							= default;
-		BasicRhiDisplay( const BasicRhiDisplay& )	= default;
-		~BasicRhiDisplay()							= default;
+		BasicGlRhiDisplay()								= default;
+		BasicGlRhiDisplay( const BasicGlRhiDisplay& )	= default;
+		~BasicGlRhiDisplay()							= default;
 	};
 }
 }

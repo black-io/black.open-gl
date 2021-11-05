@@ -17,7 +17,7 @@ namespace Internal
 		This type implements the first layer of platform-agnostic RHI video mode type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicRhiVideoMode
+	class BasicGlRhiVideoMode
 	{
 	// Public interface.
 	public:
@@ -48,15 +48,15 @@ namespace Internal
 
 	// Heirs construction and initialization.
 	protected:
-		BasicRhiVideoMode()								= default;
-		BasicRhiVideoMode( const BasicRhiVideoMode& )	= default;
-		BasicRhiVideoMode( BasicRhiVideoMode&& )		= default;
-		~BasicRhiVideoMode()							= default;
+		BasicGlRhiVideoMode()								= default;
+		BasicGlRhiVideoMode( const BasicGlRhiVideoMode& )	= default;
+		BasicGlRhiVideoMode( BasicGlRhiVideoMode&& )		= default;
+		~BasicGlRhiVideoMode()								= default;
 
 	// Heirs interface.
 	protected:
 		// Swap the state with given instance.
-		void Swap( BasicRhiVideoMode& other );
+		void Swap( BasicGlRhiVideoMode& other );
 
 	// Heirs state.
 	protected:

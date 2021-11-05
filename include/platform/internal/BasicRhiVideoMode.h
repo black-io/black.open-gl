@@ -34,7 +34,7 @@ namespace Internal
 		inline const size32_t GetRefreshRate() const	{ return m_refresh_rate; };
 
 		// Get the aspect ratio, which represents `width / height` proportion.
-		inline const size32_t GetAspectRatio() const	{ return m_aspect; };
+		inline const float GetAspectRatio() const		{ return m_aspect; };
 
 
 		// Whether the video mode is suitable for purposes of OpenGL.

@@ -15,7 +15,7 @@ namespace PlatformSpecific
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class RhiAdapter;
+	class GlRhiAdapter;
 
 	/**
 		@brief	Platform dependent Display implementation.
@@ -23,7 +23,7 @@ namespace PlatformSpecific
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class RhiDisplay;
+	class GlRhiDisplay;
 
 	/**
 		@brief	Platform dependent display video mode implementation.
@@ -31,7 +31,7 @@ namespace PlatformSpecific
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class RhiVideoMode;
+	class GlRhiVideoMode;
 
 	/**
 		@brief	Platform dependent EGL-compatible configuration implementation.
@@ -55,7 +55,7 @@ namespace PlatformSpecific
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class RhiConnection;
+	class GlRhiConnection;
 }
 }
 }

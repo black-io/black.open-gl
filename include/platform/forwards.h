@@ -8,10 +8,10 @@ inline namespace OpenGl
 inline namespace Platform
 {
 	// Forward the RHI adapter to be used in platform-specific code.
-	class RhiAdapter;
+	class GlRhiAdapter;
 
 	// Forward the RHI display to be used in platform-specific code.
-	class RhiDisplay;
+	class GlRhiDisplay;
 
 	// Forward the configuration to be used in platform-specific code.
 	class GlConfiguration;

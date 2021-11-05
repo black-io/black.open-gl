@@ -11,6 +11,13 @@ inline namespace Platform
 		: PlatformSpecific::RhiVideoMode<Black::BUILD_PLATFORM>{ info }
 	{
 	}
+
+	void RhiVideoMode::Swap( RhiVideoMode& other )
+	{
+		using std::swap;
+
+		PlatformSpecific::RhiVideoMode<Black::BUILD_PLATFORM>::Swap( other );
+	}
 }
 }
 }

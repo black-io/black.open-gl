@@ -15,9 +15,16 @@ inline namespace Platform
 	*/
 	class RhiVideoMode final : public PlatformSpecific::RhiVideoMode<Black::BUILD_PLATFORM>
 	{
+	// Friendship declarations.
+	public:
+		// Swap the state with given instance.
+		friend inline void swap( RhiVideoMode& left, RhiVideoMode& right ) { left.Swap( right ); };
+
 	// Construction and initialization.
 	public:
-		RhiVideoMode( const RhiVideoMode& ) = default;
+		RhiVideoMode()						= delete;
+		RhiVideoMode( const RhiVideoMode& )	= default;
+		RhiVideoMode( RhiVideoMode&& )		= default;
 		explicit RhiVideoMode( const ConstructionInfo& info );
 		~RhiVideoMode() = default;
 
@@ -50,6 +57,15 @@ inline namespace Platform
 	// Public interface.
 	public:
 
+	// Contracts of protected API.
+	private:
+		/// @see	RhiVideoMode::Swap
+		using PlatformSpecific::RhiVideoMode<Black::BUILD_PLATFORM>::Swap;
+
+	// Private interface.
+	private:
+		// Swap the state with given instance.
+		void Swap( RhiVideoMode& other );
 	};
 }
 }

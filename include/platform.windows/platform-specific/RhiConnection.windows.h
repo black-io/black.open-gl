@@ -35,7 +35,7 @@ namespace PlatformSpecific
 		static Black::PlainView<const ::DXGI_FORMAT> GetCompatibleDisplayFormats();
 
 		// Get the bit-rate for given display format. May return `0` in case the format is not compatible.
-		static const size_t GetDisplayFormatBitrate( const ::DXGI_FORMAT format );
+		static const size32_t GetDisplayFormatBitrate( const ::DXGI_FORMAT format );
 
 		// Whether the given display format is compatible for purposes of OpenGL.
 		static const bool IsDisplayFormatCompatible( const ::DXGI_FORMAT format );

@@ -138,7 +138,7 @@ namespace
 		return { VIDEO_MODE_FORMATS };
 	}
 
-	const size_t RhiConnection<Black::PlatformType::WindowsDesktop>::GetDisplayFormatBitrate( const ::DXGI_FORMAT format )
+	const size32_t RhiConnection<Black::PlatformType::WindowsDesktop>::GetDisplayFormatBitrate( const ::DXGI_FORMAT format )
 	{
 		const size_t format_index = Black::GetItemIndex( VIDEO_MODE_FORMATS, format );
 		CRET( format_index == Black::UNDEFINED_INDEX, 0 );

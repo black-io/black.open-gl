@@ -7,8 +7,8 @@ inline namespace OpenGl
 {
 inline namespace Platform
 {
-	RhiAdapter::RhiAdapter( const ConstructionInfo& info )
-		: PlatformSpecific::RhiAdapter<Black::BUILD_PLATFORM>{ info }
+	GlRhiAdapter::GlRhiAdapter( const ConstructionInfo& info )
+		: PlatformSpecific::GlRhiAdapter<Black::BUILD_PLATFORM>{ info }
 	{
 	}
 }

@@ -7,16 +7,16 @@ inline namespace OpenGl
 {
 inline namespace Platform
 {
-	RhiVideoMode::RhiVideoMode( const ConstructionInfo& info )
-		: PlatformSpecific::RhiVideoMode<Black::BUILD_PLATFORM>{ info }
+	GlRhiVideoMode::GlRhiVideoMode( const ConstructionInfo& info )
+		: PlatformSpecific::GlRhiVideoMode<Black::BUILD_PLATFORM>{ info }
 	{
 	}
 
-	void RhiVideoMode::Swap( RhiVideoMode& other )
+	void GlRhiVideoMode::Swap( GlRhiVideoMode& other )
 	{
 		using std::swap;
 
-		PlatformSpecific::RhiVideoMode<Black::BUILD_PLATFORM>::Swap( other );
+		PlatformSpecific::GlRhiVideoMode<Black::BUILD_PLATFORM>::Swap( other );
 	}
 }
 }

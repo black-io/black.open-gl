@@ -13,18 +13,18 @@ inline namespace Platform
 		Implements the final, third layer of platform-agnostic display type.
 		This type is public and may be freely used outside of subsystem.
 	*/
-	class RhiDisplay final : public PlatformSpecific::RhiDisplay<Black::BUILD_PLATFORM>
+	class GlRhiDisplay final : public PlatformSpecific::GlRhiDisplay<Black::BUILD_PLATFORM>
 	{
 	// Construction and initialization.
 	public:
-		RhiDisplay( const RhiDisplay& ) = default;
-		explicit RhiDisplay( const ConstructionInfo& info );
-		~RhiDisplay() = default;
+		GlRhiDisplay( const GlRhiDisplay& ) = default;
+		explicit GlRhiDisplay( const ConstructionInfo& info );
+		~GlRhiDisplay() = default;
 
 	// Contracts of public API.
 	public:
-		/// @see	RhiDisplay::GetIndex
-		using PlatformSpecific::RhiDisplay<Black::BUILD_PLATFORM>::GetIndex;
+		/// @see	GlRhiDisplay::GetIndex
+		using PlatformSpecific::GlRhiDisplay<Black::BUILD_PLATFORM>::GetIndex;
 
 	// Public interface.
 	public:

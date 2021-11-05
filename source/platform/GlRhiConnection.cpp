@@ -7,7 +7,7 @@ inline namespace OpenGl
 {
 inline namespace Platform
 {
-	RhiConnection::~RhiConnection()
+	GlRhiConnection::~GlRhiConnection()
 	{
 		Finalize();
 	}

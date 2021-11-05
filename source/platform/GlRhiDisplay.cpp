@@ -7,8 +7,8 @@ inline namespace OpenGl
 {
 inline namespace Platform
 {
-	RhiDisplay::RhiDisplay( const ConstructionInfo& info )
-		: PlatformSpecific::RhiDisplay<Black::BUILD_PLATFORM>{ info }
+	GlRhiDisplay::GlRhiDisplay( const ConstructionInfo& info )
+		: PlatformSpecific::GlRhiDisplay<Black::BUILD_PLATFORM>{ info }
 	{
 	}
 }

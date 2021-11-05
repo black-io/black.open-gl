@@ -13,26 +13,26 @@ inline namespace Platform
 		Implements the final, third layer of platform-agnostic GPU connection type.
 		This type is public and may be freely used outside of subsystem.
 	*/
-	class RhiConnection final : public PlatformSpecific::RhiConnection<Black::BUILD_PLATFORM>
+	class GlRhiConnection final : public PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>
 	{
 	// Construction and initialization.
 	public:
-		RhiConnection() = default;
-		~RhiConnection();
+		GlRhiConnection() = default;
+		~GlRhiConnection();
 
 	// Contracts of public API.
 	public:
-		/// @see	RhiConnection::Finalize
-		using PlatformSpecific::RhiConnection<Black::BUILD_PLATFORM>::Finalize;
+		/// @see	GlRhiConnection::Finalize
+		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::Finalize;
 
-		/// @see	RhiConnection::EnumerateAdapters
-		using PlatformSpecific::RhiConnection<Black::BUILD_PLATFORM>::EnumerateAdapters;
+		/// @see	GlRhiConnection::EnumerateAdapters
+		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::EnumerateAdapters;
 
-		/// @see	RhiConnection::EnumerateDisplays
-		using PlatformSpecific::RhiConnection<Black::BUILD_PLATFORM>::EnumerateDisplays;
+		/// @see	GlRhiConnection::EnumerateDisplays
+		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::EnumerateDisplays;
 
-		/// @see	RhiConnection::EnumerateVideoModes
-		using PlatformSpecific::RhiConnection<Black::BUILD_PLATFORM>::EnumerateVideoModes;
+		/// @see	GlRhiConnection::EnumerateVideoModes
+		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::EnumerateVideoModes;
 
 	// Public interface.
 	public:

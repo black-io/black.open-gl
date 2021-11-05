@@ -17,7 +17,7 @@ namespace Internal
 		This type implements the first layer of platform-agnostic RHI video mode type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicRhiVideoMode : private Black::NonTransferable
+	class BasicRhiVideoMode : private Black::NonMovable
 	{
 	// Heirs construction and initialization.
 	protected:

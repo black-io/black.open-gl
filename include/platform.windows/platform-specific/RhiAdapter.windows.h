@@ -23,8 +23,8 @@ namespace PlatformSpecific
 	{
 	// Public inner types.
 	public:
-		// Construction arguments.
-		using ConstructionArguments = std::tuple<::DXGI_ADAPTER_DESC1, size32_t>;
+		// Information for instance construction.
+		using ConstructionInfo = Internal::RhiAdapterInformationConsumer::AdapterInfo;
 
 	// Platform-specific interface.
 	public:
@@ -40,7 +40,7 @@ namespace PlatformSpecific
 	protected:
 		RhiAdapter()					= delete;
 		RhiAdapter( const RhiAdapter& )	= default;
-		explicit RhiAdapter( const ConstructionArguments& arguments );
+		explicit RhiAdapter( const ConstructionInfo& info );
 		~RhiAdapter() = default;
 
 	// Private state.

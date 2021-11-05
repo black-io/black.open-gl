@@ -18,7 +18,7 @@ inline namespace Platform
 	// Construction and initialization.
 	public:
 		RhiVideoMode( const RhiVideoMode& ) = default;
-		explicit RhiVideoMode( const ConstructionArguments& arguments );
+		explicit RhiVideoMode( const ConstructionInfo& info );
 		~RhiVideoMode() = default;
 
 	// Contracts of public API.

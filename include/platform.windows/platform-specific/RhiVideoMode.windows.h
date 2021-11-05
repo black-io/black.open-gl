@@ -23,8 +23,8 @@ namespace PlatformSpecific
 	{
 	// Public inner types.
 	public:
-		// Construction arguments.
-		using ConstructionArguments = std::tuple<::DXGI_MODE_DESC>;
+		// Information for instance construction.
+		using ConstructionInfo = Internal::RhiVideoModeInformationConsumer::VideoModeInfo;
 
 	// Platform-specific interface.
 	public:
@@ -38,7 +38,7 @@ namespace PlatformSpecific
 	protected:
 		RhiVideoMode()						= delete;
 		RhiVideoMode( const RhiVideoMode& )	= default;
-		explicit RhiVideoMode( const ConstructionArguments& arguments );
+		explicit RhiVideoMode( const ConstructionInfo& info );
 		~RhiVideoMode() = default;
 
 	// Private state.

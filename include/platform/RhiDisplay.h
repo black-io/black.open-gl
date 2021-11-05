@@ -18,7 +18,7 @@ inline namespace Platform
 	// Construction and initialization.
 	public:
 		RhiDisplay( const RhiDisplay& ) = default;
-		explicit RhiDisplay( const ConstructionArguments& arguments );
+		explicit RhiDisplay( const ConstructionInfo& info );
 		~RhiDisplay() = default;
 
 	// Contracts of public API.

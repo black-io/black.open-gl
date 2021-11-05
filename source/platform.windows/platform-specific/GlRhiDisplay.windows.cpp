@@ -16,7 +16,7 @@ namespace
 }
 
 
-	RhiDisplay<Black::PlatformType::WindowsDesktop>::RhiDisplay( const ConstructionInfo& info )
+	GlRhiDisplay<Black::PlatformType::WindowsDesktop>::GlRhiDisplay( const ConstructionInfo& info )
 		: m_device_desc{ std::get<0>( info ) }
 		, m_default_mode{ std::get<1>( info ) }
 		, m_monitor_info{ std::get<2>( info ) }

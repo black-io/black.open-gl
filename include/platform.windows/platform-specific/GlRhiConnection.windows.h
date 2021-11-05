@@ -16,7 +16,7 @@ namespace PlatformSpecific
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class RhiConnection<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiConnection
+	class GlRhiConnection<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiConnection
 	{
 	// Public inner types.
 	public:
@@ -62,15 +62,15 @@ namespace PlatformSpecific
 		void EnumerateAdapters( AdapterInfoConsumer& consumer );
 
 		// Enumerate the displays connected to given GPU adapter.
-		void EnumerateDisplays( const Black::RhiAdapter& adapter, DisplayInfoConsumer& consumer );
+		void EnumerateDisplays( const Black::GlRhiAdapter& adapter, DisplayInfoConsumer& consumer );
 
 		// Enumerate the video modes for given display.
-		void EnumerateVideoModes( const Black::RhiDisplay& display, VideoModeInfoConsumer& consumer );
+		void EnumerateVideoModes( const Black::GlRhiDisplay& display, VideoModeInfoConsumer& consumer );
 
 	// Heirs construction and initialization.
 	protected:
-		RhiConnection()		= default;
-		~RhiConnection()	= default;
+		GlRhiConnection()	= default;
+		~GlRhiConnection()	= default;
 
 	// Private interface.
 	private:

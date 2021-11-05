@@ -19,7 +19,7 @@ namespace PlatformSpecific
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class RhiDisplay<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiDisplay
+	class GlRhiDisplay<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiDisplay
 	{
 	// Public inner types.
 	public:
@@ -50,10 +50,10 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		RhiDisplay()					= delete;
-		RhiDisplay( const RhiDisplay& )	= default;
-		explicit RhiDisplay( const ConstructionInfo& info );
-		~RhiDisplay()					= default;
+		GlRhiDisplay()					= delete;
+		GlRhiDisplay( const GlRhiDisplay& )	= default;
+		explicit GlRhiDisplay( const ConstructionInfo& info );
+		~GlRhiDisplay()					= default;
 
 	// Private state.
 	private:

@@ -19,7 +19,7 @@ namespace PlatformSpecific
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class RhiVideoMode<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiVideoMode
+	class GlRhiVideoMode<Black::PlatformType::WindowsDesktop> : public Internal::BasicRhiVideoMode
 	{
 	// Public inner types.
 	public:
@@ -37,13 +37,13 @@ namespace PlatformSpecific
 	// Heirs construction and initialization.
 	protected:
 		using BasicRhiVideoMode::BasicRhiVideoMode;
-		explicit RhiVideoMode( const ConstructionInfo& info );
-		~RhiVideoMode() = default;
+		explicit GlRhiVideoMode( const ConstructionInfo& info );
+		~GlRhiVideoMode() = default;
 
 	// Heirs interface.
 	protected:
 		// Swap the state with given instance.
-		void Swap( RhiVideoMode<Black::PlatformType::WindowsDesktop>& other );
+		void Swap( GlRhiVideoMode<Black::PlatformType::WindowsDesktop>& other );
 
 	// Private state.
 	private:

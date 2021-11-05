@@ -35,7 +35,7 @@ namespace PlatformSpecific
 // First layer of platform-agnostic types. Cross-platform basic definitions.
 #include "internal/BasicRhiAdapter.h"
 #include "internal/BasicRhiDisplay.h"
-#include "internal/BasicRhiVideoMove.h"
+#include "internal/BasicRhiVideoMode.h"
 
 #include "internal/BasicGlConfiguration.h"
 #include "internal/BasicGlContext.h"

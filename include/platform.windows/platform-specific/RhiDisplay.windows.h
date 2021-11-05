@@ -23,8 +23,8 @@ namespace PlatformSpecific
 	{
 	// Public inner types.
 	public:
-		// Construction arguments.
-		using ConstructionArguments = std::tuple<::DXGI_OUTPUT_DESC, ::DXGI_MODE_DESC, ::MONITORINFOEXW, ::DISPLAY_DEVICEW, size32_t>;
+		// Information for instance construction.
+		using ConstructionInfo = Internal::RhiDisplayInformationConsumer::DisplayInfo;
 
 	// Platform-specific interface.
 	public:
@@ -45,11 +45,14 @@ namespace PlatformSpecific
 		// Get the ordinal index of display.
 		inline const size32_t GetIndex() const							{ return m_index; };
 
+		// Get the ordinal index of GPU adapter, where the display is connected.
+		inline const size32_t GetAdapterIndex() const					{ return m_adapter_index; };
+
 	// Heirs construction and initialization.
 	protected:
 		RhiDisplay()					= delete;
 		RhiDisplay( const RhiDisplay& )	= default;
-		explicit RhiDisplay( const ConstructionArguments& arguments );
+		explicit RhiDisplay( const ConstructionInfo& info );
 		~RhiDisplay()					= default;
 
 	// Private state.
@@ -58,6 +61,7 @@ namespace PlatformSpecific
 		::DXGI_MODE_DESC	m_default_mode;		// Default video mode of display.
 		::MONITORINFOEXW	m_monitor_info;		// Additional information about display.
 		::DISPLAY_DEVICEW	m_display_info;		// Additional information about display.
+		size32_t			m_adapter_index;	// Ordinal index of GPU adapter the display connected.
 		size32_t			m_index;			// Ordinal index of display.
 	};
 }

@@ -9,7 +9,7 @@
 #include ".bootstrap/namespace.h"
 
 // Global types.
-#include ".global/types/generic-classes.h"
+#include ".global/types/generic-types.h"
 
 // Platform-specific definitions.
 #include "platform/platform.h"

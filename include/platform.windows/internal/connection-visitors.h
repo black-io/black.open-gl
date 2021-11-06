@@ -24,7 +24,7 @@ namespace Internal
 	// Public virtual interface.
 	public:
 		// Consume the information for RHI adapter.
-		virtual void Consume( const AdapterInfo& info ) = 0;
+		virtual void Consume( std::string_view device_path, std::string_view device_name, const AdapterInfo& info ) = 0;
 
 	// Heirs construction and initialization.
 	protected:
@@ -47,7 +47,7 @@ namespace Internal
 	// Public virtual interface.
 	public:
 		// Consume the information for RHI display.
-		virtual void Consume( const DisplayInfo& info ) = 0;
+		virtual void Consume( std::string_view device_path, std::string_view device_name, const DisplayInfo& info ) = 0;
 
 	// Heirs construction and initialization.
 	protected:

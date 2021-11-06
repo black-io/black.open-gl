@@ -1,6 +1,8 @@
 #include <black/open-gl.h>
 #include <black/core/algorithms.h>
 
+#include <stringapiset.h>
+
 
 namespace Black
 {
@@ -130,6 +132,36 @@ namespace
 
 		return sorted_video_modes;
 	}
+
+	// Wrap for WinAPI function that hides the constant arguments.
+	inline const size_t WideCharToMultiByte( const Black::PlainView<char> output_buffer, const std::wstring_view input_buffer )
+	{
+		return ::WideCharToMultiByte(
+			CP_UTF8,
+			WC_NO_BEST_FIT_CHARS,
+			input_buffer.data(),
+			int32_t( input_buffer.size() ),
+			output_buffer.data(),
+			int32_t( output_buffer.size() ),
+			nullptr,
+			nullptr
+		);
+	}
+
+	// Perform the conversion from wide string to multi-byte one.
+	inline std::string ConvertWideString( const std::wstring_view wide_string )
+	{
+		std::string result;
+
+		const size_t result_length = WideCharToMultiByte( {}, wide_string );
+		result.resize( result_length, 'X' );
+		const size_t converted_length = WideCharToMultiByte( { result.data(), result_length }, wide_string );
+
+		EXPECTS_DEBUG( converted_length > 0 );
+		EXPECTS_DEBUG( converted_length == result_length );
+
+		return result;
+	}
 }
 
 
@@ -184,6 +216,7 @@ namespace
 
 		::DXGI_ADAPTER_DESC		adapter_generic_desc{};
 		::DXGI_ADAPTER_DESC1	adapter_extended_desc{};
+		::DXGI_OUTPUT_DESC		default_output_desc{};
 
 		::HRESULT	access_result	= S_OK;
 		size32_t	adapter_index	= 0;
@@ -195,14 +228,27 @@ namespace
 			::IDXGIAdapter*	adapter_ptr	= nullptr;
 			::HRESULT access_result = m_generic_factory->EnumAdapters( adapter_index, &adapter_ptr );
 			CBRK( access_result == DXGI_ERROR_NOT_FOUND );
-			CBRKE( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for adapter #{}.", adapter_index );
+			CBRKE( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for adapter #{}, result: 0x{:08X}.", adapter_index, access_result );
 
 			ENSURES_DEBUG( adapter_ptr != nullptr );
 			Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ std::exchange( adapter_ptr, nullptr ) };
 
+			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the default output for adapter." );
+			::IDXGIOutput* default_output_ptr	= nullptr;
+			access_result						= adapter_interface->EnumOutputs( 0, &default_output_ptr );
+			CCON( access_result == DXGI_ERROR_NOT_FOUND );
+			CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to access the output device for adapter #{}, result: 0x{:08X}.", adapter_index, access_result );
+
+			ENSURES( default_output_ptr != nullptr );
+			Black::ScopedComPointer<::IDXGIOutput> default_output_interface{ std::exchange( default_output_ptr, nullptr ) };
+
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the description of adapter." );
 			access_result = adapter_interface->GetDesc( &adapter_generic_desc );
 			CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for adapter #{}.", adapter_index );
+
+			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the description of default output." );
+			access_result = default_output_interface->GetDesc( &default_output_desc );
+			CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for default output of adapter #{}.", adapter_index );
 
 			if( m_extended_factory == nullptr )
 			{
@@ -225,8 +271,18 @@ namespace
 				CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for adapter #{}.", adapter_index );
 			}
 
+			// Prepare the device path.
+			std::wstring_view	wide_device_path{ default_output_desc.DeviceName };
+			std::string			device_path{ ConvertWideString( wide_device_path ) };
+			ENSURES_DEBUG( !device_path.empty() || wide_device_path.empty() );
+
+			// Prepare the device name.
+			std::wstring_view	wide_device_name{ adapter_extended_desc.Description };
+			std::string			device_name{ ConvertWideString( wide_device_name ) };
+			ENSURES_DEBUG( !device_name.empty() || wide_device_name.empty() );
+
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Consuming the information of adapter." );
-			consumer.Consume( AdapterInfoConsumer::AdapterInfo{ adapter_extended_desc, adapter_index } );
+			consumer.Consume( device_path, device_name, AdapterInfoConsumer::AdapterInfo{ adapter_extended_desc, adapter_index } );
 		}
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Information about {} adapters enumerated.", adapter_index );
@@ -284,8 +340,22 @@ namespace
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Detecting the default display mode." );
 			::DXGI_MODE_DESC default_mode{ FindDefaultDisplayMode( *output_interface, monitor_info ) };
 
+			// Prepare the device path.
+			std::wstring_view	wide_device_path{ device_desc.DeviceName };
+			std::string			device_path{ ConvertWideString( wide_device_path ) };
+			ENSURES_DEBUG( !device_path.empty() || wide_device_path.empty() );
+
+			// Prepare the device name.
+			std::wstring_view	wide_device_name{ display_info.DeviceString };
+			std::string			device_name{ ConvertWideString( wide_device_name ) };
+			ENSURES_DEBUG( !device_name.empty() || wide_device_name.empty() );
+
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Consuming the information of display." );
-			consumer.Consume( DisplayInfoConsumer::DisplayInfo{ device_desc, default_mode, monitor_info, display_info, adapter.GetIndex(), output_index } );
+			consumer.Consume(
+				device_path,
+				device_name,
+				DisplayInfoConsumer::DisplayInfo{ device_desc, default_mode, monitor_info, display_info, adapter.GetIndex(), output_index }
+			);
 		}
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Information about {} displays enumerated for adapter #{}.", output_index, adapter.GetIndex() );

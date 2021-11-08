@@ -34,6 +34,59 @@ namespace
 	static_assert( std::size( VIDEO_MODE_FORMATS ) == std::size( VIDEO_MODE_BIT_RATES ), "Number of video mode bit rates should be same as number of formats." );
 
 
+	// Query the adapter interface by given ordinal number.
+	inline ::IDXGIAdapter* QueryAdapterInterface( ::IDXGIFactory& factory, const size32_t adapter_index )
+	{
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the adapter instance." );
+		::IDXGIAdapter*	adapter_ptr	= nullptr;
+		const ::HRESULT access_result = factory.EnumAdapters( adapter_index, &adapter_ptr );
+		CRETD( access_result == DXGI_ERROR_NOT_FOUND, nullptr, LOG_CHANNEL, "No adapter can be found for index #{}.", adapter_index );
+
+		if( SUCCEEDED( access_result ) )
+		{
+			ENSURES_DEBUG( adapter_ptr != nullptr );
+			return adapter_ptr;
+		}
+
+		BLACK_LOG_ERROR( LOG_CHANNEL, "Failed to access the interface for adapter #{}, result: 0x{:08X}.", adapter_index, access_result );
+		return nullptr;
+	}
+
+	// Query the output interface by given ordinal number.
+	inline ::IDXGIOutput* QueryOutputInterface( ::IDXGIAdapter& adapter, const size32_t output_index )
+	{
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the output interface for adapter." );
+		::IDXGIOutput* output_ptr		= nullptr;
+		const ::HRESULT access_result	= adapter.EnumOutputs( 0, &output_ptr );
+		CRETD( access_result == DXGI_ERROR_NOT_FOUND, nullptr, LOG_CHANNEL, "No output can be found for index #{}.", output_index );
+
+		if( SUCCEEDED( access_result ) )
+		{
+			ENSURES_DEBUG( output_ptr );
+			return output_ptr;
+		}
+
+		BLACK_LOG_ERROR( LOG_CHANNEL, "Failed to access the interface of output #{}, result: 0x{:08X}.", output_index, access_result );
+		return nullptr;
+	}
+
+	// Query the elevated version of adapter interface.
+	inline ::IDXGIAdapter1* QueryElevatedAdapterInterface( ::IDXGIAdapter& adapter )
+	{
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the elevated version of adapter interface." );
+		::IDXGIAdapter1* elevated_adapter_ptr = nullptr;
+		const ::HRESULT access_result = adapter.QueryInterface( &elevated_adapter_ptr );
+
+		if( SUCCEEDED( access_result ) )
+		{
+			ENSURES_DEBUG( elevated_adapter_ptr != nullptr );
+			return elevated_adapter_ptr;
+		}
+
+		BLACK_LOG_ERROR( LOG_CHANNEL, "Failed to access the elevated version of adapter interface, result: 0x{:08X}.", access_result );
+		return nullptr;
+	}
+
 	// Find the display mode that is closest to desktop display mode so it can be named as default.
 	::DXGI_MODE_DESC FindDefaultDisplayMode( ::IDXGIOutput& output, const ::MONITORINFOEXW& monitor_info )
 	{
@@ -224,23 +277,11 @@ namespace
 		{
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Attempt to get the information for adapter #{}.", adapter_index );
 
-			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the adapter instance." );
-			::IDXGIAdapter*	adapter_ptr	= nullptr;
-			::HRESULT access_result = m_generic_factory->EnumAdapters( adapter_index, &adapter_ptr );
-			CBRK( access_result == DXGI_ERROR_NOT_FOUND );
-			CBRKE( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for adapter #{}, result: 0x{:08X}.", adapter_index, access_result );
+			Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, adapter_index ) };
+			CBRK( adapter_interface.IsEmpty() );
 
-			ENSURES_DEBUG( adapter_ptr != nullptr );
-			Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ std::exchange( adapter_ptr, nullptr ) };
-
-			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the default output for adapter." );
-			::IDXGIOutput* default_output_ptr	= nullptr;
-			access_result						= adapter_interface->EnumOutputs( 0, &default_output_ptr );
-			CCON( access_result == DXGI_ERROR_NOT_FOUND );
-			CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to access the output device for adapter #{}, result: 0x{:08X}.", adapter_index, access_result );
-
-			ENSURES( default_output_ptr != nullptr );
-			Black::ScopedComPointer<::IDXGIOutput> default_output_interface{ std::exchange( default_output_ptr, nullptr ) };
+			Black::ScopedComPointer<::IDXGIOutput> default_output_interface{ QueryOutputInterface( *adapter_interface, 0 ) };
+			CCON( default_output_interface.IsEmpty() );
 
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the description of adapter." );
 			access_result = adapter_interface->GetDesc( &adapter_generic_desc );
@@ -258,16 +299,11 @@ namespace
 			}
 			else
 			{
-				BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the extended interface of adapter." );
-				::IDXGIAdapter1* extended_adapter_ptr = nullptr;
-				access_result = adapter_interface->QueryInterface( &extended_adapter_ptr );
-				ENSURES( SUCCEEDED( access_result ) );
-
-				ENSURES_DEBUG( extended_adapter_ptr != nullptr );
-				Black::ScopedComPointer<::IDXGIAdapter1> extended_adapter_interface{ std::exchange( extended_adapter_ptr, nullptr ) };
+				Black::ScopedComPointer<::IDXGIAdapter1> elevated_adapter_interface{ QueryElevatedAdapterInterface( *adapter_interface ) };
+				EXPECTS( !elevated_adapter_interface.IsEmpty() );
 
 				BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the full description of adapter." );
-				access_result = extended_adapter_interface->GetDesc1( &adapter_extended_desc );
+				access_result = elevated_adapter_interface->GetDesc1( &adapter_extended_desc );
 				CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for adapter #{}.", adapter_index );
 			}
 
@@ -297,13 +333,8 @@ namespace
 
 		::HRESULT access_result = S_OK;
 
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the instance of adapter #{}.", adapter.GetIndex() );
-		::IDXGIAdapter*	adapter_ptr	= nullptr;
-		access_result = m_generic_factory->EnumAdapters( adapter.GetIndex(), &adapter_ptr );
-		CRETE( FAILED( access_result ), , LOG_CHANNEL, "Failed to enumerate information for adapter #{}.", adapter.GetIndex() );
-
-		ENSURES_DEBUG( adapter_ptr != nullptr );
-		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ std::exchange( adapter_ptr, nullptr ) };
+		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, adapter.GetIndex() ) };
+		CRETE( !adapter_interface, , LOG_CHANNEL, "Failed to enumerate displays for adapter #{}.", adapter.GetIndex() );
 
 		::DXGI_OUTPUT_DESC	device_desc{};
 		::MONITORINFOEXW	monitor_info{};
@@ -314,14 +345,8 @@ namespace
 		{
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Attempt to get the information for display #{}.", output_index );
 
-			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the display instance." );
-			::IDXGIOutput* output_ptr	= nullptr;
-			access_result				= adapter_interface->EnumOutputs( output_index, &output_ptr );
-			CBRK( access_result == DXGI_ERROR_NOT_FOUND );
-			CBRKE( FAILED( access_result ), LOG_CHANNEL, "Failed to get information for display #{} of adapter #{}.", output_index, adapter.GetIndex() );
-
-			ENSURES_DEBUG( output_ptr != nullptr );
-			Black::ScopedComPointer<::IDXGIOutput> output_interface{ std::exchange( output_ptr, nullptr ) };
+			Black::ScopedComPointer<::IDXGIOutput> output_interface{ QueryOutputInterface( *adapter_interface, output_index ) };
+			CBRK( output_interface.IsEmpty() );
 
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the description of display." );
 			access_result = output_interface->GetDesc( &device_desc );
@@ -368,11 +393,11 @@ namespace
 		EnsureInitialized();
 		EXPECTS_DEBUG( m_generic_factory != nullptr );
 
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the instance of adapter #{}.", display.GetAdapterIndex() );
-		::IDXGIAdapter*	adapter_ptr	= nullptr;
-		::HRESULT access_result = m_generic_factory->EnumAdapters( display.GetAdapterIndex(), &adapter_ptr );
+		::HRESULT access_result = S_OK;
+
+		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, display.GetAdapterIndex() ) };
 		CRETE(
-			FAILED( access_result ),
+			!adapter_interface,
 			,
 			LOG_CHANNEL,
 			"Failed to enumerate video modes for display #{} of adapter #{}.",
@@ -380,23 +405,15 @@ namespace
 			display.GetAdapterIndex()
 		);
 
-		ENSURES_DEBUG( adapter_ptr != nullptr );
-		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ std::exchange( adapter_ptr, nullptr ) };
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the instance of display #{}.", display.GetIndex() );
-		::IDXGIOutput* output_ptr	= nullptr;
-		access_result				= adapter_interface->EnumOutputs( display.GetIndex(), &output_ptr );
+		Black::ScopedComPointer<::IDXGIOutput> output_interface{ QueryOutputInterface( *adapter_interface, display.GetIndex() ) };
 		CRETE(
-			FAILED( access_result ),
+			!output_interface,
 			,
 			LOG_CHANNEL,
 			"Failed to enumerate video modes for display #{} of adapter #{}.",
 			display.GetIndex(),
 			display.GetAdapterIndex()
 		);
-
-		ENSURES_DEBUG( output_ptr != nullptr );
-		Black::ScopedComPointer<::IDXGIOutput> output_interface{ std::exchange( output_ptr, nullptr ) };
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the display video modes." );
 		std::vector<::DXGI_MODE_DESC>	video_modes{ BuildVideoModeList( *output_interface ) };
@@ -405,7 +422,7 @@ namespace
 
 		for( const ::DXGI_MODE_DESC* video_mode : sorted_video_modes )
 		{
-			EXPECTS_DEBUG( video_mode->RefreshRate.Denominator > 0 );
+			CCON( video_mode->RefreshRate.Denominator == 0 );
 
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Consuming the information of video mode." );
 			consumer.Consume( VideoModeInfoConsumer::VideoModeInfo{ *video_mode } );

@@ -67,6 +67,10 @@ namespace PlatformSpecific
 		// Enumerate the video modes for given display.
 		void EnumerateVideoModes( const Black::GlRhiDisplay& display, VideoModeInfoConsumer& consumer );
 
+
+		// Configure the graphics layer connection for desired device. After the graphics layer is configured, it can't be configured to other device.
+		const bool ConfigureGraphicsLayer( const Black::GlRhiAdapter& adapter );
+
 	// Heirs construction and initialization.
 	protected:
 		GlRhiConnection()	= default;

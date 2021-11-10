@@ -5,6 +5,10 @@
 #include "rhi-connection/functions.video-modes.h"
 #include "rhi-connection/functions.strings.h"
 
+#include "wgl/wgl-bindings.initialization.h"
+#include "wgl/wgl-bindings.h"
+#include "wgl/wgl-bindings.extensions.h"
+
 
 namespace Black
 {
@@ -236,8 +240,18 @@ namespace
 
 	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::ConfigureGraphicsLayer( const Black::GlRhiAdapter& adapter )
 	{
-		BLACK_LOG_CRITICAL( LOG_CHANNEL, "Function is not implemented yet." );
-		return false;
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to configure the graphics layer to use adapter #{}.", adapter.GetIndex() );
+
+		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, adapter.GetIndex() ) };
+		CRETE( !adapter_interface, false, LOG_CHANNEL, "Failed to configure the graphics layer for selected adapter." );
+
+		Black::ScopedComPointer<::IDXGIOutput> output_interface{ QueryOutputInterface( *adapter_interface, 0 ) };
+		CRETE( !adapter_interface, false, LOG_CHANNEL, "Failed to configure the graphics layer for selected adapter." );
+
+		CRETE( !::Wgl::InitializeBindings( *output_interface ), false, LOG_CHANNEL, "Failed to initialize WGL layer for selected adapter." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Graphics layer initialized to use adapter #{}.", adapter.GetIndex() );
+		return true;
 	}
 
 	void GlRhiConnection<Black::PlatformType::WindowsDesktop>::EnsureInitialized()

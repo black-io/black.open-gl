@@ -1,13 +1,7 @@
 #pragma once
 
 
-namespace Black
-{
-inline namespace OpenGl
-{
-inline namespace Platform
-{
-namespace PlatformSpecific
+namespace Wgl
 {
 	// State of WGL extensions.
 	union ExtensionsState final
@@ -78,17 +72,14 @@ namespace PlatformSpecific
 
 
 	// Initialize the WGL interface for required display output device.
-	const bool WglInitialize( ::IDXGIOutput& display );
+	const bool InitializeBindings( ::IDXGIOutput& display );
 
 	// Perform the core interface loading for WGL API.
-	const bool WglLoadCoreProfile();
+	const bool LoadCoreProfile();
 
 	// Perform the loading of WGL extensions.
-	const bool WglLoadExtensions();
+	const bool LoadExtensions();
 
 	// Get the state of currently available WGL extensions.
 	const ExtensionsState& GetExtensionsState();
-}
-}
-}
 }

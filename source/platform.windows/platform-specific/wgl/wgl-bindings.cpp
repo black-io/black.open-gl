@@ -1,6 +1,6 @@
 #include <black/open-gl.h>
 
-#include "wgl.h"
+#include "wgl-bindings.h"
 
 
 namespace Wgl

@@ -18,6 +18,135 @@ namespace
 	const wchar_t* STUB_WINDOW_CLASS_NAME = L"WglInitializationStubClass";
 
 
+	// Select the best pixel format for WGL initialization.
+	inline std::optional<int32_t> SelectPixelFormat( ::IDXGIOutput& display )
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Selecting the best pixel format." );
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the display description." );
+		::DXGI_OUTPUT_DESC output_description{};
+
+		{
+			const ::HRESULT access_result = display.GetDesc( &output_description );
+			CRETE( FAILED( access_result ), {}, LOG_CHANNEL, "Failed to get display description, result - 0x{:08X}.", access_result );
+		}
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the desktop settings of display." );
+		::DEVMODEW device_mode{};
+
+		{
+			device_mode.dmSize				= sizeof( device_mode );
+			const bool has_display_settings	= ::EnumDisplaySettingsW( output_description.DeviceName, ENUM_CURRENT_SETTINGS, &device_mode ) == TRUE;
+			CRETE( !has_display_settings, {}, LOG_CHANNEL, "Failed to get desktop settings." );
+		}
+
+		const ::PIXELFORMATDESCRIPTOR format_descriptor{
+			sizeof( ::PIXELFORMATDESCRIPTOR ),							// nSize
+			1,															// nVersion
+			PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,	// dwFlags
+			PFD_TYPE_RGBA,												// iPixelType
+			::BYTE( device_mode.dmBitsPerPel ),							// cColorBits
+			0,															// cRedBits
+			0,															// cRedShift
+			0,															// cGreenBits
+			0,															// cGreenShift
+			0,															// cBlueBits
+			0,															// cBlueShift
+			8,															// cAlphaBits
+			0,															// cAlphaShift
+			0,															// cAccumBits
+			0,															// cAccumRedBits
+			0,															// cAccumGreenBits
+			0,															// cAccumBlueBits
+			0,															// cAccumAlphaBits
+			24,															// cDepthBits
+			8,															// cStencilBits
+			0,															// cAuxBuffers
+			PFD_MAIN_PLANE,												// iLayerType
+			0,															// bReserved
+			0,															// dwLayerMask
+			0,															// dwVisibleMask
+			0,															// dwDamageMask
+		};
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Accessing the temporary device context." );
+		const ::HDC device_context = ::CreateDCW( nullptr, output_description.DeviceName, nullptr, nullptr );
+		CRETE( device_context == nullptr, {}, LOG_CHANNEL, "Failed to create temporary device context." );
+
+		// Guard will delete this device context on function end.
+		const auto device_context_guard = Black::ScopeLeaveHandler{
+			[device_context]()
+			{
+				if( ::DeleteDC( device_context ) != TRUE )
+				{
+					BLACK_LOG_WARNING( LOG_CHANNEL, "The deletion of temporary device context does not went properly." );
+				}
+			}
+		};
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Selecting the pixel format for device context." );
+		const int pixel_format = ChoosePixelFormat( device_context, &format_descriptor );
+		CRETE( pixel_format == 0, {}, LOG_CHANNEL, "Failed to select pixel format for device context, error: 0x{:08X}", ::GetLastError() );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Pixel format #{} was chosen.", pixel_format );
+		return { pixel_format };
+	}
+
+	// Create the device context for selected display.
+	inline std::optional<::HDC> CreateDisplayConntext( ::IDXGIOutput& display, const int32_t pixel_format )
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Trying to create the device context for selected display." );
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the display description." );
+		::DXGI_OUTPUT_DESC output_description{};
+
+		{
+			const ::HRESULT access_result = display.GetDesc( &output_description );
+			CRETE( FAILED( access_result ), {}, LOG_CHANNEL, "Failed to get display description, result - 0x{:08X}.", access_result );
+		}
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Creating the device context for selected display." );
+		const ::HDC device_context = ::CreateDCW( nullptr, output_description.DeviceName, nullptr, nullptr );
+		CRETE( device_context == nullptr, {}, LOG_CHANNEL, "Failed to create device context." );
+
+		// Guard to delete the device context upon the error. It will be canceled on function success.
+		auto device_context_guard = Black::ScopeLeaveHandler{
+			[device_context]()
+			{
+				if( ::DeleteDC( device_context ) != TRUE )
+				{
+					BLACK_LOG_WARNING( LOG_CHANNEL, "The deletion of device context does not went properly." );
+				}
+			}
+		};
+
+		{
+			::PIXELFORMATDESCRIPTOR format_descriptor{};
+			const int32_t access_result = ::DescribePixelFormat( device_context, pixel_format, sizeof( format_descriptor ), &format_descriptor );
+			CRETE( access_result == 0, {}, LOG_CHANNEL, "Failed to describe pixel format, error: 0x{:08X}.", ::GetLastError() );
+
+			const bool has_format_set = ::SetPixelFormat( device_context, pixel_format, &format_descriptor ) == TRUE;
+			if( !has_format_set )
+			{
+				BLACK_LOG_WARNING( LOG_CHANNEL, "Failed to set pixel format for device context, error: 0x{:08X}.", ::GetLastError() );
+			}
+		}
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Device context successfully created." );
+		device_context_guard.Cancel();
+		return { device_context };
+	}
+
+	// Delete the previously created device context.
+	inline void DestroyDisplayContext( ::HDC device_context )
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Device context for display will be deleted." );
+		if( ::DeleteDC( device_context ) != TRUE )
+		{
+			BLACK_LOG_WARNING( LOG_CHANNEL, "The deletion of device context does not went properly." );
+		}
+	}
+
 	// Retrieve the desktop area represented by display.
 	inline std::optional<::RECT> GetDisplayDesktopArea( ::IDXGIOutput& display )
 	{
@@ -101,65 +230,19 @@ namespace
 	}
 
 	// Acquire the valid device context from given window.
-	inline std::optional<::HDC> AcquireDeviceContext( const ::HWND window, ::IDXGIOutput& display )
+	inline std::optional<::HDC> AcquireWindowContext( const ::HWND window, const int32_t pixel_format )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Trying to Acquire the device context for window." );
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the display description." );
-		::DXGI_OUTPUT_DESC output_description{};
-
-		{
-			const ::HRESULT access_result = display.GetDesc( &output_description );
-			CRETE( FAILED( access_result ), {}, LOG_CHANNEL, "Failed to get display description, result - 0x{:08X}.", access_result );
-		}
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the desktop settings of display." );
-		::DEVMODEW device_mode{};
-
-		{
-			device_mode.dmSize				= sizeof( device_mode );
-			const bool has_display_settings	= ::EnumDisplaySettingsW( output_description.DeviceName, ENUM_CURRENT_SETTINGS, &device_mode ) == TRUE;
-			CRETE( !has_display_settings, {}, LOG_CHANNEL, "Failed to get desktop settings." );
-		}
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Accessing the device context of window." );
 		const ::HDC device_context = ::GetDC( window );
 		CRETE( device_context == nullptr, {}, LOG_CHANNEL, "Failed to get device context." );
 
-		const ::PIXELFORMATDESCRIPTOR format_descriptor{
-			sizeof( ::PIXELFORMATDESCRIPTOR ),							// nSize
-			1,															// nVersion
-			PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,	// dwFlags
-			PFD_TYPE_RGBA,												// iPixelType
-			::BYTE( device_mode.dmBitsPerPel ),							// cColorBits
-			0,															// cRedBits
-			0,															// cRedShift
-			0,															// cGreenBits
-			0,															// cGreenShift
-			0,															// cBlueBits
-			0,															// cBlueShift
-			8,															// cAlphaBits
-			0,															// cAlphaShift
-			0,															// cAccumBits
-			0,															// cAccumRedBits
-			0,															// cAccumGreenBits
-			0,															// cAccumBlueBits
-			0,															// cAccumAlphaBits
-			24,															// cDepthBits
-			8,															// cStencilBits
-			0,															// cAuxBuffers
-			PFD_MAIN_PLANE,												// iLayerType
-			0,															// bReserved
-			0,															// dwLayerMask
-			0,															// dwVisibleMask
-			0,															// dwDamageMask
-		};
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Selecting the pixel format for device context." );
-		const int pixel_format = ChoosePixelFormat( device_context, &format_descriptor );
-		CRETE( pixel_format == 0, {}, LOG_CHANNEL, "Failed to select pixel format for device context, error: 0x{:08X}", ::GetLastError() );
-
 		{
+			::PIXELFORMATDESCRIPTOR format_descriptor{};
+			const int32_t access_result = ::DescribePixelFormat( device_context, pixel_format, sizeof( format_descriptor ), &format_descriptor );
+			CRETE( access_result == 0, {}, LOG_CHANNEL, "Failed to describe pixel format, error: 0x{:08X}.", ::GetLastError() );
+
 			const bool has_format_set = ::SetPixelFormat( device_context, pixel_format, &format_descriptor ) == TRUE;
 			if( !has_format_set )
 			{
@@ -172,7 +255,7 @@ namespace
 	}
 
 	// Release the acquired device context.
-	inline void ReleaseDeviceContext( const ::HWND window, const ::HDC device_context )
+	inline void ReleaseWindowContext( const ::HWND window, const ::HDC device_context )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Releasing the device context." );
 		::ReleaseDC( window, device_context );
@@ -196,9 +279,6 @@ namespace
 			}
 		};
 
-		const bool is_succeeded = ::wglMakeCurrent( device_context, graphics_context ) == TRUE;
-		CRETE( !is_succeeded, {}, LOG_CHANNEL, "Failed to make the graphics context current, error: 0x{:08X}", ::GetLastError() );
-
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "OpenGL context created successfully." );
 		context_guard.Cancel();
 		return graphics_context;
@@ -208,11 +288,6 @@ namespace
 	inline void DestroyGraphicsContext( const ::HGLRC graphics_context )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Deleting the OpenGL context." );
-
-		if( ::wglMakeCurrent( nullptr, nullptr ) != TRUE )
-		{
-			BLACK_LOG_WARNING( LOG_CHANNEL, "Failed to unbind the current context, error: 0x{:08X}.", ::GetLastError() );
-		}
 
 		if( ::wglDeleteContext( graphics_context ) != TRUE )
 		{
@@ -325,12 +400,37 @@ namespace
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to initialize the WGL layer." );
 
+		const auto pixel_format = SelectPixelFormat( display );
+		CRETE( !pixel_format.has_value(), false, LOG_CHANNEL, "Failed to initialize WGL." );
+
+		const auto display_context = CreateDisplayConntext( display, *pixel_format );
+		CRETE( !display_context.has_value(), false, LOG_CHANNEL, "Failed to initialize WGL." );
+
+		// Guard to properly destroy the created display context.
+		const auto display_context_guard = Black::ScopeLeaveHandler{
+			[context = *display_context]()
+			{
+				DestroyDisplayContext( context );
+			}
+		};
+
+		const auto graphics_context = CreateGraphicsContext( *display_context );
+		CRETE( graphics_context == nullptr, false, LOG_CHANNEL, "Failed to initialize WGL." );
+
+		// Guard to properly destroy the OpenGL context.
+		auto gl_guard = Black::ScopeLeaveHandler{
+			[context = *graphics_context]()
+			{
+				DestroyGraphicsContext( context );
+			}
+		};
+
 		const auto desktop_area = GetDisplayDesktopArea( display );
 		CRETE( !desktop_area.has_value(), false, LOG_CHANNEL, "Failed to initialize WGL." );
 
 		CRETE( !RegisterStubWindowClass(), false, LOG_CHANNEL, "Failed to initialize WGL." );
 
-		// Guard of window class registration.
+		// Guard to revert the window class registration on function end.
 		auto window_class_guard = Black::ScopeLeaveHandler{ UnregisterStubWindowClass };
 
 		const auto window_handle = CreateStubWindow( *desktop_area );
@@ -344,31 +444,26 @@ namespace
 			}
 		};
 
-		const auto device_context = AcquireDeviceContext( *window_handle, display );
-		CRETE( !device_context.has_value(), false, LOG_CHANNEL, "Failed to initialize WGL." );
+		const auto window_context = AcquireWindowContext( *window_handle, *pixel_format );
+		CRETE( !window_context.has_value(), false, LOG_CHANNEL, "Failed to initialize WGL." );
 
 		// Guard to release the device context.
 		auto context_guard = Black::ScopeLeaveHandler{
-			[context = *device_context, window = *window_handle]()
+			[context = *window_context, window = *window_handle]()
 			{
-				ReleaseDeviceContext( window, context );
+				ReleaseWindowContext( window, context );
 			}
 		};
 
-		const auto graphics_context = CreateGraphicsContext( *device_context );
-		CRETE( graphics_context == nullptr, false, LOG_CHANNEL, "Failed to initialize WGL." );
-
-		// Guard to properly destroy the OpenGL context.
-		auto gl_guard = Black::ScopeLeaveHandler{
-			[context = *graphics_context]()
-			{
-				DestroyGraphicsContext( context );
-			}
-		};
+		// Make the graphics context current to proceed the WGL initialization.
+		const bool is_context_set = ::wglMakeCurrent( *window_context, *graphics_context );
+		CRETE( !is_context_set, false, LOG_CHANNEL, "Failed to initialize WGL." );
 
 		// Perform the WGL initialization.
 		CRETE( !LoadCoreProfile(), false, LOG_CHANNEL, "Failed to initialize WGL." );
 		CRETE( !LoadExtensions(), false, LOG_CHANNEL, "Failed to initialize WGL." );
+
+		::wglMakeCurrent( nullptr, nullptr );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "WGL layer initialized successfully." );
 		return true;

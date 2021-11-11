@@ -257,7 +257,7 @@ namespace
 	// Release the acquired device context.
 	inline void ReleaseWindowContext( const ::HWND window, const ::HDC device_context )
 	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Releasing the device context." );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Releasing the device context of window." );
 		::ReleaseDC( window, device_context );
 	}
 

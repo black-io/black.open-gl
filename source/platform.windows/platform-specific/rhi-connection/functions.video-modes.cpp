@@ -80,7 +80,7 @@ namespace
 	{
 		std::vector<::DXGI_MODE_DESC*> sorted_video_modes;
 
-		auto criteria = []( const ::DXGI_MODE_DESC* left, const ::DXGI_MODE_DESC* right ) -> bool
+		auto criteria = []( const ::DXGI_MODE_DESC* left, const ::DXGI_MODE_DESC* right ) -> const bool
 		{
 			{
 				const ::DXGI_FORMAT left_format		= left->Format;

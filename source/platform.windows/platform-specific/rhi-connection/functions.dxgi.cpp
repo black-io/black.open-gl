@@ -52,19 +52,19 @@ namespace
 		return nullptr;
 	}
 
-	::IDXGIAdapter1* QueryElevatedAdapterInterface( ::IDXGIAdapter& adapter )
+	::IDXGIAdapter1* QueryAdapterV1Interface( ::IDXGIAdapter& adapter )
 	{
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the elevated version of adapter interface." );
-		::IDXGIAdapter1* elevated_adapter_ptr = nullptr;
-		const ::HRESULT access_result = adapter.QueryInterface( &elevated_adapter_ptr );
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to query the version 1 of adapter interface." );
+		::IDXGIAdapter1* adapter_v1_ptr = nullptr;
+		const ::HRESULT access_result = adapter.QueryInterface( &adapter_v1_ptr );
 
 		if( SUCCEEDED( access_result ) )
 		{
-			ENSURES_DEBUG( elevated_adapter_ptr != nullptr );
-			return elevated_adapter_ptr;
+			ENSURES_DEBUG( adapter_v1_ptr != nullptr );
+			return adapter_v1_ptr;
 		}
 
-		BLACK_LOG_ERROR( LOG_CHANNEL, "Failed to access the elevated version of adapter interface, result: 0x{:08X}.", access_result );
+		BLACK_LOG_ERROR( LOG_CHANNEL, "Failed to access the version 1 of adapter interface, result: 0x{:08X}.", access_result );
 		return nullptr;
 	}
 }

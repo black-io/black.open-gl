@@ -15,8 +15,8 @@ namespace PlatformSpecific
 	// Query the output interface by given ordinal number.
 	::IDXGIOutput* QueryOutputInterface( ::IDXGIAdapter& adapter, const size32_t output_index );
 
-	// Query the elevated version of adapter interface.
-	::IDXGIAdapter1* QueryElevatedAdapterInterface( ::IDXGIAdapter& adapter );
+	// Query the version 1 of adapter interface.
+	::IDXGIAdapter1* QueryAdapterV1Interface( ::IDXGIAdapter& adapter );
 }
 }
 }

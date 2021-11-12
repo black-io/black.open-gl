@@ -32,6 +32,7 @@ inline namespace WindowsDesktop
 #include "platform-specific/GlRhiDisplay.windows.h"
 #include "platform-specific/GlRhiVideoMode.windows.h"
 
+#include "platform-specific/EglDisplay.windows.h"
 #include "platform-specific/GlConfiguration.windows.h"
 #include "platform-specific/GlContext.windows.h"
 

@@ -13,6 +13,9 @@ inline namespace Platform
 	// Forward the RHI display to be used in platform-specific code.
 	class GlRhiDisplay;
 
+	// Forward the EGL display object to be used in platform-specific code.
+	class EglDisplay;
+
 	// Forward the configuration to be used in platform-specific code.
 	class GlConfiguration;
 

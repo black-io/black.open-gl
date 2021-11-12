@@ -37,8 +37,8 @@ namespace PlatformSpecific
 #include "internal/BasicGlRhiDisplay.h"
 #include "internal/BasicGlRhiVideoMode.h"
 
+#include "internal/BasicEglConfiguration.h"
 #include "internal/BasicEglDisplay.h"
-#include "internal/BasicGlConfiguration.h"
 #include "internal/BasicGlContext.h"
 
 #include "internal/BasicGlRhiConnection.h"
@@ -66,8 +66,8 @@ namespace PlatformSpecific
 #include "GlRhiDisplay.h"
 #include "GlRhiVideoMode.h"
 
+#include "EglConfiguration.h"
 #include "EglDisplay.h"
-#include "GlConfiguration.h"
 #include "GlContext.h"
 
 #include "GlRhiConnection.h"

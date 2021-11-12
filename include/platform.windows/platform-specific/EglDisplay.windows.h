@@ -10,7 +10,10 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent EGL-compatible display implementation.
+		@brief	Platform dependent implementation of EGL-compatible display in terms of windows desktop platform.
+
+		On Windows desktop platform the EGL Display connection is provided by DXGI interface.
+		Also, any OpenGL context for this display will be created using the stored device context.
 
 		Implements the second layer of platform-agnostic EGL display type.
 		This type is strictly internal and should never been used outside of subsystem.

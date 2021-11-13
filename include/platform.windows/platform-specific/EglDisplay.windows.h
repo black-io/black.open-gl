@@ -48,6 +48,9 @@ namespace PlatformSpecific
 		// Get the default video mode of display.
 		inline const ::DXGI_MODE_DESC& GetDefaultVideoMode() const		{ return m_default_mode; };
 
+		// Get the desktop settings of display.
+		inline const ::DEVMODEW& GetDesktopSettings() const				{ return m_desktop_settings; };
+
 		// Get the additional information about display monitor.
 		inline const ::MONITORINFOEXW& GetDisplayMonitorInfo() const	{ return m_monitor_info; };
 
@@ -82,6 +85,9 @@ namespace PlatformSpecific
 		// Copy the display information from given handle.
 		const bool CopyDisplayInfo( const Black::GlRhiDisplay& display );
 
+		// Read the display desktop settings.
+		const bool ReadDesktopSettings();
+
 		// Try to create the device context.
 		const bool CreateDeviceContext();
 
@@ -97,6 +103,7 @@ namespace PlatformSpecific
 
 		::DXGI_OUTPUT_DESC	m_device_desc;		// Internal description of display device.
 		::DXGI_MODE_DESC	m_default_mode;		// Default video mode of display.
+		::DEVMODEW			m_desktop_settings;	// Display device desktop settings.
 		::MONITORINFOEXW	m_monitor_info;		// Additional information about display.
 		::DISPLAY_DEVICEW	m_display_info;		// Additional information about display.
 	};

@@ -26,6 +26,7 @@ namespace
 		CRETE( !AcquireAdapterInterface( adapter.GetIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 		CRETE( !AcquireOutputInterface( 0, factory ), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 		CRETE( !CollectDisplayInfo(), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
+		CRETE( !ReadDesktopSettings(), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 		CRETE( !CreateDeviceContext(), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Successfully connected to default display of adapter #{}.", adapter.GetIndex() );
@@ -39,6 +40,7 @@ namespace
 		CRETE( !AcquireAdapterInterface( display.GetAdapterIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to display." );
 		CRETE( !AcquireOutputInterface( display.GetIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to display." );
 		CRETE( !CopyDisplayInfo( display ), false, LOG_CHANNEL, "Failed to connect to display." );
+		CRETE( !ReadDesktopSettings(), false, LOG_CHANNEL, "Failed to connect to display." );
 		CRETE( !CreateDeviceContext(), false, LOG_CHANNEL, "Failed to connect to display." );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Successfully connected to display #{} of adapter #{}.", display.GetIndex(), display.GetAdapterIndex() );
@@ -125,6 +127,18 @@ namespace
 		Black::CopyMemory( m_display_info, display.GetDisplayInfo() );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display information copied successfully." );
+		return true;
+	}
+
+	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::ReadDesktopSettings()
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Reading the desktop settings of display." );
+
+		m_desktop_settings.dmSize	= sizeof( m_desktop_settings );
+		const bool is_succeeded		= ::EnumDisplaySettingsW( m_device_desc.DeviceName, ENUM_CURRENT_SETTINGS, &m_desktop_settings ) == TRUE;
+		CRETE( !is_succeeded, {}, LOG_CHANNEL, "Failed to get desktop settings." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display desktop settings successfully obtained." );
 		return true;
 	}
 

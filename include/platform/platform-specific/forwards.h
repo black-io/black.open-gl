@@ -34,20 +34,20 @@ namespace PlatformSpecific
 	class GlRhiVideoMode;
 
 	/**
+		@brief	Platform dependent EGL-compatible configuration implementation.
+		This class is statically instantiated for any of platform the framework supports.
+		Each instantiation may have platform-specific code.
+	*/
+	template< Black::PlatformType PLATFORM_TYPE >
+	class EglConfiguration;
+
+	/**
 		@brief	Platform dependent EGL-compatible display implementation.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
 	class EglDisplay;
-
-	/**
-		@brief	Platform dependent EGL-compatible configuration implementation.
-		This class is statically instantiated for any of platform the framework supports.
-		Each instantiation may have platform-specific code.
-	*/
-	template< Black::PlatformType PLATFORM_TYPE >
-	class GlConfiguration;
 
 	/**
 		@brief	Platform dependent OpenGL context implementation.

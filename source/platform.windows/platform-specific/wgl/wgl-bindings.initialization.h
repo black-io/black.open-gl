@@ -72,7 +72,7 @@ namespace Wgl
 
 
 	// Initialize the WGL interface for required display output device.
-	const bool InitializeBindings( ::IDXGIOutput& display );
+	const bool InitializeBindings( const Black::EglDisplay& display );
 
 	// Perform the core interface loading for WGL API.
 	const bool LoadCoreProfile();

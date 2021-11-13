@@ -245,7 +245,7 @@ namespace
 		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the display can be connected." );
 		CRETE( !target_display.Connect( adapter_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
 		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
-		CRETE( !::Wgl::InitializeBindings( *target_display.QueryOutputInterface() ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
+		CRETE( !::Wgl::InitializeBindings( target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display object successfully connected to adapter #{}.", adapter_handle.GetIndex() );
 		return true;
@@ -258,7 +258,7 @@ namespace
 		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the display can be connected." );
 		CRETE( !target_display.Connect( display_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
 		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
-		CRETE( !::Wgl::InitializeBindings( *target_display.QueryOutputInterface() ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
+		CRETE( !::Wgl::InitializeBindings( target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display object successfully connected to display #{}.", display_handle.GetIndex() );
 		return true;

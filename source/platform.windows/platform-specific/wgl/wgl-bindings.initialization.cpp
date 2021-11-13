@@ -19,33 +19,16 @@ namespace
 
 
 	// Select the best pixel format for WGL initialization.
-	inline std::optional<int32_t> SelectPixelFormat( ::IDXGIOutput& display )
+	inline std::optional<int32_t> SelectPixelFormat( const Black::EglDisplay& display )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Selecting the best pixel format." );
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the display description." );
-		::DXGI_OUTPUT_DESC output_description{};
-
-		{
-			const ::HRESULT access_result = display.GetDesc( &output_description );
-			CRETE( FAILED( access_result ), {}, LOG_CHANNEL, "Failed to get display description, result - 0x{:08X}.", access_result );
-		}
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the desktop settings of display." );
-		::DEVMODEW device_mode{};
-
-		{
-			device_mode.dmSize				= sizeof( device_mode );
-			const bool has_display_settings	= ::EnumDisplaySettingsW( output_description.DeviceName, ENUM_CURRENT_SETTINGS, &device_mode ) == TRUE;
-			CRETE( !has_display_settings, {}, LOG_CHANNEL, "Failed to get desktop settings." );
-		}
 
 		const ::PIXELFORMATDESCRIPTOR format_descriptor{
 			sizeof( ::PIXELFORMATDESCRIPTOR ),							// nSize
 			1,															// nVersion
 			PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,	// dwFlags
 			PFD_TYPE_RGBA,												// iPixelType
-			::BYTE( device_mode.dmBitsPerPel ),							// cColorBits
+			::BYTE( display.GetDesktopSettings().dmBitsPerPel ),		// cColorBits
 			0,															// cRedBits
 			0,															// cRedShift
 			0,															// cGreenBits
@@ -70,7 +53,7 @@ namespace
 		};
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Accessing the temporary device context." );
-		const ::HDC device_context = ::CreateDCW( nullptr, output_description.DeviceName, nullptr, nullptr );
+		const ::HDC device_context = ::CreateDCW( nullptr, display.GetOutputDescription().DeviceName, nullptr, nullptr );
 		CRETE( device_context == nullptr, {}, LOG_CHANNEL, "Failed to create temporary device context." );
 
 		// Guard will delete this device context on function end.
@@ -93,20 +76,12 @@ namespace
 	}
 
 	// Create the device context for selected display.
-	inline std::optional<::HDC> CreateDisplayConntext( ::IDXGIOutput& display, const int32_t pixel_format )
+	inline std::optional<::HDC> CreateDisplayConntext( const Black::EglDisplay& display, const int32_t pixel_format )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Trying to create the device context for selected display." );
 
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Trying to get the display description." );
-		::DXGI_OUTPUT_DESC output_description{};
-
-		{
-			const ::HRESULT access_result = display.GetDesc( &output_description );
-			CRETE( FAILED( access_result ), {}, LOG_CHANNEL, "Failed to get display description, result - 0x{:08X}.", access_result );
-		}
-
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Creating the device context for selected display." );
-		const ::HDC device_context = ::CreateDCW( nullptr, output_description.DeviceName, nullptr, nullptr );
+		const ::HDC device_context = ::CreateDCW( nullptr, display.GetOutputDescription().DeviceName, nullptr, nullptr );
 		CRETE( device_context == nullptr, {}, LOG_CHANNEL, "Failed to create device context." );
 
 		// Guard to delete the device context upon the error. It will be canceled on function success.
@@ -148,15 +123,11 @@ namespace
 	}
 
 	// Retrieve the desktop area represented by display.
-	inline std::optional<::RECT> GetDisplayDesktopArea( ::IDXGIOutput& display )
+	inline std::optional<::RECT> GetDisplayDesktopArea( const Black::EglDisplay& display )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Trying to get the desktop area of display." );
 
-		::DXGI_OUTPUT_DESC	output_description{};
-		const ::HRESULT		access_result = display.GetDesc( &output_description );
-		CRETE( FAILED( access_result ), {}, LOG_CHANNEL, "Failed to get display description, result - 0x{:08X}.", access_result );
-
-		const ::RECT& result = output_description.DesktopCoordinates;
+		const ::RECT& result = display.GetOutputDescription().DesktopCoordinates;
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "[{}, {}, {}, {}] area will be used.", result.left, result.top, result.right, result.bottom );
 		return { result };
 	}
@@ -396,7 +367,7 @@ namespace
 }
 
 
-	const bool InitializeBindings( ::IDXGIOutput& display )
+	const bool InitializeBindings( const Black::EglDisplay& display )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to initialize the WGL layer." );
 

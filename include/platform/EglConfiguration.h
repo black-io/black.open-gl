@@ -8,7 +8,10 @@ inline namespace OpenGl
 inline namespace Platform
 {
 	/**
-		@brief	Implementation of EGL-compatible configuration.
+		@brief	EGL configuration object.
+
+		This type implements regular EGL Configuration object, or emulates it on system without EGL support.
+		Check the platform-specific implementations for details.
 
 		Implements the final, third layer of platform-agnostic EGL configuration type.
 		This type is public and may be freely used outside of subsystem.

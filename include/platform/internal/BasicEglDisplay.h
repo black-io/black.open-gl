@@ -17,11 +17,6 @@ namespace Internal
 	*/
 	class BasicEglDisplay : private Black::NonTransferable
 	{
-	// Public interface.
-	public:
-		// Get the list of available EGL configurations for display.
-		inline Black::PlainVector<const Black::EglConfiguration> GetConfigurations() const { return { m_configurations.data(), m_configurations.size() }; };
-
 	// Heirs construction and initialization.
 	protected:
 		BasicEglDisplay()	= default;

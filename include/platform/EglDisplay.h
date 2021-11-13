@@ -30,7 +30,8 @@ inline namespace Platform
 
 	// Public interface.
 	public:
-
+		// Get the list of available EGL configurations for display.
+		inline Black::PlainView<const Black::EglConfiguration> GetConfigurations() const { return { m_configurations.data(), m_configurations.size() }; };
 	};
 }
 }

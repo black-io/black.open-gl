@@ -106,7 +106,7 @@ namespace
 			}
 			else
 			{
-				Black::ScopedComPointer<::IDXGIAdapter1> elevated_adapter_interface{ QueryElevatedAdapterInterface( *adapter_interface ) };
+				Black::ScopedComPointer<::IDXGIAdapter1> elevated_adapter_interface{ QueryAdapterV1Interface( *adapter_interface ) };
 				EXPECTS( !elevated_adapter_interface.IsEmpty() );
 
 				BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the full description of adapter." );
@@ -238,19 +238,29 @@ namespace
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Video modes enumerated for display #{} of adapter #{}.", display.GetIndex(), display.GetAdapterIndex() );
 	}
 
-	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::ConfigureGraphicsLayer( const Black::GlRhiAdapter& adapter )
+	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::ConnectDisplay( const Black::GlRhiAdapter& adapter_handle, Black::EglDisplay& target_display )
 	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to configure the graphics layer to use adapter #{}.", adapter.GetIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to connect the display object to adapter #{}.", adapter_handle.GetIndex() );
 
-		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, adapter.GetIndex() ) };
-		CRETE( !adapter_interface, false, LOG_CHANNEL, "Failed to configure the graphics layer for selected adapter." );
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the display can be connected." );
+		CRETE( !target_display.Connect( adapter_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
+		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
+		CRETE( !::Wgl::InitializeBindings( *target_display.QueryOutputInterface() ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
 
-		Black::ScopedComPointer<::IDXGIOutput> output_interface{ QueryOutputInterface( *adapter_interface, 0 ) };
-		CRETE( !adapter_interface, false, LOG_CHANNEL, "Failed to configure the graphics layer for selected adapter." );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display object successfully connected to adapter #{}.", adapter_handle.GetIndex() );
+		return true;
+	}
 
-		CRETE( !::Wgl::InitializeBindings( *output_interface ), false, LOG_CHANNEL, "Failed to initialize WGL layer for selected adapter." );
+	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::ConnectDisplay( const Black::GlRhiDisplay& display_handle, Black::EglDisplay& target_display )
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to connect the display object to display #{}.", display_handle.GetIndex() );
 
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Graphics layer initialized to use adapter #{}.", adapter.GetIndex() );
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the display can be connected." );
+		CRETE( !target_display.Connect( display_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
+		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
+		CRETE( !::Wgl::InitializeBindings( *target_display.QueryOutputInterface() ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display object successfully connected to display #{}.", display_handle.GetIndex() );
 		return true;
 	}
 

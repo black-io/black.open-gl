@@ -68,8 +68,11 @@ namespace PlatformSpecific
 		void EnumerateVideoModes( const Black::GlRhiDisplay& display, VideoModeInfoConsumer& consumer );
 
 
-		// Configure the graphics layer connection for desired device. After the graphics layer is configured, it can't be configured to other device.
-		const bool ConfigureGraphicsLayer( const Black::GlRhiAdapter& adapter );
+		// Perform the EGL display connection to given adapter.
+		const bool ConnectDisplay( const Black::GlRhiAdapter& adapter_handle, Black::EglDisplay& target_display );
+
+		// Perform the EGL display connection to given display.
+		const bool ConnectDisplay( const Black::GlRhiDisplay& display_handle, Black::EglDisplay& target_display );
 
 	// Heirs construction and initialization.
 	protected:
@@ -83,8 +86,8 @@ namespace PlatformSpecific
 
 	// Private state.
 	private:
-		Black::UniqueComPointer<::IDXGIFactory>		m_generic_factory;	// Generic interface of DXGI factory.
-		Black::UniqueComPointer<::IDXGIFactory1>	m_extended_factory;	// Extended interface of DXGI factory.
+		Black::UniqueComPointer<::IDXGIFactory>		m_generic_factory;				// Generic interface of DXGI factory.
+		Black::UniqueComPointer<::IDXGIFactory1>	m_extended_factory;				// Extended interface of DXGI factory.
 	};
 }
 }

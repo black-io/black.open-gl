@@ -247,6 +247,8 @@ namespace
 		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
 		CRETE( !::Wgl::InitializeBindings( target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
 
+		target_display.UpdateConfigurations();
+
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display object successfully connected to adapter #{}.", adapter_handle.GetIndex() );
 		return true;
 	}
@@ -259,6 +261,8 @@ namespace
 		CRETE( !target_display.Connect( display_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
 		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
 		CRETE( !::Wgl::InitializeBindings( target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
+
+		target_display.UpdateConfigurations();
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display object successfully connected to display #{}.", display_handle.GetIndex() );
 		return true;

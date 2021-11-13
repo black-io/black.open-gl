@@ -63,6 +63,10 @@ namespace PlatformSpecific
 		void Finalize();
 
 
+		// Update the available configurations for connected display.
+		void UpdateConfigurations();
+
+
 		// Whether the display is connected to device.
 		inline const bool IsConnected() const { return m_device_context != nullptr; };
 

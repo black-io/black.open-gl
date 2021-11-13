@@ -3,6 +3,8 @@
 #include "rhi-connection/functions.dxgi.h"
 #include "rhi-connection/functions.video-modes.h"
 
+#include "rhi-connection/functions.pixel-formats.h"
+
 
 namespace Black
 {
@@ -55,8 +57,30 @@ namespace
 		m_output_interface.reset();
 		m_adapter_v1_interface.reset();
 		m_adapter_interface.reset();
+		m_configurations.clear();
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display finalized properly." );
+	}
+
+	void EglDisplay<Black::PlatformType::WindowsDesktop>::UpdateConfigurations()
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "List of EGL configurations will be updated." );
+
+		CRETE( !IsConnected(), , LOG_CHANNEL, "Unable to get configurations for disconnected display." );
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the WGL pixel formats." );
+		std::vector<::PIXELFORMATDESCRIPTOR> pixel_formats{ BuildPixelFormatList( *m_output_interface ) };
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Sorting the collected pixel formats." );
+		std::vector<::PIXELFORMATDESCRIPTOR*> sorted_pixel_formats{ SortPixelFormats( pixel_formats ) };
+
+		m_configurations.clear();
+		for( ::PIXELFORMATDESCRIPTOR* format : sorted_pixel_formats )
+		{
+			const size32_t format_index = size32_t( std::distance( pixel_formats.data(), format ) );
+			m_configurations.emplace_back( Black::EglConfiguration::ConstructionInfo{ *format, format_index } );
+		}
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "WGL configurations updated." );
 	}
 
 	EglDisplay<Black::PlatformType::WindowsDesktop>::~EglDisplay()

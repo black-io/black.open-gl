@@ -168,9 +168,9 @@ namespace
 					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_BITMAP );
 					break;
 				case ::Wgl::ACCELERATION_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_EXT )? 0 : PFD_GENERIC_FORMAT );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_EXT )? 0 : PFD_GENERIC_ACCELERATED );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_EXT )? 0 : PFD_DIRECT3D_ACCELERATED );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_EXT )? PFD_GENERIC_FORMAT : 0 );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_EXT )? PFD_GENERIC_ACCELERATED : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_EXT )? PFD_DIRECT3D_ACCELERATED : 0  );
 					break;
 				case ::Wgl::NEED_PALETTE_EXT:
 					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_PALETTE );
@@ -182,9 +182,9 @@ namespace
 					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SWAP_LAYER_BUFFERS );
 					break;
 				case ::Wgl::SWAP_METHOD_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_EXT )? 0 : PFD_SWAP_EXCHANGE );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_EXT )? 0 : PFD_SWAP_COPY );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_EXT )? 0 : PFD_SWAP_COPY );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_EXT )? PFD_SWAP_EXCHANGE : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_EXT )? PFD_SWAP_COPY : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_EXT )? PFD_SWAP_COPY : 0  );
 					break;
 				case ::Wgl::NUMBER_OVERLAYS_EXT:
 					description.bReserved = description.bReserved | ::BYTE( values[ index ] & 0xFU );
@@ -312,9 +312,9 @@ namespace
 					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_BITMAP );
 					break;
 				case ::Wgl::ACCELERATION_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_ARB )? 0 : PFD_GENERIC_FORMAT );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_ARB )? 0 : PFD_GENERIC_ACCELERATED );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_ARB )? 0 : PFD_DIRECT3D_ACCELERATED );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_ARB )? PFD_GENERIC_FORMAT : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_ARB )? PFD_GENERIC_ACCELERATED : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_ARB )? PFD_DIRECT3D_ACCELERATED : 0  );
 					break;
 				case ::Wgl::NEED_PALETTE_ARB:
 					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_PALETTE );
@@ -326,9 +326,9 @@ namespace
 					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SWAP_LAYER_BUFFERS );
 					break;
 				case ::Wgl::SWAP_METHOD_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_ARB )? 0 : PFD_SWAP_EXCHANGE );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_ARB )? 0 : PFD_SWAP_COPY );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_ARB )? 0 : PFD_SWAP_COPY );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_ARB )? PFD_SWAP_EXCHANGE : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_ARB )? PFD_SWAP_COPY : 0  );
+					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_ARB )? PFD_SWAP_COPY : 0  );
 					break;
 				case ::Wgl::NUMBER_OVERLAYS_ARB:
 					description.bReserved = description.bReserved | ::BYTE( values[ index ] & 0xFU );

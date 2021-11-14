@@ -23,15 +23,18 @@ namespace PlatformSpecific
 	// Public inner types.
 	public:
 		// Information for instance construction.
-		using ConstructionInfo = std::tuple<::PIXELFORMATDESCRIPTOR, size32_t>;
+		using ConstructionInfo = std::tuple<::PIXELFORMATDESCRIPTOR, Internal::PixelBufferSettings, size32_t>;
 
 	// Platform-specific interface.
 	public:
 		// Get the description of WGL pixel format.
-		inline const ::PIXELFORMATDESCRIPTOR& GetDescription() const	{ return m_description; };
+		inline const ::PIXELFORMATDESCRIPTOR& GetDescription() const				{ return m_description; };
+
+		// Get the settings for pixel buffers.
+		inline const Internal::PixelBufferSettings& GetPixelBufferSettings() const	{ return m_pixel_buffer_settings; };
 
 		// Get the ordinal index of WGL pixel format.
-		inline const size32_t GetIndex() const							{ return m_index; };
+		inline const size32_t GetIndex() const										{ return m_index; };
 
 	// Platform-agnostic interface.
 	public:
@@ -45,8 +48,9 @@ namespace PlatformSpecific
 
 	// private state.
 	private:
-		::PIXELFORMATDESCRIPTOR	m_description;	// Description of pixel format.
-		size32_t				m_index;		// Ordinal number of configuration.
+		::PIXELFORMATDESCRIPTOR			m_description;				// Description of pixel format.
+		Internal::PixelBufferSettings	m_pixel_buffer_settings;	// Pixel buffer settings for this format.
+		size32_t						m_index;					// Ordinal number of configuration.
 	};
 }
 }

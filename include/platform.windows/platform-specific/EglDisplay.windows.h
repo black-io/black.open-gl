@@ -66,6 +66,12 @@ namespace PlatformSpecific
 		// Update the available configurations for connected display.
 		void UpdateConfigurations();
 
+		// Find the best configuration for window surfaces.
+		std::optional<Black::EglConfiguration> FindBestWindowConfiguration() const;
+
+		// Find the best configuration for pixel buffer surfaces.
+		std::optional<Black::EglConfiguration> FindBestPixelBufferConfiguration( const Black::EglConfiguration& window_configuration ) const;
+
 
 		// Whether the display is connected to device.
 		inline const bool IsConnected() const { return m_device_context != nullptr; };

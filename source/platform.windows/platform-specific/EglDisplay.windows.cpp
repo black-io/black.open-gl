@@ -5,6 +5,9 @@
 
 #include "rhi-connection/functions.pixel-formats.h"
 
+#include "wgl/wgl-bindings.h"
+#include "wgl/wgl-bindings.extensions.h"
+
 
 namespace Black
 {
@@ -69,7 +72,7 @@ namespace
 		CRETE( !IsConnected(), , LOG_CHANNEL, "Unable to get configurations for disconnected display." );
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the WGL pixel formats." );
-		std::vector<::PIXELFORMATDESCRIPTOR> pixel_formats{ BuildPixelFormatList( *m_output_interface ) };
+		std::vector<::PIXELFORMATDESCRIPTOR> pixel_formats{ BuildPixelFormatList( *this ) };
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Sorting the collected pixel formats." );
 		std::vector<::PIXELFORMATDESCRIPTOR*> sorted_pixel_formats{ SortPixelFormats( pixel_formats ) };
 
@@ -81,6 +84,108 @@ namespace
 		}
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "WGL configurations updated." );
+	}
+
+	std::optional<Black::EglConfiguration> EglDisplay<Black::PlatformType::WindowsDesktop>::FindBestWindowConfiguration() const
+	{
+		std::vector<const Black::EglConfiguration*> configurations;
+		configurations.resize( m_configurations.size() );
+		std::transform( m_configurations.begin(), m_configurations.end(), configurations.begin(), []( const Black::EglConfiguration& item ) { return &item; } );
+
+		auto configurations_begin	= configurations.begin();
+		auto configurations_end		= configurations.end();
+
+		// Keep only configurations that support OpenGL, allow drawing to window, provide bit-depth of desktop along with depth/stencil buffers.
+		configurations_end = std::copy_if(
+			configurations_begin,
+			configurations_end,
+			configurations_begin,
+			[this]( const Black::EglConfiguration* configuration ) -> const bool
+			{
+				constexpr ::DWORD required_flags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL;
+				const ::PIXELFORMATDESCRIPTOR& pixel_format = configuration->GetDescription();
+
+				CRET( pixel_format.iLayerType != PFD_MAIN_PLANE, false );
+				CRET( ( pixel_format.dwFlags & required_flags ) != required_flags, false );
+				CRET( pixel_format.cColorBits != m_desktop_settings.dmBitsPerPel, false );
+
+				return ( pixel_format.cDepthBits > 0 ) && ( pixel_format.cStencilBits > 0 );
+			}
+		);
+
+		// Sort the configurations by complex criteria. The best match will be stored first.
+		std::sort(
+			configurations_begin,
+			configurations_end,
+			[]( const Black::EglConfiguration* left, const Black::EglConfiguration* right ) -> const bool
+			{
+				const ::PIXELFORMATDESCRIPTOR& left_format	= left->GetDescription();
+				const ::PIXELFORMATDESCRIPTOR& right_format	= right->GetDescription();
+
+				{
+					const int32_t left_acceleration_flag	= left_format.dwFlags & PFD_DIRECT3D_ACCELERATED;
+					const int32_t right_acceleration_flag	= right_format.dwFlags & PFD_DIRECT3D_ACCELERATED;
+					if( left_acceleration_flag != right_acceleration_flag )
+					{
+						return left_acceleration_flag > right_acceleration_flag;
+					}
+				}
+
+				{
+					const int32_t left_buffering_flag	= left_format.dwFlags & PFD_DOUBLEBUFFER;
+					const int32_t right_buffering_flag	= right_format.dwFlags & PFD_DOUBLEBUFFER;
+					if( left_buffering_flag != right_buffering_flag )
+					{
+						return left_buffering_flag > right_buffering_flag;
+					}
+				}
+
+				{
+					const int32_t left_exchange_flag	= left_format.dwFlags & PFD_SWAP_EXCHANGE;
+					const int32_t right_exchange_flag	= right_format.dwFlags & PFD_SWAP_EXCHANGE;
+					if( left_exchange_flag != right_exchange_flag )
+					{
+						return left_exchange_flag > right_exchange_flag;
+					}
+				}
+
+				if( left_format.cDepthBits != right_format.cDepthBits )
+				{
+					return left_format.cDepthBits > right_format.cDepthBits;
+				}
+
+				if( left_format.cStencilBits != right_format.cStencilBits )
+				{
+					return left_format.cStencilBits > right_format.cStencilBits;
+				}
+
+				if( left_format.cRedBits != right_format.cRedBits )
+				{
+					return left_format.cRedBits > right_format.cRedBits;
+				}
+
+				if( left_format.cBlueBits != right_format.cBlueBits )
+				{
+					return left_format.cBlueBits > right_format.cBlueBits;
+				}
+
+				if( left_format.cGreenBits != right_format.cGreenBits )
+				{
+					return left_format.cGreenBits > right_format.cGreenBits;
+				}
+
+				return left_format.cAlphaBits > right_format.cAlphaBits;
+			}
+		);
+
+		return { *configurations.front() };
+	}
+
+	std::optional<Black::EglConfiguration> EglDisplay<Black::PlatformType::WindowsDesktop>::FindBestPixelBufferConfiguration(
+		const Black::EglConfiguration& window_configuration
+	) const
+	{
+		return {};
 	}
 
 	EglDisplay<Black::PlatformType::WindowsDesktop>::~EglDisplay()

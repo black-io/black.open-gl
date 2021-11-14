@@ -450,20 +450,7 @@ namespace
 	{
 		std::vector<::PIXELFORMATDESCRIPTOR> pixel_formats;
 
-		const ::HDC device_context = ::CreateDCW( nullptr, display.GetOutputDescription().DeviceName, nullptr, nullptr );
-		CRETE( device_context == nullptr, pixel_formats, LOG_CHANNEL, "Failed to create temporary device context." );
-
-		// Guard will delete this device context on function end.
-		const auto device_context_guard = Black::ScopeLeaveHandler{
-			[device_context]()
-			{
-				if( ::DeleteDC( device_context ) != TRUE )
-				{
-					BLACK_LOG_WARNING( LOG_CHANNEL, "The deletion of temporary device context does not went properly." );
-				}
-			}
-		};
-
+		const ::HDC device_context = display.GetDeviceContext();
 		const int32_t max_pixel_format_index = GetMaximumFormatIndex( device_context );
 		CRETE( max_pixel_format_index < 1, pixel_formats, LOG_CHANNEL, "Failed to describe pixel formats count." );
 
@@ -525,6 +512,93 @@ namespace
 		std::sort( sorted_pixel_formats.begin(), sorted_pixel_formats.end(), criteria );
 
 		return sorted_pixel_formats;
+	}
+
+	Internal::PixelBufferSettings ReadPixelBufferSettings( const EglDisplay<Black::PlatformType::WindowsDesktop>& display, const int32_t format_index )
+	{
+		Internal::PixelBufferSettings result;
+
+		const ::Wgl::ExtensionsState& extensions = ::Wgl::GetExtensionsState();
+
+		if( extensions.has_wgl_ext_pbuffer )
+		{
+			EXPECTS_DEBUG( extensions.has_wgl_ext_pixel_format );
+
+			int32_t attribute_name	= ::Wgl::DRAW_TO_PBUFFER_EXT;
+			int32_t value			= 0;
+			const bool is_succeeded	= ::Wgl::get_pixel_format_attribiv_ext(
+				display.GetDeviceContext(),
+				format_index,
+				PFD_MAIN_PLANE,
+				1,
+				&attribute_name,
+				&value
+			) == TRUE;
+			CRETE( !is_succeeded, result, LOG_CHANNEL, "Failed to check the support of pixel buffers for pixel format." );
+			result.is_supported = value == TRUE;
+		}
+		else if( extensions.has_wgl_arb_pbuffer )
+		{
+			EXPECTS_DEBUG( extensions.has_wgl_arb_pixel_format );
+
+			const int32_t attribute_name	= ::Wgl::DRAW_TO_PBUFFER_ARB;
+			int32_t value					= 0;
+			const bool is_succeeded			= ::Wgl::get_pixel_format_attribiv_arb(
+				display.GetDeviceContext(),
+				format_index,
+				PFD_MAIN_PLANE,
+				1,
+				&attribute_name,
+				&value
+			) == TRUE;
+			CRETE( !is_succeeded, result, LOG_CHANNEL, "Failed to check the support of pixel buffers for pixel format." );
+			result.is_supported = value == TRUE;
+		}
+		else
+		{
+			return result;
+		}
+
+		CRET( !result.is_supported, result );
+
+		if( extensions.has_wgl_ext_pbuffer )
+		{
+			int32_t attribute_names[] {
+				::Wgl::MAX_PBUFFER_WIDTH_EXT,
+				::Wgl::MAX_PBUFFER_HEIGHT_EXT,
+				::Wgl::MAX_PBUFFER_PIXELS_EXT,
+				::Wgl::OPTIMAL_PBUFFER_WIDTH_EXT,
+				::Wgl::OPTIMAL_PBUFFER_HEIGHT_EXT,
+			};
+
+			::Wgl::get_pixel_format_attribiv_ext(
+				display.GetDeviceContext(),
+				format_index,
+				PFD_MAIN_PLANE,
+				::UINT( std::size( attribute_names ) ),
+				attribute_names,
+				&result.maximum_width
+			);
+		}
+		else if( extensions.has_wgl_arb_pbuffer )
+		{
+			const int32_t attribute_names[] {
+				::Wgl::MAX_PBUFFER_WIDTH_ARB,
+				::Wgl::MAX_PBUFFER_HEIGHT_ARB,
+				::Wgl::MAX_PBUFFER_PIXELS_ARB,
+			};
+
+			::Wgl::get_pixel_format_attribiv_arb(
+				display.GetDeviceContext(),
+				format_index,
+				PFD_MAIN_PLANE,
+				::UINT( std::size( attribute_names ) ),
+				attribute_names,
+				&result.maximum_width
+			);
+		}
+
+		return result;
 	}
 }
 }

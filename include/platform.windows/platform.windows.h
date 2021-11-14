@@ -22,6 +22,7 @@ inline namespace WindowsDesktop
 
 
 // Include internal stuff.
+#include "internal/structures.h"
 #include "internal/connection-visitors.h"
 
 // Include related platform-specific stuff.

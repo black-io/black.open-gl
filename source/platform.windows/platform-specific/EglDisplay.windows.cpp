@@ -7,6 +7,7 @@
 
 #include "wgl/wgl-bindings.h"
 #include "wgl/wgl-bindings.extensions.h"
+#include "wgl/wgl-bindings.initialization.h"
 
 
 namespace Black
@@ -80,7 +81,7 @@ namespace
 		for( ::PIXELFORMATDESCRIPTOR* format : sorted_pixel_formats )
 		{
 			const size32_t format_index = size32_t( std::distance( pixel_formats.data(), format ) );
-			m_configurations.emplace_back( Black::EglConfiguration::ConstructionInfo{ *format, format_index } );
+			m_configurations.emplace_back( Black::EglConfiguration::ConstructionInfo{ *format, ReadPixelBufferSettings( *this, format_index ), format_index } );
 		}
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "WGL configurations updated." );
@@ -185,7 +186,83 @@ namespace
 		const Black::EglConfiguration& window_configuration
 	) const
 	{
-		return {};
+		const ::Wgl::ExtensionsState& extensions = ::Wgl::GetExtensionsState();
+		CRETE( !( extensions.has_wgl_ext_pbuffer || extensions.has_wgl_arb_pbuffer ), {}, LOG_CHANNEL, "Pixel buffers are not supported by GPU." );
+		CRET( window_configuration.GetPixelBufferSettings().is_supported, { window_configuration } );
+
+		std::vector<const Black::EglConfiguration*> configurations;
+		configurations.resize( m_configurations.size() );
+		std::transform( m_configurations.begin(), m_configurations.end(), configurations.begin(), []( const Black::EglConfiguration& item ) { return &item; } );
+
+		auto configurations_begin	= configurations.begin();
+		auto configurations_end		= configurations.end();
+
+		// Keep only configurations that correlate with original configuration.
+		configurations_end = std::copy_if(
+			configurations_begin,
+			configurations_end,
+			configurations_begin,
+			[&window_configuration, &extensions]( const Black::EglConfiguration* configuration ) -> const bool
+			{
+				constexpr ::DWORD required_flags = PFD_SUPPORT_OPENGL;
+				const ::PIXELFORMATDESCRIPTOR& current_format = configuration->GetDescription();
+				const ::PIXELFORMATDESCRIPTOR& origin_format = window_configuration.GetDescription();
+
+				CRET( !configuration->GetPixelBufferSettings().is_supported, false );
+				CRET( current_format.iLayerType != origin_format.iLayerType, false );
+				CRET( ( current_format.dwFlags & required_flags ) == 0, false );
+				CRET( current_format.cColorBits != origin_format.cColorBits, false );
+				CRET( current_format.cRedBits != origin_format.cRedBits, false );
+				CRET( current_format.cRedShift != origin_format.cRedShift, false );
+				CRET( current_format.cGreenBits != origin_format.cGreenBits, false );
+				CRET( current_format.cGreenShift != origin_format.cGreenShift, false );
+				CRET( current_format.cBlueBits != origin_format.cBlueBits, false );
+				CRET( current_format.cBlueShift != origin_format.cBlueShift, false );
+				CRET( current_format.cAlphaBits != origin_format.cAlphaBits, false );
+				CRET( current_format.cAlphaShift != origin_format.cAlphaShift, false );
+
+				return true;
+			}
+		);
+
+		// Sort the configurations by complex criteria. The best match will be stored first.
+		std::sort(
+			configurations_begin,
+			configurations_end,
+			[]( const Black::EglConfiguration* left, const Black::EglConfiguration* right ) -> const bool
+			{
+				const ::PIXELFORMATDESCRIPTOR& left_format	= left->GetDescription();
+				const ::PIXELFORMATDESCRIPTOR& right_format	= right->GetDescription();
+
+				{
+					const int32_t left_acceleration_flag	= left_format.dwFlags & PFD_DIRECT3D_ACCELERATED;
+					const int32_t right_acceleration_flag	= right_format.dwFlags & PFD_DIRECT3D_ACCELERATED;
+					if( left_acceleration_flag != right_acceleration_flag )
+					{
+						return left_acceleration_flag > right_acceleration_flag;
+					}
+				}
+
+				if( left_format.cRedBits != right_format.cRedBits )
+				{
+					return left_format.cRedBits > right_format.cRedBits;
+				}
+
+				if( left_format.cBlueBits != right_format.cBlueBits )
+				{
+					return left_format.cBlueBits > right_format.cBlueBits;
+				}
+
+				if( left_format.cGreenBits != right_format.cGreenBits )
+				{
+					return left_format.cGreenBits > right_format.cGreenBits;
+				}
+
+				return left_format.cAlphaBits > right_format.cAlphaBits;
+			}
+		);
+
+		return { *configurations.front() };
 	}
 
 	EglDisplay<Black::PlatformType::WindowsDesktop>::~EglDisplay()

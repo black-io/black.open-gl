@@ -38,6 +38,41 @@ namespace Wgl
 	typedef BOOL (WINAPI *PFNWGLUSEFONTOUTLINESWPROC)(HDC hDC, DWORD first, DWORD count, DWORD listBase, FLOAT deviation, FLOAT extrusion, int format, LPGLYPHMETRICSFLOAT lpgmf);
 
 
+	constexpr uint32_t FONT_LINES = 0;
+	constexpr uint32_t FONT_POLYGONS = 1;
+	constexpr uint32_t SWAP_MAIN_PLANE = 0x00000001;
+	constexpr uint32_t SWAP_OVERLAY1 = 0x00000002;
+	constexpr uint32_t SWAP_OVERLAY10 = 0x00000400;
+	constexpr uint32_t SWAP_OVERLAY11 = 0x00000800;
+	constexpr uint32_t SWAP_OVERLAY12 = 0x00001000;
+	constexpr uint32_t SWAP_OVERLAY13 = 0x00002000;
+	constexpr uint32_t SWAP_OVERLAY14 = 0x00004000;
+	constexpr uint32_t SWAP_OVERLAY15 = 0x00008000;
+	constexpr uint32_t SWAP_OVERLAY2 = 0x00000004;
+	constexpr uint32_t SWAP_OVERLAY3 = 0x00000008;
+	constexpr uint32_t SWAP_OVERLAY4 = 0x00000010;
+	constexpr uint32_t SWAP_OVERLAY5 = 0x00000020;
+	constexpr uint32_t SWAP_OVERLAY6 = 0x00000040;
+	constexpr uint32_t SWAP_OVERLAY7 = 0x00000080;
+	constexpr uint32_t SWAP_OVERLAY8 = 0x00000100;
+	constexpr uint32_t SWAP_OVERLAY9 = 0x00000200;
+	constexpr uint32_t SWAP_UNDERLAY1 = 0x00010000;
+	constexpr uint32_t SWAP_UNDERLAY10 = 0x02000000;
+	constexpr uint32_t SWAP_UNDERLAY11 = 0x04000000;
+	constexpr uint32_t SWAP_UNDERLAY12 = 0x08000000;
+	constexpr uint32_t SWAP_UNDERLAY13 = 0x10000000;
+	constexpr uint32_t SWAP_UNDERLAY14 = 0x20000000;
+	constexpr uint32_t SWAP_UNDERLAY15 = 0x40000000;
+	constexpr uint32_t SWAP_UNDERLAY2 = 0x00020000;
+	constexpr uint32_t SWAP_UNDERLAY3 = 0x00040000;
+	constexpr uint32_t SWAP_UNDERLAY4 = 0x00080000;
+	constexpr uint32_t SWAP_UNDERLAY5 = 0x00100000;
+	constexpr uint32_t SWAP_UNDERLAY6 = 0x00200000;
+	constexpr uint32_t SWAP_UNDERLAY7 = 0x00400000;
+	constexpr uint32_t SWAP_UNDERLAY8 = 0x00800000;
+	constexpr uint32_t SWAP_UNDERLAY9 = 0x01000000;
+
+
 	extern PFNCHOOSEPIXELFORMATPROC				choose_pixel_format;
 	extern PFNDESCRIBEPIXELFORMATPROC			describe_pixel_format;
 	extern PFNGETENHMETAFILEPIXELFORMATPROC		get_enh_meta_file_pixel_format;

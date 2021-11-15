@@ -31,10 +31,11 @@ namespace PlatformSpecific
 		// Get the internal description of device.
 		inline const ::DXGI_ADAPTER_DESC1& GetDescription() const	{ return m_description; };
 
-	// Platform-agnostic interface.
-	public:
 		// Get the ordinal index of adapter.
 		inline const size32_t GetIndex() const						{ return m_index; };
+
+	// Platform-agnostic interface.
+	public:
 
 	// Heirs construction and initialization.
 	protected:

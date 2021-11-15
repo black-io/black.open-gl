@@ -10,21 +10,22 @@ inline namespace Platform
 namespace Internal
 {
 	/**
-		@brief	Basic implementation of display.
+		@brief	Most fundamental, the basic, information about display hardware connected to GPU.
 
-		RHI for display should implement the interface to identify and communicate with display device connected to particular GPU adapter.
+		Basic handle underlies the cross-platform type and implements the state and interface used by platform-specific types of all platforms.
 		At this level there is no requirement to associate GPU adapter with display device, so user shall implement such functionality manually once it required.
 
-		This type implements the first layer of platform-agnostic RHI display type.
+		This type implements the first layer of platform-agnostic Display Handle type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicGlRhiDisplay : private Black::NonMovable
+	class BasicGlDisplayHandle
 	{
 	// Heirs construction and initialization.
 	protected:
-		BasicGlRhiDisplay()								= default;
-		BasicGlRhiDisplay( const BasicGlRhiDisplay& )	= default;
-		~BasicGlRhiDisplay()							= default;
+		BasicGlDisplayHandle()								= default;
+		BasicGlDisplayHandle( const BasicGlDisplayHandle& )	= default;
+		BasicGlDisplayHandle( BasicGlDisplayHandle&& )		= default;
+		~BasicGlDisplayHandle()								= default;
 	};
 }
 }

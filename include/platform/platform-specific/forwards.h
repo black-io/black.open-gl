@@ -10,31 +10,31 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent GPU adapter implementation.
+		@brief	Platform-specific implementation of GPU adapter handle.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class GlRhiAdapter;
+	class GlAdapterHandle;
 
 	/**
-		@brief	Platform dependent Display implementation.
+		@brief	Platform-specific implementation of display handle.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class GlRhiDisplay;
+	class GlDisplayHandle;
 
 	/**
-		@brief	Platform dependent display video mode implementation.
+		@brief	Platform-specific implementation of display video mode.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class GlRhiVideoMode;
+	class GlDisplayVideoMode;
 
 	/**
-		@brief	Platform dependent EGL-compatible configuration implementation.
+		@brief	Platform-specific implementation of EGL-compatible configuration object.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
@@ -42,7 +42,7 @@ namespace PlatformSpecific
 	class EglConfiguration;
 
 	/**
-		@brief	Platform dependent EGL-compatible display implementation.
+		@brief	Platform-specific implementation of EGL-compatible display object.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
@@ -50,20 +50,28 @@ namespace PlatformSpecific
 	class EglDisplay;
 
 	/**
-		@brief	Platform dependent OpenGL context implementation.
+		@brief	Platform-specific implementation of EGL-compatible surface object.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class GlContext;
+	class EglSurface;
 
 	/**
-		@brief	Platform dependent GPU connection implementation.
+		@brief	Platform-specific implementations of EGL-compatible context object.
 		This class is statically instantiated for any of platform the framework supports.
 		Each instantiation may have platform-specific code.
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
-	class GlRhiConnection;
+	class EglContext;
+
+	/**
+		@brief	Platform-specific implementation of EGL connection.
+		This class is statically instantiated for any of platform the framework supports.
+		Each instantiation may have platform-specific code.
+	*/
+	template< Black::PlatformType PLATFORM_TYPE >
+	class EglConnection;
 }
 }
 }

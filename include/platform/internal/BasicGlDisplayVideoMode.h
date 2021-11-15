@@ -10,14 +10,14 @@ inline namespace Platform
 namespace Internal
 {
 	/**
-		@brief	Basic implementation of display video mode.
+		@brief	Most fundamental, the basic, information about Display video mode.
 
-		RHI for display video mode should implement the interface for graphics display to configure the identified video mode.
+		Basic mode underlies the cross-platform type and implements the state and interface used by platform-specific types of all platforms.
 
-		This type implements the first layer of platform-agnostic RHI video mode type.
+		This type implements the first layer of platform-agnostic Display Video Mode type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicGlRhiVideoMode
+	class BasicGlDisplayVideoMode
 	{
 	// Public interface.
 	public:
@@ -48,15 +48,15 @@ namespace Internal
 
 	// Heirs construction and initialization.
 	protected:
-		BasicGlRhiVideoMode()								= default;
-		BasicGlRhiVideoMode( const BasicGlRhiVideoMode& )	= default;
-		BasicGlRhiVideoMode( BasicGlRhiVideoMode&& )		= default;
-		~BasicGlRhiVideoMode()								= default;
+		BasicGlDisplayVideoMode()									= default;
+		BasicGlDisplayVideoMode( const BasicGlDisplayVideoMode& )	= default;
+		BasicGlDisplayVideoMode( BasicGlDisplayVideoMode&& )		= default;
+		~BasicGlDisplayVideoMode()									= default;
 
 	// Heirs interface.
 	protected:
 		// Swap the state with given instance.
-		void Swap( BasicGlRhiVideoMode& other );
+		void Swap( BasicGlDisplayVideoMode& other );
 
 	// Heirs state.
 	protected:

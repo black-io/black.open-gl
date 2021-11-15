@@ -1,6 +1,6 @@
 #include <black/open-gl.h>
 
-#include "functions.dxgi.h"
+#include "functions.dxgi-pointters.h"
 
 
 namespace Black
@@ -14,7 +14,7 @@ namespace PlatformSpecific
 namespace
 {
 	// Logging channel.
-	constexpr const char* LOG_CHANNEL = "Black/OpenGL/RHI Connection";
+	constexpr const char* LOG_CHANNEL = "Black/OpenGL/DXGI";
 }
 
 

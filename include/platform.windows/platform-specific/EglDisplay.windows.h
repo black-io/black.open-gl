@@ -10,9 +10,9 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent implementation of EGL-compatible display in terms of windows desktop platform.
+		@brief	Platform-specific implementation of EGL-compatible display in terms of Windows Desktop platform.
 
-		On Windows desktop platform the EGL Display connection is provided by DXGI interface.
+		On Windows Desktop platform the EGL Display uses the DXGI interface along with WGL functions.
 		Also, any OpenGL context for this display will be created using the stored device context.
 
 		Implements the second layer of platform-agnostic EGL display type.
@@ -24,10 +24,10 @@ namespace PlatformSpecific
 	// Platform-specific interface.
 	public:
 		// Perform the display connection to default display of given adapter.
-		const bool Connect( const Black::GlRhiAdapter& adapter, ::IDXGIFactory& factory );
+		const bool Connect( const Black::GlAdapterHandle& adapter_handle, ::IDXGIFactory& factory );
 
 		// Perform the display connection to given display.
-		const bool Connect( const Black::GlRhiDisplay& display, ::IDXGIFactory& factory );
+		const bool Connect( const Black::GlDisplayHandle& display_handle, ::IDXGIFactory& factory );
 
 
 		// Query the interface of bound GPU adapter. May return `nullptr` if display is not connected.
@@ -79,7 +79,7 @@ namespace PlatformSpecific
 	// Heirs construction and initialization.
 	protected:
 		EglDisplay()	= default;
-		~EglDisplay();
+		~EglDisplay()	= default;
 
 	// Private interface.
 	private:
@@ -93,10 +93,7 @@ namespace PlatformSpecific
 		const bool CollectDisplayInfo();
 
 		// Copy the display information from given handle.
-		const bool CopyDisplayInfo( const Black::GlRhiDisplay& display );
-
-		// Read the display desktop settings.
-		const bool ReadDesktopSettings();
+		const bool CopyDisplayInfo( const Black::GlDisplayHandle& display_handle );
 
 		// Try to create the device context.
 		const bool CreateDeviceContext();

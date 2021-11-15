@@ -1,13 +1,12 @@
 #include <black/open-gl.h>
 
-#include "rhi-connection/functions.dxgi.h"
-#include "rhi-connection/functions.video-modes.h"
+#include "dxgi/functions.dxgi-pointters.h"
+#include "dxgi/functions.dxgi-video-modes.h"
 
-#include "rhi-connection/functions.pixel-formats.h"
-
-#include "wgl/wgl-bindings.h"
-#include "wgl/wgl-bindings.extensions.h"
-#include "wgl/wgl-bindings.initialization.h"
+#include "wgl/bindings.wgl.h"
+#include "wgl/bindings.wgl-extensions.h"
+#include "wgl/functions.settings.h"
+#include "wgl/functions.pixel-formats.h"
 
 
 namespace Black
@@ -25,31 +24,29 @@ namespace
 }
 
 
-	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::Connect( const Black::GlRhiAdapter& adapter, ::IDXGIFactory& factory )
+	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::Connect( const Black::GlAdapterHandle& adapter_handle, ::IDXGIFactory& factory )
 	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting to default display of adapter #{}.", adapter.GetIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting to default display of adapter #{}.", adapter_handle.GetIndex() );
 
-		CRETE( !AcquireAdapterInterface( adapter.GetIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
+		CRETE( !AcquireAdapterInterface( adapter_handle.GetIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 		CRETE( !AcquireOutputInterface( 0, factory ), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 		CRETE( !CollectDisplayInfo(), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
-		CRETE( !ReadDesktopSettings(), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 		CRETE( !CreateDeviceContext(), false, LOG_CHANNEL, "Failed to connect to default display of adapter." );
 
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Successfully connected to default display of adapter #{}.", adapter.GetIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Successfully connected to default display of adapter #{}.", adapter_handle.GetIndex() );
 		return true;
 	}
 
-	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::Connect( const Black::GlRhiDisplay& display, ::IDXGIFactory& factory )
+	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::Connect( const Black::GlDisplayHandle& display_handle, ::IDXGIFactory& factory )
 	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting to display #{} of adapter #{}.", display.GetIndex(), display.GetAdapterIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting to display #{} of adapter #{}.", display_handle.GetIndex(), display_handle.GetAdapterIndex() );
 
-		CRETE( !AcquireAdapterInterface( display.GetAdapterIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to display." );
-		CRETE( !AcquireOutputInterface( display.GetIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to display." );
-		CRETE( !CopyDisplayInfo( display ), false, LOG_CHANNEL, "Failed to connect to display." );
-		CRETE( !ReadDesktopSettings(), false, LOG_CHANNEL, "Failed to connect to display." );
+		CRETE( !AcquireAdapterInterface( display_handle.GetAdapterIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to display." );
+		CRETE( !AcquireOutputInterface( display_handle.GetIndex(), factory ), false, LOG_CHANNEL, "Failed to connect to display." );
+		CRETE( !CopyDisplayInfo( display_handle ), false, LOG_CHANNEL, "Failed to connect to display." );
 		CRETE( !CreateDeviceContext(), false, LOG_CHANNEL, "Failed to connect to display." );
 
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Successfully connected to display #{} of adapter #{}.", display.GetIndex(), display.GetAdapterIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Successfully connected to display #{} of adapter #{}.", display_handle.GetIndex(), display_handle.GetAdapterIndex() );
 		return true;
 	}
 
@@ -265,11 +262,6 @@ namespace
 		return { *configurations.front() };
 	}
 
-	EglDisplay<Black::PlatformType::WindowsDesktop>::~EglDisplay()
-	{
-		Finalize();
-	}
-
 	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::AcquireAdapterInterface( size32_t adapter_index, ::IDXGIFactory& factory )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Capturing the interface of adapter #{}.", adapter_index );
@@ -304,47 +296,41 @@ namespace
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the description of display." );
 		access_result = m_output_interface->GetDesc( &m_device_desc );
-		CRETE( FAILED( access_result ), false, LOG_CHANNEL, "Failed to get description of display, result: 0x{:08X}.", access_result );
+		CRETE( FAILED( access_result ), false, LOG_CHANNEL, "Failed to read description of display, result: 0x{:08X}.", access_result );
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Detecting the default display mode." );
+		m_default_mode = FindDefaultDisplayMode( *m_output_interface, m_device_desc );
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the desktop settings." );
+		m_desktop_settings.dmSize	= sizeof( m_desktop_settings );
+		const bool is_succeeded		= ::EnumDisplaySettingsW( m_device_desc.DeviceName, ENUM_CURRENT_SETTINGS, &m_desktop_settings ) == TRUE;
+		CRETE( !is_succeeded, {}, LOG_CHANNEL, "Failed to read desktop settings." );
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the monitor information for display." );
 		m_monitor_info.cbSize = size32_t( sizeof( m_monitor_info ) );
 		const bool has_monitor_info	= ::GetMonitorInfoW( m_device_desc.Monitor, &m_monitor_info ) == TRUE;
-		CRETE( !has_monitor_info, false, LOG_CHANNEL, "Failed to get the monitor information for display." );
+		CRETE( !has_monitor_info, false, LOG_CHANNEL, "Failed to read the monitor information for display." );
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the device information for display." );
 		m_display_info.cb = size32_t( sizeof( m_display_info ) );
 		const bool has_display_info	= ::EnumDisplayDevicesW( m_device_desc.DeviceName, 0, &m_display_info, 0 ) == TRUE;
-		CRETE( !has_display_info, false, LOG_CHANNEL, "Failed to get device info for display." );
-
-		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Detecting the default display mode." );
-		m_default_mode = FindDefaultDisplayMode( *m_output_interface, m_monitor_info );
+		CRETE( !has_display_info, false, LOG_CHANNEL, "Failed to read device info for display." );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display information collected successfully." );
 		return true;
 	}
 
-	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::CopyDisplayInfo( const Black::GlRhiDisplay& display )
+	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::CopyDisplayInfo( const Black::GlDisplayHandle& display_handle )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Copying the display information." );
 
-		Black::CopyMemory( m_device_desc, display.GetDeviceDescription() );
-		Black::CopyMemory( m_default_mode, display.GetDefaultVideoMode() );
-		Black::CopyMemory( m_monitor_info, display.GetDisplayMonitorInfo() );
-		Black::CopyMemory( m_display_info, display.GetDisplayInfo() );
+		Black::CopyMemory( m_device_desc, display_handle.GetDeviceDescription() );
+		Black::CopyMemory( m_default_mode, display_handle.GetDefaultVideoMode() );
+		Black::CopyMemory( m_desktop_settings, display_handle.GetDesktopSettings() );
+		Black::CopyMemory( m_monitor_info, display_handle.GetDisplayMonitorInfo() );
+		Black::CopyMemory( m_display_info, display_handle.GetDisplayInfo() );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display information copied successfully." );
-		return true;
-	}
-
-	const bool EglDisplay<Black::PlatformType::WindowsDesktop>::ReadDesktopSettings()
-	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Reading the desktop settings of display." );
-
-		m_desktop_settings.dmSize	= sizeof( m_desktop_settings );
-		const bool is_succeeded		= ::EnumDisplaySettingsW( m_device_desc.DeviceName, ENUM_CURRENT_SETTINGS, &m_desktop_settings ) == TRUE;
-		CRETE( !is_succeeded, {}, LOG_CHANNEL, "Failed to get desktop settings." );
-
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display desktop settings successfully obtained." );
 		return true;
 	}
 

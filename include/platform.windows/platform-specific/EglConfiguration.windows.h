@@ -10,7 +10,7 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent EGL-compatible configuration implementation.
+		@brief	Platform-specific implementation of EGL-compatible configuration in terms of Windows Desktop platform.
 
 		On Windows desktop platform EGL configuration is emulated by pixel format descriptor.
 

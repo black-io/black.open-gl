@@ -2,9 +2,9 @@
 
 #include "functions.pixel-formats.h"
 
-#include "../wgl/wgl-bindings.h"
-#include "../wgl/wgl-bindings.extensions.h"
-#include "../wgl/wgl-bindings.initialization.h"
+#include "bindings.wgl.h"
+#include "bindings.wgl-extensions.h"
+#include "functions.settings.h"
 
 
 namespace Black
@@ -18,7 +18,7 @@ namespace PlatformSpecific
 namespace
 {
 	// Logging channel.
-	constexpr const char* LOG_CHANNEL = "Black/OpenGL/RHI Connection";
+	constexpr const char* LOG_CHANNEL = "Black/OpenGL/WGL";
 
 	// Full list of requested attributes for pixel format description.
 	// Sadly, `WGL_EXT_pixel_format` does not allows this array to be constant.

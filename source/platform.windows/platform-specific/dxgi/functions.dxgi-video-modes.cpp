@@ -1,7 +1,7 @@
 #include <black/open-gl.h>
 #include <black/core/algorithms.h>
 
-#include "functions.video-modes.h"
+#include "functions.dxgi-video-modes.h"
 
 
 namespace Black
@@ -15,17 +15,31 @@ namespace PlatformSpecific
 namespace
 {
 	// Logging channel.
-	constexpr const char* LOG_CHANNEL = "Black/OpenGL/RHI Connection";
+	constexpr const char* LOG_CHANNEL = "Black/OpenGL/DXGI";
+
+	// Suitable formats of video mode.
+	constexpr ::DXGI_FORMAT VIDEO_MODE_FORMATS[] {
+		DXGI_FORMAT_R10G10B10A2_UNORM, DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_B8G8R8X8_UNORM,
+		DXGI_FORMAT_B4G4R4A4_UNORM, DXGI_FORMAT_B5G5R5A1_UNORM, DXGI_FORMAT_B5G6R5_UNORM
+	};
+
+	// Association of bit-rates for suitable formats of video mode.
+	constexpr size32_t VIDEO_MODE_BIT_RATES[] {
+		32, 32, 32, 32,
+		16, 16, 16
+	};
+
+	static_assert( std::size( VIDEO_MODE_FORMATS ) == std::size( VIDEO_MODE_BIT_RATES ), "Number of video mode bit rates should be same as number of formats." );
 }
 
 
-	::DXGI_MODE_DESC FindDefaultDisplayMode( ::IDXGIOutput& output, const ::MONITORINFOEXW& monitor_info )
+	::DXGI_MODE_DESC FindDefaultDisplayMode( ::IDXGIOutput& output, const ::DXGI_OUTPUT_DESC& output_desc )
 	{
 		::DXGI_MODE_DESC default_display_mode{};
 
 		::DEVMODEW device_mode{};
 		device_mode.dmSize = sizeof( device_mode );
-		const bool has_display_settings = ::EnumDisplaySettingsW( monitor_info.szDevice, ENUM_CURRENT_SETTINGS, &device_mode ) == TRUE;
+		const bool has_display_settings = ::EnumDisplaySettingsW( output_desc.DeviceName, ENUM_CURRENT_SETTINGS, &device_mode ) == TRUE;
 		EXPECTS_DEBUG( has_display_settings );
 
 		const bool has_refresh_rate = device_mode.dmDisplayFrequency > 1;
@@ -113,6 +127,19 @@ namespace
 		std::sort( sorted_video_modes.begin(), sorted_video_modes.end(), criteria );
 
 		return sorted_video_modes;
+	}
+
+	const size32_t GetDisplayFormatBitrate( const ::DXGI_FORMAT format )
+	{
+		const size_t format_index = Black::GetItemIndex( VIDEO_MODE_FORMATS, format );
+		CRET( format_index == Black::UNDEFINED_INDEX, 0 );
+
+		return VIDEO_MODE_BIT_RATES[ format_index ];
+	}
+
+	const bool IsDisplayFormatCompatible( const ::DXGI_FORMAT format )
+	{
+		return Black::GetItemIndex( VIDEO_MODE_FORMATS, format ) != Black::UNDEFINED_INDEX;
 	}
 }
 }

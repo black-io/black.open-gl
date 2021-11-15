@@ -1,13 +1,12 @@
 #include <black/open-gl.h>
 #include <black/core/algorithms.h>
 
-#include "rhi-connection/functions.dxgi.h"
-#include "rhi-connection/functions.video-modes.h"
-#include "rhi-connection/functions.strings.h"
+#include "dxgi/functions.dxgi-pointters.h"
+#include "dxgi/functions.dxgi-video-modes.h"
 
-#include "wgl/wgl-bindings.initialization.h"
-#include "wgl/wgl-bindings.h"
-#include "wgl/wgl-bindings.extensions.h"
+#include "utils/functions.strings.h"
+
+#include "wgl/functions.initialization.h"
 
 
 namespace Black
@@ -21,41 +20,23 @@ namespace PlatformSpecific
 namespace
 {
 	// Logging channel.
-	constexpr const char* LOG_CHANNEL = "Black/OpenGL/RHI Connection";
+	constexpr const char* LOG_CHANNEL = "Black/OpenGL/EGL Connection";
 }
 
 
-	Black::PlainView<const ::DXGI_FORMAT> GlRhiConnection<Black::PlatformType::WindowsDesktop>::GetCompatibleDisplayFormats()
-	{
-		return { VIDEO_MODE_FORMATS };
-	}
-
-	const size32_t GlRhiConnection<Black::PlatformType::WindowsDesktop>::GetDisplayFormatBitrate( const ::DXGI_FORMAT format )
-	{
-		const size_t format_index = Black::GetItemIndex( VIDEO_MODE_FORMATS, format );
-		CRET( format_index == Black::UNDEFINED_INDEX, 0 );
-
-		return VIDEO_MODE_BIT_RATES[ format_index ];
-	}
-
-	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::IsDisplayFormatCompatible( const ::DXGI_FORMAT format )
-	{
-		return Black::GetItemIndex( VIDEO_MODE_FORMATS, format ) != Black::UNDEFINED_INDEX;
-	}
-
-	::IDXGIFactory* GlRhiConnection<Black::PlatformType::WindowsDesktop>::QueryGenericFactory()
+	::IDXGIFactory* EglConnection<Black::PlatformType::WindowsDesktop>::QueryGenericFactory()
 	{
 		EnsureInitialized();
 		return m_generic_factory.get();
 	}
 
-	::IDXGIFactory1* GlRhiConnection<Black::PlatformType::WindowsDesktop>::QueryExtendedFactory()
+	::IDXGIFactory1* EglConnection<Black::PlatformType::WindowsDesktop>::QueryExtendedFactory()
 	{
 		EnsureInitialized();
 		return m_extended_factory.get();
 	}
 
-	void GlRhiConnection<Black::PlatformType::WindowsDesktop>::Finalize()
+	void EglConnection<Black::PlatformType::WindowsDesktop>::Finalize()
 	{
 		CRET( !IsInitialized() );
 
@@ -67,7 +48,7 @@ namespace
 		BLACK_LOG_INFO( LOG_CHANNEL, "Connection is finalized." );
 	}
 
-	void GlRhiConnection<Black::PlatformType::WindowsDesktop>::EnumerateAdapters( AdapterInfoConsumer& consumer )
+	void EglConnection<Black::PlatformType::WindowsDesktop>::EnumerateAdapters( AdapterInfoConsumer& consumer )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to enumerate the information about GPU adapters." );
 
@@ -131,21 +112,19 @@ namespace
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Information about {} adapters enumerated.", adapter_index );
 	}
 
-	void GlRhiConnection<Black::PlatformType::WindowsDesktop>::EnumerateDisplays( const Black::GlRhiAdapter& adapter, DisplayInfoConsumer& consumer )
+	void EglConnection<Black::PlatformType::WindowsDesktop>::EnumerateDisplays( const Black::GlAdapterHandle& adapter_handle, DisplayInfoConsumer& consumer )
 	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to enumerate the information about displays of adapter #{}.", adapter.GetIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to enumerate the information about displays of adapter #{}.", adapter_handle.GetIndex() );
 
 		EnsureInitialized();
 		EXPECTS_DEBUG( m_generic_factory != nullptr );
 
 		::HRESULT access_result = S_OK;
 
-		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, adapter.GetIndex() ) };
-		CRETE( !adapter_interface, , LOG_CHANNEL, "Failed to enumerate displays for adapter #{}.", adapter.GetIndex() );
+		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, adapter_handle.GetIndex() ) };
+		CRETE( !adapter_interface, , LOG_CHANNEL, "Failed to enumerate displays for adapter #{}.", adapter_handle.GetIndex() );
 
-		::DXGI_OUTPUT_DESC	device_desc{};
-		::MONITORINFOEXW	monitor_info{};
-		::DISPLAY_DEVICEW	display_info{};
+		::DXGI_OUTPUT_DESC device_desc{};
 
 		size32_t output_index = 0;
 		for( ; SUCCEEDED( access_result ); ++output_index )
@@ -159,18 +138,8 @@ namespace
 			access_result = output_interface->GetDesc( &device_desc );
 			CCONW( FAILED( access_result ), LOG_CHANNEL, "Failed to get description for output display #{}, result: 0x{:08X}.", output_index, access_result );
 
-			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the monitor information for display." );
-			monitor_info.cbSize = size32_t( sizeof( monitor_info ) );
-			const bool has_monitor_info	= ::GetMonitorInfoW( device_desc.Monitor, &monitor_info ) == TRUE;
-			CCONW( !has_monitor_info, LOG_CHANNEL, "Failed to get the monitor info for display #{}.", output_index );
-
-			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the device information for display." );
-			display_info.cb = size32_t( sizeof( display_info ) );
-			const bool has_display_info	= ::EnumDisplayDevicesW( monitor_info.szDevice, 0, &display_info, 0 ) == TRUE;
-			CCONW( !has_display_info, LOG_CHANNEL, "Failed to get device info for display #{}.", output_index );
-
 			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Detecting the default display mode." );
-			::DXGI_MODE_DESC default_mode{ FindDefaultDisplayMode( *output_interface, monitor_info ) };
+			::DXGI_MODE_DESC default_mode{ FindDefaultDisplayMode( *output_interface, device_desc ) };
 
 			// Prepare the device path.
 			std::wstring_view	wide_device_path{ device_desc.DeviceName };
@@ -178,7 +147,7 @@ namespace
 			ENSURES_DEBUG( !device_path.empty() || wide_device_path.empty() );
 
 			// Prepare the device name.
-			std::wstring_view	wide_device_name{ display_info.DeviceString };
+			std::wstring_view	wide_device_name{ device_desc.DeviceName };
 			std::string			device_name{ ConvertWideString( wide_device_name ) };
 			ENSURES_DEBUG( !device_name.empty() || wide_device_name.empty() );
 
@@ -186,40 +155,45 @@ namespace
 			consumer.Consume(
 				device_path,
 				device_name,
-				DisplayInfoConsumer::DisplayInfo{ device_desc, default_mode, monitor_info, display_info, adapter.GetIndex(), output_index }
+				DisplayInfoConsumer::DisplayInfo{ device_desc, default_mode, adapter_handle.GetIndex(), output_index }
 			);
 		}
 
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Information about {} displays enumerated for adapter #{}.", output_index, adapter.GetIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Information about {} displays enumerated for adapter #{}.", output_index, adapter_handle.GetIndex() );
 	}
 
-	void GlRhiConnection<Black::PlatformType::WindowsDesktop>::EnumerateVideoModes( const Black::GlRhiDisplay& display, VideoModeInfoConsumer& consumer )
+	void EglConnection<Black::PlatformType::WindowsDesktop>::EnumerateVideoModes( const Black::GlDisplayHandle& display_handle, VideoModeInfoConsumer& consumer )
 	{
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to enumerate the video modes for display #{} of adapter #{}.", display.GetIndex(), display.GetAdapterIndex() );
+		BLACK_LOG_DEBUG(
+			LOG_CHANNEL,
+			"Attempt to enumerate the video modes for display #{} of adapter #{}.",
+			display_handle.GetIndex(),
+			display_handle.GetAdapterIndex()
+		);
 
 		EnsureInitialized();
 		EXPECTS_DEBUG( m_generic_factory != nullptr );
 
 		::HRESULT access_result = S_OK;
 
-		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, display.GetAdapterIndex() ) };
+		Black::ScopedComPointer<::IDXGIAdapter> adapter_interface{ QueryAdapterInterface( *m_generic_factory, display_handle.GetAdapterIndex() ) };
 		CRETE(
 			!adapter_interface,
 			,
 			LOG_CHANNEL,
 			"Failed to enumerate video modes for display #{} of adapter #{}.",
-			display.GetIndex(),
-			display.GetAdapterIndex()
+			display_handle.GetIndex(),
+			display_handle.GetAdapterIndex()
 		);
 
-		Black::ScopedComPointer<::IDXGIOutput> output_interface{ QueryOutputInterface( *adapter_interface, display.GetIndex() ) };
+		Black::ScopedComPointer<::IDXGIOutput> output_interface{ QueryOutputInterface( *adapter_interface, display_handle.GetIndex() ) };
 		CRETE(
 			!output_interface,
 			,
 			LOG_CHANNEL,
 			"Failed to enumerate video modes for display #{} of adapter #{}.",
-			display.GetIndex(),
-			display.GetAdapterIndex()
+			display_handle.GetIndex(),
+			display_handle.GetAdapterIndex()
 		);
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Reading the display video modes." );
@@ -235,10 +209,10 @@ namespace
 			consumer.Consume( VideoModeInfoConsumer::VideoModeInfo{ *video_mode } );
 		}
 
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Video modes enumerated for display #{} of adapter #{}.", display.GetIndex(), display.GetAdapterIndex() );
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Video modes enumerated for display #{} of adapter #{}.", display_handle.GetIndex(), display_handle.GetAdapterIndex() );
 	}
 
-	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::ConnectDisplay( const Black::GlRhiAdapter& adapter_handle, Black::EglDisplay& target_display )
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectDisplay( const Black::GlAdapterHandle& adapter_handle, Black::EglDisplay& target_display )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to connect the display object to adapter #{}.", adapter_handle.GetIndex() );
 
@@ -253,7 +227,7 @@ namespace
 		return true;
 	}
 
-	const bool GlRhiConnection<Black::PlatformType::WindowsDesktop>::ConnectDisplay( const Black::GlRhiDisplay& display_handle, Black::EglDisplay& target_display )
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectDisplay( const Black::GlDisplayHandle& display_handle, Black::EglDisplay& target_display )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to connect the display object to display #{}.", display_handle.GetIndex() );
 
@@ -268,7 +242,7 @@ namespace
 		return true;
 	}
 
-	void GlRhiConnection<Black::PlatformType::WindowsDesktop>::EnsureInitialized()
+	void EglConnection<Black::PlatformType::WindowsDesktop>::EnsureInitialized()
 	{
 		CRET( IsInitialized() );
 

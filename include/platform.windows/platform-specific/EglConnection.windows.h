@@ -10,35 +10,27 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent GPU connection implementation.
+		@brief	Platform-specific implementation of EGL-compatible connection in terms of Windows Desktop platform.
+
+		Windows Desktop platform operates with DXGI and WGL implementations.
+		Devices are enumerated with DXGI, but the most of OpenGL-related functional is implemented with WGL and WGL extensions.
 
 		Implements the second layer of platform-agnostic GPU connection type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class GlRhiConnection<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlRhiConnection
+	class EglConnection<Black::PlatformType::WindowsDesktop> : public Internal::BasicEglConnection
 	{
 	// Public inner types.
 	public:
 		// Interface to consume the RHI adapter information.
-		using AdapterInfoConsumer = Internal::RhiAdapterInformationConsumer;
+		using AdapterInfoConsumer = Internal::AdapterHandleInformationConsumer;
 
 		// Interface to consume the RHI display information.
-		using DisplayInfoConsumer = Internal::RhiDisplayInformationConsumer;
+		using DisplayInfoConsumer = Internal::DisplayHandleInformationConsumer;
 
 		// Interface to consume the display video mode information.
-		using VideoModeInfoConsumer = Internal::RhiVideoModeInformationConsumer;
-
-	// Static platform-specific interface.
-	public:
-		// Get the list of compatible formats for display.
-		static Black::PlainView<const ::DXGI_FORMAT> GetCompatibleDisplayFormats();
-
-		// Get the bit-rate for given display format. May return `0` in case the format is not compatible.
-		static const size32_t GetDisplayFormatBitrate( const ::DXGI_FORMAT format );
-
-		// Whether the given display format is compatible for purposes of OpenGL.
-		static const bool IsDisplayFormatCompatible( const ::DXGI_FORMAT format );
+		using VideoModeInfoConsumer = Internal::DisplayVideoModeInformationConsumer;
 
 	// Platform-specific interface.
 	public:
@@ -62,22 +54,22 @@ namespace PlatformSpecific
 		void EnumerateAdapters( AdapterInfoConsumer& consumer );
 
 		// Enumerate the displays connected to given GPU adapter.
-		void EnumerateDisplays( const Black::GlRhiAdapter& adapter, DisplayInfoConsumer& consumer );
+		void EnumerateDisplays( const Black::GlAdapterHandle& adapter_handle, DisplayInfoConsumer& consumer );
 
 		// Enumerate the video modes for given display.
-		void EnumerateVideoModes( const Black::GlRhiDisplay& display, VideoModeInfoConsumer& consumer );
+		void EnumerateVideoModes( const Black::GlDisplayHandle& display_handle, VideoModeInfoConsumer& consumer );
 
 
 		// Perform the EGL display connection to given adapter.
-		const bool ConnectDisplay( const Black::GlRhiAdapter& adapter_handle, Black::EglDisplay& target_display );
+		const bool ConnectDisplay( const Black::GlAdapterHandle& adapter_handle, Black::EglDisplay& target_display );
 
 		// Perform the EGL display connection to given display.
-		const bool ConnectDisplay( const Black::GlRhiDisplay& display_handle, Black::EglDisplay& target_display );
+		const bool ConnectDisplay( const Black::GlDisplayHandle& display_handle, Black::EglDisplay& target_display );
 
 	// Heirs construction and initialization.
 	protected:
-		GlRhiConnection()	= default;
-		~GlRhiConnection()	= default;
+		EglConnection()	= default;
+		~EglConnection()	= default;
 
 	// Private interface.
 	private:
@@ -86,8 +78,8 @@ namespace PlatformSpecific
 
 	// Private state.
 	private:
-		Black::UniqueComPointer<::IDXGIFactory>		m_generic_factory;				// Generic interface of DXGI factory.
-		Black::UniqueComPointer<::IDXGIFactory1>	m_extended_factory;				// Extended interface of DXGI factory.
+		Black::UniqueComPointer<::IDXGIFactory>		m_generic_factory;	// Generic interface of DXGI factory.
+		Black::UniqueComPointer<::IDXGIFactory1>	m_extended_factory;	// Extended interface of DXGI factory.
 	};
 }
 }

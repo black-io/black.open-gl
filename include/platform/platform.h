@@ -33,15 +33,13 @@ namespace PlatformSpecific
 #include "forwards.h"
 
 // First layer of platform-agnostic types. Cross-platform basic definitions.
-#include "internal/BasicGlRhiAdapter.h"
-#include "internal/BasicGlRhiDisplay.h"
-#include "internal/BasicGlRhiVideoMode.h"
+#include "internal/BasicGlAdapterHandle.h"
+#include "internal/BasicGlDisplayHandle.h"
+#include "internal/BasicGlDisplayVideoMode.h"
 
 #include "internal/BasicEglConfiguration.h"
 #include "internal/BasicEglDisplay.h"
-#include "internal/BasicGlContext.h"
-
-#include "internal/BasicGlRhiConnection.h"
+#include "internal/BasicEglConnection.h"
 
 // Second layer of platform-agnostic types. Platform-specific declarations.
 #include "platform-specific/forwards.h"
@@ -62,14 +60,12 @@ namespace PlatformSpecific
 #endif
 
 // Third layer of platform-agnostic types. Public platform-agnostic definitions.
-#include "GlRhiAdapter.h"
-#include "GlRhiDisplay.h"
-#include "GlRhiVideoMode.h"
+#include "GlAdapterHandle.h"
+#include "GlDisplayHandle.h"
+#include "GlDisplayVideoMode.h"
 
 #include "EglConfiguration.h"
 #include "EglDisplay.h"
-#include "GlContext.h"
-
-#include "GlRhiConnection.h"
+#include "EglConnection.h"
 
 // Deferred implementations.

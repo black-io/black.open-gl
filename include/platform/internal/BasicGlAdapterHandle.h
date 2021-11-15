@@ -10,20 +10,21 @@ inline namespace Platform
 namespace Internal
 {
 	/**
-		@brief	Basic information about GPU Adapter device.
+		@brief	Most fundamental, the basic, information about GPU hardware.
 
-		RHI for GPU adapter should implement the interface to identify and communicate with GPU hardware connected to system.
+		Basic handle underlies the cross-platform type and implements the state and interface used by platform-specific types of all platforms.
 
-		This type implements the first layer of platform-agnostic RHI Adapter type.
+		This type implements the first layer of platform-agnostic Adapter Handle type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicGlRhiAdapter : private Black::NonMovable
+	class BasicGlAdapterHandle
 	{
 	// Heirs construction and initialization.
 	protected:
-		BasicGlRhiAdapter()								= default;
-		BasicGlRhiAdapter( const BasicGlRhiAdapter& )	= default;
-		~BasicGlRhiAdapter()							= default;
+		BasicGlAdapterHandle()								= default;
+		BasicGlAdapterHandle( const BasicGlAdapterHandle& )	= default;
+		BasicGlAdapterHandle( BasicGlAdapterHandle&& )		= default;
+		~BasicGlAdapterHandle()								= default;
 	};
 }
 }

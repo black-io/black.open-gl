@@ -17,7 +17,7 @@ namespace
 	constexpr const char* LOG_CHANNEL = "Black/OpenGL/WGL";
 
 	// Name of stub window class.
-	const wchar_t* STUB_WINDOW_CLASS_NAME = L"Black::Framework::Wgl::StubWindow";
+	const wchar_t* STUB_WINDOW_CLASS_NAME = L"Black::Framework::WGL::StubWindow";
 
 
 	// Select the best pixel format for WGL initialization.

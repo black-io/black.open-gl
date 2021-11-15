@@ -18,12 +18,21 @@ inline namespace Platform
 	// Construction and initialization.
 	public:
 		EglDisplay()	= default;
-		~EglDisplay()	= default;
+		~EglDisplay();
 
 	// Contracts of public API.
 	public:
 		/// @see	EglDisplay::Finalize
 		using PlatformSpecific::EglDisplay<Black::BUILD_PLATFORM>::Finalize;
+
+		/// @see	EglDisplay::UpdateConfigurations
+		using PlatformSpecific::EglDisplay<Black::BUILD_PLATFORM>::UpdateConfigurations;
+
+		/// @see	EglDisplay::FindBestWindowConfiguration
+		using PlatformSpecific::EglDisplay<Black::BUILD_PLATFORM>::FindBestWindowConfiguration;
+
+		/// @see	EglDisplay::FindBestPixelBufferConfiguration
+		using PlatformSpecific::EglDisplay<Black::BUILD_PLATFORM>::FindBestPixelBufferConfiguration;
 
 		/// @see	EglDisplay::IsConnected
 		using PlatformSpecific::EglDisplay<Black::BUILD_PLATFORM>::IsConnected;

@@ -14,6 +14,10 @@ namespace
 }
 
 
+	EglDisplay::~EglDisplay()
+	{
+		Finalize();
+	}
 }
 }
 }

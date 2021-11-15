@@ -43,13 +43,15 @@ namespace PlatformSpecific
 		// Get the additional information about display.
 		inline const ::DISPLAY_DEVICEW& GetDisplayInfo() const			{ return m_display_info; };
 
-	// Platform-agnostic interface.
-	public:
 		// Get the ordinal index of display.
 		inline const size32_t GetIndex() const							{ return m_index; };
 
 		// Get the ordinal index of GPU adapter, where the display is connected.
 		inline const size32_t GetAdapterIndex() const					{ return m_adapter_index; };
+
+
+	// Platform-agnostic interface.
+	public:
 
 	// Heirs construction and initialization.
 	protected:

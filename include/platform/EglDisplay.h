@@ -17,7 +17,7 @@ inline namespace Platform
 	{
 	// Construction and initialization.
 	public:
-		EglDisplay()	= default;
+		EglDisplay() = default;
 		~EglDisplay();
 
 	// Contracts of public API.

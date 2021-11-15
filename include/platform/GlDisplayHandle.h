@@ -8,23 +8,29 @@ inline namespace OpenGl
 inline namespace Platform
 {
 	/**
-		@brief	Implementation of RHI for display device.
+		@brief	Handle of usable display device.
 
-		Implements the final, third layer of platform-agnostic display type.
+		This handle may be used to store the information about Display hardware in system.
+		Handles are used to connect the EGL Display object with target GPU.
+
+		Implements the final, third layer of platform-agnostic Display Handle type.
 		This type is public and may be freely used outside of subsystem.
 	*/
-	class GlRhiDisplay final : public PlatformSpecific::GlRhiDisplay<Black::BUILD_PLATFORM>
+	class GlDisplayHandle final : public PlatformSpecific::GlDisplayHandle<Black::BUILD_PLATFORM>
 	{
 	// Construction and initialization.
 	public:
-		GlRhiDisplay( const GlRhiDisplay& ) = default;
-		explicit GlRhiDisplay( const ConstructionInfo& info );
-		~GlRhiDisplay() = default;
+		GlDisplayHandle( const GlDisplayHandle& )	= default;
+		GlDisplayHandle( GlDisplayHandle&& )		= default;
+		explicit GlDisplayHandle( const ConstructionInfo& info );
+		~GlDisplayHandle() = default;
+
+
+		inline GlDisplayHandle& operator = ( const GlDisplayHandle& )	= default;
+		inline GlDisplayHandle& operator = ( GlDisplayHandle&& )		= default;
 
 	// Contracts of public API.
 	public:
-		/// @see	GlRhiDisplay::GetIndex
-		using PlatformSpecific::GlRhiDisplay<Black::BUILD_PLATFORM>::GetIndex;
 
 	// Public interface.
 	public:

@@ -10,62 +10,62 @@ inline namespace Platform
 namespace Internal
 {
 	/**
-		@brief	RHI connection visitor for purposes of GPU adapters enumeration.
+		@brief	EGL Connection visitor for purposes of GPU adapters enumeration.
 
 		This interface may be used to access the information about GPU hardware installed in system.
 	*/
-	class RhiAdapterInformationConsumer : private Black::NonTransferable
+	class AdapterHandleInformationConsumer : private Black::NonTransferable
 	{
 	// Public inner types.
 	public:
-		// Information of RHI adapter.
-		using AdapterInfo = std::tuple<::DXGI_ADAPTER_DESC1, size32_t>;
+		// Information of adapter.
+		using AdapterInfo = std::tuple<const ::DXGI_ADAPTER_DESC1&, size32_t>;
 
 	// Public virtual interface.
 	public:
-		// Consume the information for RHI adapter.
+		// Consume the adapter information.
 		virtual void Consume( std::string_view device_path, std::string_view device_name, const AdapterInfo& info ) = 0;
 
 	// Heirs construction and initialization.
 	protected:
-		RhiAdapterInformationConsumer()		= default;
-		~RhiAdapterInformationConsumer()	= default;
+		AdapterHandleInformationConsumer()	= default;
+		~AdapterHandleInformationConsumer()	= default;
 	};
 
 	/**
-		@brief	RHI connection visitor for purposes of display enumeration.
+		@brief	EGL Connection visitor for purposes of display enumeration.
 
 		This interface may be used to access the information about displays installed in system.
 	*/
-	class RhiDisplayInformationConsumer : private Black::NonTransferable
+	class DisplayHandleInformationConsumer : private Black::NonTransferable
 	{
 	// Public inner types.
 	public:
-		// Information of RHI display.
-		using DisplayInfo = std::tuple<::DXGI_OUTPUT_DESC, ::DXGI_MODE_DESC, ::MONITORINFOEXW, ::DISPLAY_DEVICEW, size32_t, size32_t>;
+		// Information of display.
+		using DisplayInfo = std::tuple<const ::DXGI_OUTPUT_DESC&, const ::DXGI_MODE_DESC&, size32_t, size32_t>;
 
 	// Public virtual interface.
 	public:
-		// Consume the information for RHI display.
+		// Consume the display information.
 		virtual void Consume( std::string_view device_path, std::string_view device_name, const DisplayInfo& info ) = 0;
 
 	// Heirs construction and initialization.
 	protected:
-		RhiDisplayInformationConsumer()		= default;
-		~RhiDisplayInformationConsumer()	= default;
+		DisplayHandleInformationConsumer()	= default;
+		~DisplayHandleInformationConsumer()	= default;
 	};
 
 	/**
-		@brief	RHI connection visitor for purposes of display video modes enumeration.
+		@brief	EGL Connection visitor for purposes of display video modes enumeration.
 
 		This interface may be used to access the information about video modes allowed for display.
 	*/
-	class RhiVideoModeInformationConsumer : private Black::NonTransferable
+	class DisplayVideoModeInformationConsumer : private Black::NonTransferable
 	{
 	// Public inner types.
 	public:
 		// Information of display video mode.
-		using VideoModeInfo = std::tuple<::DXGI_MODE_DESC>;
+		using VideoModeInfo = std::tuple<const ::DXGI_MODE_DESC&>;
 
 	// Public virtual interface.
 	public:
@@ -74,8 +74,8 @@ namespace Internal
 
 	// Heirs construction and initialization.
 	protected:
-		RhiVideoModeInformationConsumer()	= default;
-		~RhiVideoModeInformationConsumer()	= default;
+		DisplayVideoModeInformationConsumer()	= default;
+		~DisplayVideoModeInformationConsumer()	= default;
 	};
 }
 }

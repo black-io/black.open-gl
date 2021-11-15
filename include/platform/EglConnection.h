@@ -8,31 +8,36 @@ inline namespace OpenGl
 inline namespace Platform
 {
 	/**
-		@brief	Implementation of RHI for GPU connection.
+		@brief	EGL-compatible Connection object.
+
+		EGL Connection object implements the bridge for platform-specific API to configure and initialize the OpenGL-related objects.
 
 		Implements the final, third layer of platform-agnostic GPU connection type.
 		This type is public and may be freely used outside of subsystem.
 	*/
-	class GlRhiConnection final : public PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>
+	class EglConnection final : public PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>
 	{
 	// Construction and initialization.
 	public:
-		GlRhiConnection() = default;
-		~GlRhiConnection();
+		EglConnection()		= default;
+		~EglConnection()	= default;
 
 	// Contracts of public API.
 	public:
-		/// @see	GlRhiConnection::Finalize
-		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::Finalize;
+		/// @see	EglConnection::Finalize
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::Finalize;
 
-		/// @see	GlRhiConnection::EnumerateAdapters
-		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::EnumerateAdapters;
+		/// @see	EglConnection::EnumerateAdapters
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::EnumerateAdapters;
 
-		/// @see	GlRhiConnection::EnumerateDisplays
-		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::EnumerateDisplays;
+		/// @see	EglConnection::EnumerateDisplays
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::EnumerateDisplays;
 
-		/// @see	GlRhiConnection::EnumerateVideoModes
-		using PlatformSpecific::GlRhiConnection<Black::BUILD_PLATFORM>::EnumerateVideoModes;
+		/// @see	EglConnection::EnumerateVideoModes
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::EnumerateVideoModes;
+
+		/// @see	EglConnection::ConnectDisplay
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::ConnectDisplay;
 
 	// Public interface.
 	public:

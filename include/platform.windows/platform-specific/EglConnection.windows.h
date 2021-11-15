@@ -68,8 +68,8 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		EglConnection()	= default;
-		~EglConnection()	= default;
+		EglConnection() = default;
+		~EglConnection();
 
 	// Private interface.
 	private:

@@ -10,21 +10,21 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent Display implementation in terms of windows desktop platform.
+		@brief	Platform-specific information of Display hardware in terms of WIndows Desktop platform.
 
-		On Windows Desktop platform the RHI to display is implemented via DXGI library.
+		On Windows Desktop platform the handle is implemented via DXGI library.
 		This type carries only description and ordinal index corresponded of `IDXGIOutput` instance.
 
-		Implements the second layer of platform-agnostic display type.
+		Implements the second layer of platform-agnostic Display Handle type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class GlRhiDisplay<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlRhiDisplay
+	class GlDisplayHandle<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlDisplayHandle
 	{
 	// Public inner types.
 	public:
 		// Information for instance construction.
-		using ConstructionInfo = Internal::RhiDisplayInformationConsumer::DisplayInfo;
+		using ConstructionInfo = Internal::DisplayHandleInformationConsumer::DisplayInfo;
 
 	// Platform-specific interface.
 	public:
@@ -33,6 +33,9 @@ namespace PlatformSpecific
 
 		// Get the default video mode of display.
 		inline const ::DXGI_MODE_DESC& GetDefaultVideoMode() const		{ return m_default_mode; };
+
+		// Get the desktop settings of display.
+		inline const ::DEVMODEW& GetDesktopSettings() const				{ return m_desktop_settings; };
 
 		// Get the additional information about display monitor.
 		inline const ::MONITORINFOEXW& GetDisplayMonitorInfo() const	{ return m_monitor_info; };
@@ -50,19 +53,34 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		GlRhiDisplay()						= delete;
-		GlRhiDisplay( const GlRhiDisplay& )	= default;
-		explicit GlRhiDisplay( const ConstructionInfo& info );
-		~GlRhiDisplay()					= default;
+		GlDisplayHandle()							= delete;
+		GlDisplayHandle( const GlDisplayHandle& )	= default;
+		GlDisplayHandle( GlDisplayHandle&& )		= default;
+		explicit GlDisplayHandle( const ConstructionInfo& info );
+		~GlDisplayHandle() = default;
+
+	// Private interface.
+	private:
+		// Fill the `m_desktop_settings` with valid information.
+		const bool ReadDesktopSettings();
+
+		// Fill the `m_monitor_info` with valid information.
+		const bool ReadMonitorInfo();
+
+		// Fill the `m_display_info` with valid information.
+		const bool ReadDisplayInfo();
+
 
 	// Private state.
 	private:
 		::DXGI_OUTPUT_DESC	m_device_desc;		// Internal description of display device.
 		::DXGI_MODE_DESC	m_default_mode;		// Default video mode of display.
-		::MONITORINFOEXW	m_monitor_info;		// Additional information about display.
-		::DISPLAY_DEVICEW	m_display_info;		// Additional information about display.
 		size32_t			m_adapter_index;	// Ordinal index of GPU adapter the display connected.
 		size32_t			m_index;			// Ordinal index of display.
+
+		::DEVMODEW			m_desktop_settings;	// Desktop settings of display.
+		::MONITORINFOEXW	m_monitor_info;		// Additional information about display.
+		::DISPLAY_DEVICEW	m_display_info;		// Additional information about display.
 	};
 }
 }

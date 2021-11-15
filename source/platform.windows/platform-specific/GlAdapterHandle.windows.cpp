@@ -12,11 +12,11 @@ namespace PlatformSpecific
 namespace
 {
 	// Logging channel.
-	constexpr const char* LOG_CHANNEL = "Black/OpenGL/RHI Adapter";
+	constexpr const char* LOG_CHANNEL = "Black/OpenGL/Adapter Handle";
 }
 
 
-	GlRhiAdapter<Black::PlatformType::WindowsDesktop>::GlRhiAdapter( const ConstructionInfo& info )
+	GlAdapterHandle<Black::PlatformType::WindowsDesktop>::GlAdapterHandle( const ConstructionInfo& info )
 		: m_description{ std::get<0>( info ) }
 		, m_index{ std::get<1>( info ) }
 	{

@@ -10,21 +10,21 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform dependent GPU adapter implementation in terms of windows desktop platform.
+		@brief	Platform-specific information of GPU hardware in terms of Windows Desktop platform.
 
-		On Windows Desktop platform the RHI to GPU adapter is implemented via DXGI library.
+		On Windows Desktop platform the handle is implemented via DXGI library.
 		This type carries only description and ordinal index corresponded of `IDXGIAdapter` instance.
 
-		Implements the second layer of platform-agnostic GPU adapter type.
+		Implements the second layer of platform-agnostic Adapter Handle type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class GlRhiAdapter<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlRhiAdapter
+	class GlAdapterHandle<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlAdapterHandle
 	{
 	// Public inner types.
 	public:
 		// Information for instance construction.
-		using ConstructionInfo = Internal::RhiAdapterInformationConsumer::AdapterInfo;
+		using ConstructionInfo = Internal::AdapterHandleInformationConsumer::AdapterInfo;
 
 	// Platform-specific interface.
 	public:
@@ -38,10 +38,11 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		GlRhiAdapter()						= delete;
-		GlRhiAdapter( const GlRhiAdapter& )	= default;
-		explicit GlRhiAdapter( const ConstructionInfo& info );
-		~GlRhiAdapter() = default;
+		GlAdapterHandle()							= delete;
+		GlAdapterHandle( const GlAdapterHandle& )	= default;
+		GlAdapterHandle( GlAdapterHandle&& )		= default;
+		explicit GlAdapterHandle( const ConstructionInfo& info );
+		~GlAdapterHandle() = default;
 
 	// Private state.
 	private:

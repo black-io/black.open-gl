@@ -10,7 +10,7 @@ inline namespace Platform
 	/**
 		@brief	Video Mode object for Display.
 
-		Implements the final, third layer of platform-agnostic display video mode type.
+		Implements the final, third layer of platform-agnostic Display Video Mode type.
 		This type is public and may be freely used outside of subsystem.
 	*/
 	class GlDisplayVideoMode final : public PlatformSpecific::GlDisplayVideoMode<Black::BUILD_PLATFORM>

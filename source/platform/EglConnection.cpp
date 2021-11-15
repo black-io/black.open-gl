@@ -14,6 +14,10 @@ namespace
 }
 
 
+	EglConnection::~EglConnection()
+	{
+		Finalize();
+	}
 }
 }
 }

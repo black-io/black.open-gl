@@ -15,7 +15,7 @@ namespace PlatformSpecific
 		Windows Desktop platform operates with DXGI and WGL implementations.
 		Devices are enumerated with DXGI, but the most of OpenGL-related functional is implemented with WGL and WGL extensions.
 
-		Implements the second layer of platform-agnostic GPU connection type.
+		Implements the second layer of platform-agnostic EGL Connection type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
@@ -68,8 +68,8 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		EglConnection() = default;
-		~EglConnection();
+		EglConnection()		= default;
+		~EglConnection()	= default;
 
 	// Private interface.
 	private:

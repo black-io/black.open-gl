@@ -242,11 +242,6 @@ namespace
 		return true;
 	}
 
-	EglConnection<Black::PlatformType::WindowsDesktop>::~EglConnection()
-	{
-		Finalize();
-	}
-
 	void EglConnection<Black::PlatformType::WindowsDesktop>::EnsureInitialized()
 	{
 		CRET( IsInitialized() );

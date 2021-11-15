@@ -12,15 +12,15 @@ inline namespace Platform
 
 		EGL Connection object implements the bridge for platform-specific API to configure and initialize the OpenGL-related objects.
 
-		Implements the final, third layer of platform-agnostic GPU connection type.
+		Implements the final, third layer of platform-agnostic EGL Connection type.
 		This type is public and may be freely used outside of subsystem.
 	*/
 	class EglConnection final : public PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>
 	{
 	// Construction and initialization.
 	public:
-		EglConnection()		= default;
-		~EglConnection()	= default;
+		EglConnection() = default;
+		~EglConnection();
 
 	// Contracts of public API.
 	public:

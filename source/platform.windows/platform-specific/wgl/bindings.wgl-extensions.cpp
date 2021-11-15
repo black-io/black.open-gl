@@ -1,7 +1,7 @@
 #include <black/open-gl.h>
 
-#include "wgl-bindings.h"
-#include "wgl-bindings.extensions.h"
+#include "bindings.wgl.h"
+#include "bindings.wgl-extensions.h"
 
 
 namespace Wgl

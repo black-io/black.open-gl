@@ -7,20 +7,23 @@ inline namespace OpenGl
 {
 inline namespace Platform
 {
-	// Forward the RHI adapter to be used in platform-specific code.
-	class GlRhiAdapter;
+	// Platform-specific code is allowed to use the type as incomplete.
+	class GlAdapterHandle;
 
-	// Forward the RHI display to be used in platform-specific code.
-	class GlRhiDisplay;
+	// Platform-specific code is allowed to use the type as incomplete.
+	class GlDisplayHandle;
 
-	// Forward the EGL configuration to be used in platform-specific code.
+	// Platform-specific code is allowed to use the type as incomplete.
 	class EglConfiguration;
 
-	// Forward the EGL display object to be used in platform-specific code.
+	// Platform-specific code is allowed to use the type as incomplete.
 	class EglDisplay;
 
-	// Forward the context to be used in platform-specific code.
-	class GlContext;
+	// Platform-specific code is allowed to use the type as incomplete.
+	class EglSurface;
+
+	// Platform-specific code is allowed to use the type as incomplete.
+	class EglContext;
 }
 }
 }

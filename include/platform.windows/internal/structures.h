@@ -28,6 +28,18 @@ namespace Internal
 			};
 		};
 	};
+
+	// State of window surface.
+	struct WindowSurfaceState final
+	{
+		::HWND host_window{}; // Host window of surface.
+	};
+
+	// State of pixel buffer surface.
+	struct PixelBufferSurfaceState final
+	{
+		void* owned_pixel_buffer = nullptr; // Storage for owned pixel buffer.
+	};
 }
 }
 }

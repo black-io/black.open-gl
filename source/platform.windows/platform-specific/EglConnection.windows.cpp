@@ -242,6 +242,89 @@ namespace
 		return true;
 	}
 
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectWindowSurface(
+		const Black::EglDisplay& display,
+		const ::HWND window_handle,
+		Black::EglSurface& target_surface
+	)
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to window with best configuration." );
+
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the surface can be connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display object is not connected." );
+
+		auto window_configuration = display.FindBestWindowConfiguration();
+		CRETE( !window_configuration.has_value(), false, LOG_CHANNEL, "Failed to find best configuration for window." );
+
+		const bool is_connected = ConnectWindowSurface( display, *window_configuration, window_handle, target_surface );
+		CRETE( !is_connected, false, LOG_CHANNEL, "Failed to connect the surface with best window configuration." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "The surface was successfully connected to window using best configuration." );
+		return true;
+	}
+
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectWindowSurface(
+		const Black::EglDisplay& display,
+		const Black::EglConfiguration& surface_configuration,
+		const ::HWND window_handle,
+		Black::EglSurface& target_surface
+	)
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to window with given configuration." );
+
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the surface can be connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display object is not connected." );
+		CRETE( !target_surface.ConnectWindow( display, surface_configuration, window_handle ), false, LOG_CHANNEL, "Failed to connect surface with window." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "The surface was successfully connected to window using given configuration." );
+		return true;
+	}
+
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectPixelBufferSurface(
+		const Black::EglDisplay& display,
+		const size32_t width,
+		const size32_t height,
+		Black::EglSurface& target_surface
+	)
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to pixel buffer with best configuration." );
+
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the surface can be connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display object is not connected." );
+
+		auto window_configuration = display.FindBestWindowConfiguration();
+		CRETE( !window_configuration.has_value(), false, LOG_CHANNEL, "Failed to find best configuration for window." );
+
+		auto pixel_buffer_configuration = display.FindBestPixelBufferConfiguration( *window_configuration );
+		CRETE( !pixel_buffer_configuration.has_value(), false, LOG_CHANNEL, "Failed to find best configuration for pixel buffer." );
+
+		const bool is_connected = ConnectPixelBufferSurface( display, *pixel_buffer_configuration, width, height, target_surface );
+		CRETE( !is_connected, false, LOG_CHANNEL, "Failed to connect the surface with best pixel buffer configuration." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "The surface was successfully connected to pixel buffer using best configuration." );
+		return true;
+	}
+
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectPixelBufferSurface(
+		const Black::EglDisplay& display,
+		const Black::EglConfiguration& surface_configuration,
+		const size32_t width,
+		const size32_t height,
+		Black::EglSurface& target_surface
+	)
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to pixel buffer with given configuration." );
+
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the surface can be connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display object is not connected." );
+
+		const bool is_connected = target_surface.ConnectPixelBuffer( display, surface_configuration, width, height );
+		CRETE( !is_connected, false, LOG_CHANNEL, "Failed to connect surface with pixel buffer." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "The surface was successfully connected to pixel buffer using given configuration." );
+		return true;
+	}
+
 	void EglConnection<Black::PlatformType::WindowsDesktop>::EnsureInitialized()
 	{
 		CRET( IsInitialized() );

@@ -39,6 +39,12 @@ inline namespace Platform
 		/// @see	EglConnection::ConnectDisplay
 		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::ConnectDisplay;
 
+		/// @see	EglConnection::ConnectDisplay
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::ConnectWindowSurface;
+
+		/// @see	EglConnection::ConnectDisplay
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::ConnectPixelBufferSurface;
+
 	// Public interface.
 	public:
 

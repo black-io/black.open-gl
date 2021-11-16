@@ -66,6 +66,34 @@ namespace PlatformSpecific
 		// Perform the EGL display connection to given display.
 		const bool ConnectDisplay( const Black::GlDisplayHandle& display_handle, Black::EglDisplay& target_display );
 
+		// Connect the surface with window using given display and best configuration for window surfaces.
+		const bool ConnectWindowSurface( const Black::EglDisplay& display, const ::HWND window_handle, Black::EglSurface& target_surface );
+
+		// Connect the surface with window using given display and given configuration for window surfaces.
+		const bool ConnectWindowSurface(
+			const Black::EglDisplay& display,
+			const Black::EglConfiguration& surface_configuration,
+			const ::HWND window_handle,
+			Black::EglSurface& target_surface
+		);
+
+		// Connect the surface with pixel buffer using given display and best configuration for pixel buffer surfaces.
+		const bool ConnectPixelBufferSurface(
+			const Black::EglDisplay& display,
+			const size32_t width,
+			const size32_t height,
+			Black::EglSurface& target_surface
+		);
+
+		// Connect the surface with pixel buffer using given display and given configuration for pixel buffer surfaces.
+		const bool ConnectPixelBufferSurface(
+			const Black::EglDisplay& display,
+			const Black::EglConfiguration& surface_configuration,
+			const size32_t width,
+			const size32_t height,
+			Black::EglSurface& target_surface
+		);
+
 	// Heirs construction and initialization.
 	protected:
 		EglConnection()		= default;

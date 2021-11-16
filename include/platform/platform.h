@@ -3,6 +3,7 @@
 
 // External dependencies.
 #include <optional>
+#include <variant>
 
 
 namespace Black
@@ -39,6 +40,7 @@ namespace PlatformSpecific
 
 #include "internal/BasicEglConfiguration.h"
 #include "internal/BasicEglDisplay.h"
+#include "internal/BasicEglSurface.h"
 #include "internal/BasicEglConnection.h"
 
 // Second layer of platform-agnostic types. Platform-specific declarations.
@@ -66,6 +68,7 @@ namespace PlatformSpecific
 
 #include "EglConfiguration.h"
 #include "EglDisplay.h"
+#include "EglSurface.h"
 #include "EglConnection.h"
 
 // Deferred implementations.

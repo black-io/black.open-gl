@@ -37,4 +37,5 @@ inline namespace WindowsDesktop
 #include "platform-specific/EglConfiguration.windows.h"
 #include "platform-specific/EglDisplay.windows.h"
 #include "platform-specific/EglSurface.windows.h"
+#include "platform-specific/EglContext.windows.h"
 #include "platform-specific/EglConnection.windows.h"

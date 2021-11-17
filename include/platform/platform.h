@@ -41,6 +41,7 @@ namespace PlatformSpecific
 #include "internal/BasicEglConfiguration.h"
 #include "internal/BasicEglDisplay.h"
 #include "internal/BasicEglSurface.h"
+#include "internal/BasicEglContext.h"
 #include "internal/BasicEglConnection.h"
 
 // Second layer of platform-agnostic types. Platform-specific declarations.
@@ -69,6 +70,7 @@ namespace PlatformSpecific
 #include "EglConfiguration.h"
 #include "EglDisplay.h"
 #include "EglSurface.h"
+#include "EglContext.h"
 #include "EglConnection.h"
 
 // Deferred implementations.

@@ -32,6 +32,7 @@ namespace PlatformSpecific
 
 // Include most fundamental platform stuff.
 #include "forwards.h"
+#include "internal/constants.h"
 
 // First layer of platform-agnostic types. Cross-platform basic definitions.
 #include "internal/BasicGlAdapterHandle.h"

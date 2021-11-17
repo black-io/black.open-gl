@@ -10,13 +10,17 @@ inline namespace Platform
 namespace Internal
 {
 	/**
-		@brief	Basic implementation of OpenGL context object.
+		@brief	Basic implementation of EGL-compatible context object.
 
-		This type implements the first layer of platform-agnostic OpenGL context type.
+		This type implements the first layer of platform-agnostic EGL Context type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
-	class BasicGlContext : private Black::NonTransferable
+	class BasicEglContext : private Black::NonTransferable
 	{
+	// Heirs construction and initialization.
+	protected:
+		BasicEglContext()	= default;
+		~BasicEglContext()	= default;
 	};
 }
 }

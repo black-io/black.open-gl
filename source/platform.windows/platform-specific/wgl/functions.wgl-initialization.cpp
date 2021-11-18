@@ -3,10 +3,11 @@
 
 #include <wingdi.h>
 
-#include "functions.initialization.h"
-#include "functions.settings.h"
+#include "functions.wgl-initialization.h"
+
 #include "bindings.wgl.h"
 #include "bindings.wgl-extensions.h"
+#include "functions.wgl-settings.h"
 
 
 namespace Wgl

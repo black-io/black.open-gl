@@ -1,7 +1,8 @@
 #include <black/open-gl.h>
 #include <black/core/algorithms.h>
 
-#include "functions.settings.h"
+#include "functions.wgl-settings.h"
+
 #include "bindings.wgl.h"
 #include "bindings.wgl-extensions.h"
 

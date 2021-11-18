@@ -1,10 +1,10 @@
 #include <black/open-gl.h>
 
-#include "functions.pixel-formats.h"
+#include "functions.wgl-pixel-formats.h"
 
 #include "bindings.wgl.h"
 #include "bindings.wgl-extensions.h"
-#include "functions.settings.h"
+#include "functions.wgl-settings.h"
 
 
 namespace Black

@@ -24,6 +24,9 @@ namespace Internal
 // Most fundamental definitions.
 
 // Generated headers.
-#include "constants.h"
-#include "aliases.h"
-#include "functions.h"
+#include "constants.gl-es-3.0.h"
+#include "aliases.gl-es-3.0.h"
+#include "functions.gl-es-3.0.h"
+
+// Initialization interface.
+#include "functions.gl-es-3.0-initialization.h"

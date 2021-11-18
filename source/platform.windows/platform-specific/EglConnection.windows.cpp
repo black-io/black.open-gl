@@ -325,6 +325,43 @@ namespace
 		return true;
 	}
 
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectContext(
+		const Black::EglDisplay& display,
+		const Black::EglConfiguration& configuration,
+		Black::EglContext& target_context
+	)
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the context to given display with given configuration." );
+
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the surface can be connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display object is not connected." );
+
+		const bool is_connected = target_context.Connect( display, configuration );
+		CRETE( !is_connected, false, LOG_CHANNEL, "Failed to connect the context to display." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Context successfully connected to given display with given configuration." );
+		return true;
+	}
+
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::ConnectContext(
+		const Black::EglDisplay& display,
+		const Black::EglConfiguration& configuration,
+		const Black::EglContext& host_context,
+		Black::EglContext& target_context
+	)
+	{
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the shared context to given display with given configuration." );
+
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the surface can be connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display object is not connected." );
+
+		const bool is_connected = target_context.Connect( display, configuration, host_context );
+		CRETE( !is_connected, false, LOG_CHANNEL, "Failed to connect the context to display." );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Shared context successfully connected to given display with given configuration." );
+		return true;
+	}
+
 	void EglConnection<Black::PlatformType::WindowsDesktop>::EnsureInitialized()
 	{
 		CRET( IsInitialized() );

@@ -94,6 +94,17 @@ namespace PlatformSpecific
 			Black::EglSurface& target_surface
 		);
 
+		// Connect the context with given display and configuration.
+		const bool ConnectContext( const Black::EglDisplay& display, const Black::EglConfiguration& configuration, Black::EglContext& target_context );
+
+		// Connect the context with given display and configuration. Host context used to share the resources with target context.
+		const bool ConnectContext(
+			const Black::EglDisplay& display,
+			const Black::EglConfiguration& configuration,
+			const Black::EglContext& host_context,
+			Black::EglContext& target_context
+		);
+
 	// Heirs construction and initialization.
 	protected:
 		EglConnection()		= default;

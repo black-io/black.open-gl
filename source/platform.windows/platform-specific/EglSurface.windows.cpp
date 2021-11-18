@@ -2,7 +2,7 @@
 
 #include "wgl/bindings.wgl.h"
 #include "wgl/bindings.wgl-extensions.h"
-#include "wgl/functions.settings.h"
+#include "wgl/functions.wgl-settings.h"
 
 
 namespace Black
@@ -63,7 +63,7 @@ namespace
 		const ::Wgl::ExtensionsState& extensions = ::Wgl::GetExtensionsState();
 		if( extensions.has_wgl_ext_pbuffer )
 		{
-			::Wgl::HPBUFFEREXT buffer_handle = ::Wgl::create_pbuffer_ext( display.GetDeviceContext(), configuration.GetIndex(), width, height, nullptr );
+			::HPBUFFEREXT buffer_handle = ::Wgl::create_pbuffer_ext( display.GetDeviceContext(), configuration.GetIndex(), width, height, nullptr );
 			CRETE( buffer_handle == nullptr, false, LOG_CHANNEL, "Failed to create the pixel buffer, error: 0x{:08X}.", ::GetLastError() );
 
 			// Guard to destroy the pixel buffer object on any error.
@@ -89,7 +89,7 @@ namespace
 		}
 		else if( extensions.has_wgl_arb_pbuffer )
 		{
-			::Wgl::HPBUFFERARB buffer_handle = ::Wgl::create_pbuffer_arb( display.GetDeviceContext(), configuration.GetIndex(), width, height, nullptr );
+			::HPBUFFERARB buffer_handle = ::Wgl::create_pbuffer_arb( display.GetDeviceContext(), configuration.GetIndex(), width, height, nullptr );
 			CRETE( buffer_handle == nullptr, false, LOG_CHANNEL, "Failed to create the pixel buffer, error: 0x{:08X}.", ::GetLastError() );
 
 			// Guard to destroy the pixel buffer object on any error.
@@ -153,7 +153,7 @@ namespace
 		auto& state = std::get<Internal::PixelBufferSurfaceState>( m_state );
 		if( extensions.has_wgl_ext_pbuffer )
 		{
-			::Wgl::HPBUFFEREXT buffer_handle = (::Wgl::HPBUFFEREXT)state.owned_pixel_buffer;
+			::HPBUFFEREXT buffer_handle = (::HPBUFFEREXT)state.owned_pixel_buffer;
 
 			if( ::Wgl::release_pbuffer_dc_ext( buffer_handle, m_surface_context ) != TRUE )
 			{
@@ -167,7 +167,7 @@ namespace
 		}
 		else if( extensions.has_wgl_arb_pbuffer )
 		{
-			::Wgl::HPBUFFERARB buffer_handle = (::Wgl::HPBUFFERARB)state.owned_pixel_buffer;
+			::HPBUFFERARB buffer_handle = (::HPBUFFERARB)state.owned_pixel_buffer;
 
 			if( ::Wgl::release_pbuffer_dc_arb( buffer_handle, m_surface_context ) != TRUE )
 			{

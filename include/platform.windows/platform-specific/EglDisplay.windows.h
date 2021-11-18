@@ -30,6 +30,10 @@ namespace PlatformSpecific
 		const bool Connect( const Black::GlDisplayHandle& display_handle, ::IDXGIFactory& factory );
 
 
+		// Ensure that pixel format is set for device context of display.
+		void EnsurePixelFormatSet( const Black::EglConfiguration& configuration ) const;
+
+
 		// Query the interface of bound GPU adapter. May return `nullptr` if display is not connected.
 		inline ::IDXGIAdapter* QueryAdapterInterface() const			{ return m_adapter_interface.get(); };
 
@@ -113,6 +117,10 @@ namespace PlatformSpecific
 		::DEVMODEW			m_desktop_settings;	// Display device desktop settings.
 		::MONITORINFOEXW	m_monitor_info;		// Additional information about display.
 		::DISPLAY_DEVICEW	m_display_info;		// Additional information about display.
+
+	// Private non-state.
+	private:
+		mutable bool m_is_pixel_format_set = false; // Whether the pixel format is set for device context.
 	};
 }
 }

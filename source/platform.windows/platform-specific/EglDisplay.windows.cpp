@@ -50,6 +50,18 @@ namespace
 		return true;
 	}
 
+	void EglDisplay<Black::PlatformType::WindowsDesktop>::EnsurePixelFormatSet( const Black::EglConfiguration& configuration ) const
+	{
+		CRET( m_is_pixel_format_set );
+		CRETW( !IsConnected(), , LOG_CHANNEL, "Display is not connected." );
+
+		m_is_pixel_format_set = ::SetPixelFormat( m_device_context, configuration.GetIndex(), &configuration.GetDescription() ) == TRUE;
+		if( !m_is_pixel_format_set )
+		{
+			BLACK_LOG_DEBUG( LOG_CHANNEL, "Failed to set pixel format for device context, error: 0x{:08X}.", ::GetLastError() );
+		}
+	}
+
 	void EglDisplay<Black::PlatformType::WindowsDesktop>::Finalize()
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Starting the display finalization." );
@@ -353,10 +365,13 @@ namespace
 		CRET( m_device_context == nullptr );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Device context of display will be deleted." );
-		if( ::DeleteDC( std::exchange( m_device_context, nullptr ) ) == FALSE )
+		if( ::DeleteDC( m_device_context ) == FALSE )
 		{
 			BLACK_LOG_WARNING( LOG_CHANNEL, "Device context of display was not deleted properly. No errors provided." );
 		}
+
+		m_is_pixel_format_set	= false;
+		m_device_context		= nullptr;
 	}
 }
 }

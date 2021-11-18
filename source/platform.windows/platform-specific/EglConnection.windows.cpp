@@ -6,7 +6,7 @@
 
 #include "utils/functions.strings.h"
 
-#include "wgl/functions.initialization.h"
+#include "wgl/functions.wgl-initialization.h"
 
 
 namespace Black

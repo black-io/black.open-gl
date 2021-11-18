@@ -2,7 +2,7 @@
 
 #include "wgl/bindings.wgl.h"
 #include "wgl/bindings.wgl-extensions.h"
-#include "wgl/functions.settings.h"
+#include "wgl/functions.wgl-settings.h"
 
 
 namespace Black

@@ -39,10 +39,14 @@ namespace PlatformSpecific
 			const size32_t height
 		);
 
+
+		// Get the surface context.
+		inline const ::HDC GetSurfaceContext() const { return m_surface_context; };
+
 	// Platform-agnostic interface.
 	public:
-		// Perform the surface disconnection.
-		void Disconnect();
+		// Finalize the surface connection.
+		void Finalize();
 
 
 		// Whether the surface object is connected.

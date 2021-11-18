@@ -123,7 +123,7 @@ namespace
 		return true;
 	}
 
-	void EglSurface<Black::PlatformType::WindowsDesktop>::Disconnect()
+	void EglSurface<Black::PlatformType::WindowsDesktop>::Finalize()
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Surface will be disconnected." );
 		switch( m_type )

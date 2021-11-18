@@ -116,18 +116,12 @@ namespace
 			int32_t attribute_name = ::Wgl::NUMBER_PIXEL_FORMATS_EXT;
 			const bool is_succeeded = ::Wgl::get_pixel_format_attribiv_ext( device_context, 0, PFD_MAIN_PLANE, 1, &attribute_name, &result ) == TRUE;
 			CRETE( !is_succeeded, 0, LOG_CHANNEL, "Failed to retrieve number of pixel formats." );
-
-			// Max format number will be one next from formats count.
-			++result;
 		}
 		else if( ::Wgl::GetExtensionsState().has_wgl_arb_pixel_format )
 		{
 			const int32_t attribute_name = ::Wgl::NUMBER_PIXEL_FORMATS_ARB;
 			const bool is_succeeded = ::Wgl::get_pixel_format_attribiv_arb( device_context, 0, PFD_MAIN_PLANE, 1, &attribute_name, &result ) == TRUE;
 			CRETE( !is_succeeded, 0, LOG_CHANNEL, "Failed to retrieve number of pixel formats." );
-
-			// Max format number will be one next from formats count.
-			++result;
 		}
 		else
 		{
@@ -151,7 +145,7 @@ namespace
 				::UINT( attributes_count ),
 				FORMAT_ATTRIBUTE_NAMES_EXT,
 				values
-			);
+			) == TRUE;
 			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to read pixel format description, error: 0x{:08X}.", ::GetLastError() );
 
 			Black::ZeroMemory( description );
@@ -162,35 +156,35 @@ namespace
 				switch( FORMAT_ATTRIBUTE_NAMES_EXT[ index ] )
 				{
 				case ::Wgl::DRAW_TO_WINDOW_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_WINDOW );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_WINDOW );
 					break;
 				case ::Wgl::DRAW_TO_BITMAP_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_BITMAP );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_BITMAP );
 					break;
 				case ::Wgl::ACCELERATION_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_EXT )? PFD_GENERIC_FORMAT : 0 );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_EXT )? PFD_GENERIC_ACCELERATED : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_EXT )? PFD_DIRECT3D_ACCELERATED : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_EXT )? PFD_GENERIC_FORMAT : 0 );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_EXT )? PFD_GENERIC_ACCELERATED : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_EXT )? PFD_DIRECT3D_ACCELERATED : 0  );
 					break;
 				case ::Wgl::NEED_PALETTE_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_PALETTE );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_PALETTE );
 					break;
 				case ::Wgl::NEED_SYSTEM_PALETTE_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_SYSTEM_PALETTE );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_SYSTEM_PALETTE );
 					break;
 				case ::Wgl::SWAP_LAYER_BUFFERS_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SWAP_LAYER_BUFFERS );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SWAP_LAYER_BUFFERS );
 					break;
 				case ::Wgl::SWAP_METHOD_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_EXT )? PFD_SWAP_EXCHANGE : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_EXT )? PFD_SWAP_COPY : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_EXT )? PFD_SWAP_COPY : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_EXT )? PFD_SWAP_EXCHANGE : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_EXT )? PFD_SWAP_COPY : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_EXT )? PFD_SWAP_COPY : 0  );
 					break;
 				case ::Wgl::NUMBER_OVERLAYS_EXT:
-					description.bReserved = description.bReserved | ::BYTE( values[ index ] & 0xFU );
+					description.bReserved |= ::BYTE( values[ index ] & 0xFU );
 					break;
 				case ::Wgl::NUMBER_UNDERLAYS_EXT:
-					description.bReserved = description.bReserved | ::BYTE( values[ index ] & 0xFU ) >> 4;
+					description.bReserved |= ::BYTE( values[ index ] & 0xFU ) >> 4;
 					break;
 				case ::Wgl::TRANSPARENT_EXT:
 					break;
@@ -204,16 +198,16 @@ namespace
 				case ::Wgl::SHARE_ACCUM_EXT:
 					break;
 				case ::Wgl::SUPPORT_GDI_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_GDI );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_GDI );
 					break;
 				case ::Wgl::SUPPORT_OPENGL_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_OPENGL );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_OPENGL );
 					break;
 				case ::Wgl::DOUBLE_BUFFER_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DOUBLEBUFFER );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DOUBLEBUFFER );
 					break;
 				case ::Wgl::STEREO_EXT:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_STEREO );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_STEREO );
 					break;
 				case ::Wgl::PIXEL_TYPE_EXT:
 					switch( values[ index ] )
@@ -295,7 +289,7 @@ namespace
 				::UINT( attributes_count ),
 				FORMAT_ATTRIBUTE_NAMES_ARB,
 				values
-			);
+			) == TRUE;
 			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to read pixel format description, error: 0x{:08X}.", ::GetLastError() );
 
 			Black::ZeroMemory( description );
@@ -306,35 +300,35 @@ namespace
 				switch( FORMAT_ATTRIBUTE_NAMES_ARB[ index ] )
 				{
 				case ::Wgl::DRAW_TO_WINDOW_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_WINDOW );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_WINDOW );
 					break;
 				case ::Wgl::DRAW_TO_BITMAP_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_BITMAP );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DRAW_TO_BITMAP );
 					break;
 				case ::Wgl::ACCELERATION_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_ARB )? PFD_GENERIC_FORMAT : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_ARB )? PFD_GENERIC_ACCELERATED : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_ARB )? PFD_DIRECT3D_ACCELERATED : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::NO_ACCELERATION_ARB )? PFD_GENERIC_FORMAT : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::GENERIC_ACCELERATION_ARB )? PFD_GENERIC_ACCELERATED : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::FULL_ACCELERATION_ARB )? PFD_DIRECT3D_ACCELERATED : 0  );
 					break;
 				case ::Wgl::NEED_PALETTE_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_PALETTE );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_PALETTE );
 					break;
 				case ::Wgl::NEED_SYSTEM_PALETTE_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_SYSTEM_PALETTE );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_NEED_SYSTEM_PALETTE );
 					break;
 				case ::Wgl::SWAP_LAYER_BUFFERS_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SWAP_LAYER_BUFFERS );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SWAP_LAYER_BUFFERS );
 					break;
 				case ::Wgl::SWAP_METHOD_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_ARB )? PFD_SWAP_EXCHANGE : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_ARB )? PFD_SWAP_COPY : 0  );
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_ARB )? PFD_SWAP_COPY : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::SWAP_EXCHANGE_ARB )? PFD_SWAP_EXCHANGE : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::SWAP_COPY_ARB )? PFD_SWAP_COPY : 0  );
+					description.dwFlags |= ::DWORD( ( values[ index ] == ::Wgl::SWAP_UNDEFINED_ARB )? PFD_SWAP_COPY : 0  );
 					break;
 				case ::Wgl::NUMBER_OVERLAYS_ARB:
-					description.bReserved = description.bReserved | ::BYTE( values[ index ] & 0xFU );
+					description.bReserved |= ::BYTE( values[ index ] & 0xFU );
 					break;
 				case ::Wgl::NUMBER_UNDERLAYS_ARB:
-					description.bReserved = description.bReserved | ::BYTE( values[ index ] & 0xFU ) >> 4;
+					description.bReserved |= ::BYTE( values[ index ] & 0xFU ) >> 4;
 					break;
 				case ::Wgl::TRANSPARENT_ARB:
 					break;
@@ -355,16 +349,16 @@ namespace
 				case ::Wgl::SHARE_ACCUM_ARB:
 					break;
 				case ::Wgl::SUPPORT_GDI_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_GDI );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_GDI );
 					break;
 				case ::Wgl::SUPPORT_OPENGL_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_OPENGL );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_SUPPORT_OPENGL );
 					break;
 				case ::Wgl::DOUBLE_BUFFER_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DOUBLEBUFFER );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_DOUBLEBUFFER );
 					break;
 				case ::Wgl::STEREO_ARB:
-					description.dwFlags = description.dwFlags | ::DWORD( ( values[ index ] == 0 )? 0 : PFD_STEREO );
+					description.dwFlags |= ::DWORD( ( values[ index ] == 0 )? 0 : PFD_STEREO );
 					break;
 				case ::Wgl::PIXEL_TYPE_ARB:
 					switch( values[ index ] )

@@ -16,9 +16,9 @@ inline namespace GlEs30
 		This function never fails, does not throw the errors and always succeeded. After the function is called it is true that the OpenGL functions may be used.
 		But once the function failed, the entire process will be terminated.
 
-		@param	connection	Instance of RHI connection to perform the possible initialization.
+		@param	connection	Instance of EGL connection to perform the possible initialization.
 	*/
-	void GlEnsureInitialized( Black::EglConnection& connection );
+	void GlEnsureInitialized( const Black::EglConnection& connection );
 }
 }
 }

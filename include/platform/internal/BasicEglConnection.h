@@ -17,6 +17,11 @@ namespace Internal
 	*/
 	class BasicEglConnection : private Black::NonTransferable
 	{
+	// Public inner types.
+	public:
+		// Regular function pointer.
+		using RegularFunction = void (*)();
+
 	// Heirs construction and initialization.
 	protected:
 		BasicEglConnection()	= default;

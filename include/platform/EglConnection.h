@@ -27,6 +27,9 @@ inline namespace Platform
 		/// @see	EglConnection::Finalize
 		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::Finalize;
 
+		/// @see	EglConnection::GetFunctionAddress
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::GetFunctionAddress;
+
 		/// @see	EglConnection::EnumerateAdapters
 		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::EnumerateAdapters;
 

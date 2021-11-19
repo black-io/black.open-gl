@@ -125,7 +125,7 @@ namespace
 		}
 		else
 		{
-			result = ::Wgl::describe_pixel_format( device_context, 0, 0, nullptr );
+			result = ::DescribePixelFormat( device_context, 0, 0, nullptr );
 		}
 
 		return result;
@@ -431,7 +431,7 @@ namespace
 		}
 		else
 		{
-			const int32_t access_result = ::Wgl::describe_pixel_format( device_context, format_index, sizeof( description ), &description );
+			const int32_t access_result = ::DescribePixelFormat( device_context, format_index, sizeof( description ), &description );
 			CRETE( access_result == 0, false, LOG_CHANNEL, "Failed to read pixel format." );
 		}
 

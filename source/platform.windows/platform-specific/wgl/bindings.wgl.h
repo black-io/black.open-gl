@@ -3,17 +3,10 @@
 
 // Types used by functions.
 #include <wingdi.h>
-#include <gl/GL.h>
 
 
 namespace Wgl
 {
-	typedef int (BLACK_GL_API *PFNCHOOSEPIXELFORMATPROC)(HDC hDc, const PIXELFORMATDESCRIPTOR * pPfd);
-	typedef int (BLACK_GL_API *PFNDESCRIBEPIXELFORMATPROC)(HDC hdc, int ipfd, UINT cjpfd, const PIXELFORMATDESCRIPTOR * ppfd);
-	typedef UINT (BLACK_GL_API *PFNGETENHMETAFILEPIXELFORMATPROC)(HENHMETAFILE hemf, const PIXELFORMATDESCRIPTOR * ppfd);
-	typedef int (BLACK_GL_API *PFNGETPIXELFORMATPROC)(HDC hdc);
-	typedef BOOL (BLACK_GL_API *PFNSETPIXELFORMATPROC)(HDC hdc, int ipfd, const PIXELFORMATDESCRIPTOR * ppfd);
-	typedef BOOL (BLACK_GL_API *PFNSWAPBUFFERSPROC)(HDC hdc);
 	typedef BOOL (BLACK_GL_API *PFNWGLCOPYCONTEXTPROC)(HGLRC hglrcSrc, HGLRC hglrcDst, UINT mask);
 	typedef HGLRC (BLACK_GL_API *PFNWGLCREATECONTEXTPROC)(HDC hDc);
 	typedef HGLRC (BLACK_GL_API *PFNWGLCREATELAYERCONTEXTPROC)(HDC hDc, int level);
@@ -73,12 +66,6 @@ namespace Wgl
 	constexpr uint32_t SWAP_UNDERLAY9 = 0x01000000;
 
 
-	extern PFNCHOOSEPIXELFORMATPROC				choose_pixel_format;
-	extern PFNDESCRIBEPIXELFORMATPROC			describe_pixel_format;
-	extern PFNGETENHMETAFILEPIXELFORMATPROC		get_enh_meta_file_pixel_format;
-	extern PFNGETPIXELFORMATPROC				get_pixel_format;
-	extern PFNSETPIXELFORMATPROC				set_pixel_format;
-	extern PFNSWAPBUFFERSPROC					swap_buffers;
 	extern PFNWGLCOPYCONTEXTPROC				copy_context;
 	extern PFNWGLCREATECONTEXTPROC				create_context;
 	extern PFNWGLCREATELAYERCONTEXTPROC			create_layer_context;

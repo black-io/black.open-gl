@@ -5,12 +5,6 @@
 
 namespace Wgl
 {
-	PFNCHOOSEPIXELFORMATPROC			choose_pixel_format				= nullptr;
-	PFNDESCRIBEPIXELFORMATPROC			describe_pixel_format			= nullptr;
-	PFNGETENHMETAFILEPIXELFORMATPROC	get_enh_meta_file_pixel_format	= nullptr;
-	PFNGETPIXELFORMATPROC				get_pixel_format				= nullptr;
-	PFNSETPIXELFORMATPROC				set_pixel_format				= nullptr;
-	PFNSWAPBUFFERSPROC					swap_buffers					= nullptr;
 	PFNWGLCOPYCONTEXTPROC				copy_context					= nullptr;
 	PFNWGLCREATECONTEXTPROC				create_context					= nullptr;
 	PFNWGLCREATELAYERCONTEXTPROC		create_layer_context			= nullptr;

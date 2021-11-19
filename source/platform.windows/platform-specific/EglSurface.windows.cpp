@@ -125,6 +125,8 @@ namespace
 
 	void EglSurface<Black::PlatformType::WindowsDesktop>::Finalize()
 	{
+		CRET( !IsConnected() );
+
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Surface will be disconnected." );
 		switch( m_type )
 		{

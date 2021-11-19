@@ -6,6 +6,7 @@
 
 #include "utils/functions.strings.h"
 
+#include "wgl/bindings.wgl.h"
 #include "wgl/functions.wgl-initialization.h"
 
 
@@ -42,10 +43,27 @@ namespace
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to finalize the connection." );
 
+		m_opengl_handle = { nullptr, []( ::HMODULE ) {} };
 		m_extended_factory.reset();
 		m_generic_factory.reset();
 
 		BLACK_LOG_INFO( LOG_CHANNEL, "Connection is finalized." );
+	}
+
+	EglConnection<Black::PlatformType::WindowsDesktop>::RegularFunction EglConnection<Black::PlatformType::WindowsDesktop>::GetFunctionAddress(
+		std::string_view function_name
+	) const
+	{
+		CRETE( !IsInitialized(), nullptr, LOG_CHANNEL, "Connection should be initialized first." );
+		CRET( ::Wgl::get_proc_address == nullptr, reinterpret_cast<RegularFunction>( ::GetProcAddress( m_opengl_handle.get(), function_name.data() ) ) );
+
+		intptr_t address = reinterpret_cast<intptr_t>( ::Wgl::get_proc_address( function_name.data() ) );
+		if( ( address == -1 ) || ( address == 0 ) || ( address == 1 ) || ( address == 2 ) || ( address == 3 ) )
+		{
+			address = reinterpret_cast<intptr_t>( ::GetProcAddress( m_opengl_handle.get(), function_name.data() ) );
+		}
+
+		return reinterpret_cast<RegularFunction>( address );
 	}
 
 	void EglConnection<Black::PlatformType::WindowsDesktop>::EnumerateAdapters( AdapterInfoConsumer& consumer )
@@ -201,11 +219,11 @@ namespace
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Sorting the collected video modes." );
 		std::vector<::DXGI_MODE_DESC*>	sorted_video_modes{ SortVideoModes( video_modes ) };
 
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Consuming the information of {} video modes.", sorted_video_modes.size() );
 		for( const ::DXGI_MODE_DESC* video_mode : sorted_video_modes )
 		{
 			CCON( video_mode->RefreshRate.Denominator == 0 );
 
-			BLACK_LOG_VERBOSE( LOG_CHANNEL, "Consuming the information of video mode." );
 			consumer.Consume( VideoModeInfoConsumer::VideoModeInfo{ *video_mode } );
 		}
 
@@ -219,7 +237,9 @@ namespace
 		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the display can be connected." );
 		CRETE( !target_display.Connect( adapter_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
 		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
-		CRETE( !::Wgl::InitializeBindings( target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
+
+		const Black::EglConnection& connection = static_cast<Black::EglConnection&>( *this );
+		CRETE( !::Wgl::InitializeBindings( connection, target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
 
 		target_display.UpdateConfigurations();
 
@@ -234,7 +254,9 @@ namespace
 		CRETE( !IsInitialized(), false, LOG_CHANNEL, "EGL Connection should be initialized before the display can be connected." );
 		CRETE( !target_display.Connect( display_handle, *m_generic_factory ), false, LOG_CHANNEL, "Failed to connect display object." );
 		CRETE( !target_display.IsConnected(), false, LOG_CHANNEL, "Display object still disconnected after connection." );
-		CRETE( !::Wgl::InitializeBindings( target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
+
+		const Black::EglConnection& connection = static_cast<Black::EglConnection&>( *this );
+		CRETE( !::Wgl::InitializeBindings( connection, target_display ), false, LOG_CHANNEL, "Failed to initialize WGL for selected display." );
 
 		target_display.UpdateConfigurations();
 
@@ -366,6 +388,8 @@ namespace
 	{
 		CRET( IsInitialized() );
 
+		EnsureOpenGlHandleLoaded();
+
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to create DXGI 1.1 factory." );
 		::IDXGIFactory1*	extended_factory	= nullptr;
 		::IDXGIFactory*		generic_factory		= nullptr;
@@ -401,6 +425,45 @@ namespace
 
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "DXGI 1.0 factory construction result: 0x{:08X}", result );
 		BLACK_LOG_CRITICAL( LOG_CHANNEL, "Failed to create the handle for graphics connection." );
+	}
+
+	void EglConnection<Black::PlatformType::WindowsDesktop>::EnsureOpenGlHandleLoaded()
+	{
+		constexpr const char* library_name = "opengl32.dll";
+
+		CRET( m_opengl_handle != nullptr );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to load OpenGL library." );
+
+		const ::HMODULE global_handle = ::GetModuleHandleA( library_name );
+		if( global_handle != nullptr )
+		{
+			BLACK_LOG_INFO( LOG_CHANNEL, "Global OpenGL module found and will be used." );
+			m_opengl_handle = { global_handle, []( const ::HMODULE ) {} };
+
+			BLACK_LOG_INFO( LOG_CHANNEL, "OpenGL library handle acquired." );
+			return;
+		}
+
+		const ::HMODULE local_handle = ::LoadLibraryA( library_name );
+		if( local_handle != nullptr )
+		{
+			BLACK_LOG_INFO( LOG_CHANNEL, "Manually loaded handle will be used." );
+			m_opengl_handle = {
+				local_handle,
+				[]( const ::HMODULE handle )
+				{
+					CRET( handle == nullptr );
+					BLACK_LOG_DEBUG( LOG_CHANNEL, "Releasing the OpenGL library." );
+					::FreeLibrary( handle );
+				}
+			};
+
+			BLACK_LOG_INFO( LOG_CHANNEL, "OpenGL library handle acquired." );
+		}
+
+		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Manual loading of OpenGL library finished with error: 0x{:08X}.", ::GetLastError() );
+		BLACK_LOG_CRITICAL( LOG_CHANNEL, "Failed to load OpenGL library." );
 	}
 }
 }

@@ -50,6 +50,10 @@ namespace PlatformSpecific
 		void Finalize();
 
 
+		// Get the address of function by given name. May return `nullptr` for unknown function names.
+		RegularFunction GetFunctionAddress( std::string_view function_name ) const;
+
+
 		// Enumerate the GPU adapters installed in system.
 		void EnumerateAdapters( AdapterInfoConsumer& consumer );
 
@@ -110,15 +114,28 @@ namespace PlatformSpecific
 		EglConnection()		= default;
 		~EglConnection()	= default;
 
+	// Private types.
+	private:
+		// Deleter type for library smart pointer.
+		using LibraryDeleter = void (*)( const ::HMODULE );
+
+		// Unique pointer to library.
+		using UniqueLibraryHandle = std::unique_ptr<std::remove_pointer_t<::HMODULE>, LibraryDeleter>;
+
 	// Private interface.
 	private:
 		// Ensure the connection is initialized.
 		void EnsureInitialized();
 
+		// Ensure the handle to OpenGL library is loaded.
+		void EnsureOpenGlHandleLoaded();
+
 	// Private state.
 	private:
-		Black::UniqueComPointer<::IDXGIFactory>		m_generic_factory;	// Generic interface of DXGI factory.
-		Black::UniqueComPointer<::IDXGIFactory1>	m_extended_factory;	// Extended interface of DXGI factory.
+		Black::UniqueComPointer<::IDXGIFactory>		m_generic_factory;		// Generic interface of DXGI factory.
+		Black::UniqueComPointer<::IDXGIFactory1>	m_extended_factory;		// Extended interface of DXGI factory.
+
+		UniqueLibraryHandle	m_opengl_handle{ nullptr, []( ::HMODULE ){} };	// Owned handle to 'opengl32.dll'.
 	};
 }
 }

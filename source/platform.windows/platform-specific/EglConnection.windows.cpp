@@ -66,6 +66,14 @@ namespace
 		return reinterpret_cast<RegularFunction>( address );
 	}
 
+	const bool EglConnection<Black::PlatformType::WindowsDesktop>::HasCurrentContext() const
+	{
+		CRETE( !IsInitialized(), false, LOG_CHANNEL, "Connection should be initialized first." );
+		CRET( ::Wgl::get_current_context == nullptr, false );
+
+		return ::Wgl::get_current_context() != nullptr;
+	}
+
 	void EglConnection<Black::PlatformType::WindowsDesktop>::EnumerateAdapters( AdapterInfoConsumer& consumer )
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Attempt to enumerate the information about GPU adapters." );

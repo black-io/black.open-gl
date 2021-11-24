@@ -53,6 +53,9 @@ namespace PlatformSpecific
 		// Get the address of function by given name. May return `nullptr` for unknown function names.
 		RegularFunction GetFunctionAddress( std::string_view function_name ) const;
 
+		// Whether there current context present for current thread.
+		const bool HasCurrentContext() const;
+
 
 		// Enumerate the GPU adapters installed in system.
 		void EnumerateAdapters( AdapterInfoConsumer& consumer );

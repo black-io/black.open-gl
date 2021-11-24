@@ -30,6 +30,9 @@ inline namespace Platform
 		/// @see	EglConnection::GetFunctionAddress
 		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::GetFunctionAddress;
 
+		/// @see	EglConnection::HasCurrentContext
+		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::HasCurrentContext;
+
 		/// @see	EglConnection::EnumerateAdapters
 		using PlatformSpecific::EglConnection<Black::BUILD_PLATFORM>::EnumerateAdapters;
 

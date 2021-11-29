@@ -1042,8 +1042,8 @@ inline namespace GlEs30
 		Rg32ui = 0x823C, // GL_RG32UI.
 		CompressedRgbS3tcDxt1 = 0x83F0, // GL_COMPRESSED_RGB_S3TC_DXT1_EXT.
 		CompressedRgbaS3tcDxt1 = 0x83F1, // GL_COMPRESSED_RGBA_S3TC_DXT1_EXT.
-		CompressedRgbaS3tcDxt3Angle = 0x83F2, // GL_COMPRESSED_RGBA_S3TC_DXT3_ANGLE.
-		CompressedRgbaS3tcDxt5Angle = 0x83F3, // GL_COMPRESSED_RGBA_S3TC_DXT5_ANGLE.
+		CompressedRgbaS3tcDxt3 = 0x83F2, // GL_COMPRESSED_RGBA_S3TC_DXT3_ANGLE.
+		CompressedRgbaS3tcDxt5 = 0x83F3, // GL_COMPRESSED_RGBA_S3TC_DXT5_ANGLE.
 		DepthStencil = 0x84F9, // GL_DEPTH_STENCIL.
 		AtcRgbaInterpolatedAlpha = 0x87EE, // GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD.
 		Gl3dcX = 0x87F9, // GL_3DC_X_AMD.
@@ -1676,8 +1676,8 @@ inline namespace GlEs30
 		Rg32ui = 0x823C, // GL_RG32UI.
 		CompressedRgbS3tcDxt1 = 0x83F0, // GL_COMPRESSED_RGB_S3TC_DXT1_EXT.
 		CompressedRgbaS3tcDxt1 = 0x83F1, // GL_COMPRESSED_RGBA_S3TC_DXT1_EXT.
-		CompressedRgbaS3tcDxt3Angle = 0x83F2, // GL_COMPRESSED_RGBA_S3TC_DXT3_ANGLE.
-		CompressedRgbaS3tcDxt5Angle = 0x83F3, // GL_COMPRESSED_RGBA_S3TC_DXT5_ANGLE.
+		CompressedRgbaS3tcDxt3 = 0x83F2, // GL_COMPRESSED_RGBA_S3TC_DXT3_ANGLE.
+		CompressedRgbaS3tcDxt5 = 0x83F3, // GL_COMPRESSED_RGBA_S3TC_DXT5_ANGLE.
 		Rgba32f = 0x8814, // GL_RGBA32F.
 		Rgb32f = 0x8815, // GL_RGB32F.
 		Rgba16f = 0x881A, // GL_RGBA16F.

@@ -174,6 +174,8 @@ inline namespace GlEs30
 		Int = 0x1404, // GL_INT.
 		UnsignedInt = 0x1405, // GL_UNSIGNED_INT.
 		Float = 0x1406, // GL_FLOAT.
+		Int64 = 0x140E, // GL_INT64_NV.
+		UnsignedInt64 = 0x140F, // GL_UNSIGNED_INT64_NV.
 		Sampler2dArrayShadow = 0x8DC4, // GL_SAMPLER_2D_ARRAY_SHADOW.
 		SamplerCubeShadow = 0x8DC5, // GL_SAMPLER_CUBE_SHADOW.
 		UnsignedIntVec2 = 0x8DC6, // GL_UNSIGNED_INT_VEC2.
@@ -276,8 +278,11 @@ inline namespace GlEs30
 	// BufferStorageMask; bitmask: True.
 	enum class BufferStorage : uint32_t
 	{
+		DynamicStorage = 0x0100, // GL_DYNAMIC_STORAGE_BIT_EXT.
 		MapRead = 0x0001, // GL_MAP_READ_BIT.
 		MapWrite = 0x0002, // GL_MAP_WRITE_BIT.
+		MapPersistent = 0x0040, // GL_MAP_PERSISTENT_BIT_EXT.
+		MapCoherent = 0x0080, // GL_MAP_COHERENT_BIT_EXT.
 	};
 
 	// BufferStorageTarget; bitmask: False.
@@ -338,6 +343,7 @@ inline namespace GlEs30
 	// ClearBufferMask; bitmask: True.
 	enum class ClearBuffer : uint32_t
 	{
+		CoverageBuffer = 0x00008000, // GL_COVERAGE_BUFFER_BIT_NV.
 		DepthBuffer = 0x00000100, // GL_DEPTH_BUFFER_BIT.
 		StencilBuffer = 0x00000400, // GL_STENCIL_BUFFER_BIT.
 		ColorBuffer = 0x00004000, // GL_COLOR_BUFFER_BIT.
@@ -449,6 +455,8 @@ inline namespace GlEs30
 		TextureCubeMap = 0x8513, // GL_TEXTURE_CUBE_MAP.
 		Texture2dArray = 0x8C1A, // GL_TEXTURE_2D_ARRAY.
 		Renderbuffer = 0x8D41, // GL_RENDERBUFFER.
+		Texture2dMultisample = 0x9100, // GL_TEXTURE_2D_MULTISAMPLE.
+		Texture2dMultisampleArray = 0x9102, // GL_TEXTURE_2D_MULTISAMPLE_ARRAY.
 	};
 
 	// CullFaceMode; bitmask: False.
@@ -463,18 +471,37 @@ inline namespace GlEs30
 	enum class DebugSeverity : uint32_t
 	{
 		DontCare = 0x1100, // GL_DONT_CARE.
+		DebugSeverityNotification = 0x826B, // GL_DEBUG_SEVERITY_NOTIFICATION.
+		DebugSeverityHigh = 0x9146, // GL_DEBUG_SEVERITY_HIGH.
+		DebugSeverityMedium = 0x9147, // GL_DEBUG_SEVERITY_MEDIUM.
+		DebugSeverityLow = 0x9148, // GL_DEBUG_SEVERITY_LOW.
 	};
 
 	// DebugSource; bitmask: False.
 	enum class DebugSource : uint32_t
 	{
 		DontCare = 0x1100, // GL_DONT_CARE.
+		DebugSourceApi = 0x8246, // GL_DEBUG_SOURCE_API.
+		DebugSourceWindowSystem = 0x8247, // GL_DEBUG_SOURCE_WINDOW_SYSTEM.
+		DebugSourceShaderCompiler = 0x8248, // GL_DEBUG_SOURCE_SHADER_COMPILER.
+		DebugSourceThirdParty = 0x8249, // GL_DEBUG_SOURCE_THIRD_PARTY.
+		DebugSourceApplication = 0x824A, // GL_DEBUG_SOURCE_APPLICATION.
+		DebugSourceOther = 0x824B, // GL_DEBUG_SOURCE_OTHER.
 	};
 
 	// DebugType; bitmask: False.
 	enum class DebugType : uint32_t
 	{
 		DontCare = 0x1100, // GL_DONT_CARE.
+		DebugTypeError = 0x824C, // GL_DEBUG_TYPE_ERROR.
+		DebugTypeDeprecatedBehavior = 0x824D, // GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR.
+		DebugTypeUndefinedBehavior = 0x824E, // GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR.
+		DebugTypePortability = 0x824F, // GL_DEBUG_TYPE_PORTABILITY.
+		DebugTypePerformance = 0x8250, // GL_DEBUG_TYPE_PERFORMANCE.
+		DebugTypeOther = 0x8251, // GL_DEBUG_TYPE_OTHER.
+		DebugTypeMarker = 0x8268, // GL_DEBUG_TYPE_MARKER.
+		DebugTypePushGroup = 0x8269, // GL_DEBUG_TYPE_PUSH_GROUP.
+		DebugTypePopGroup = 0x826A, // GL_DEBUG_TYPE_POP_GROUP.
 	};
 
 	// DepthFunction; bitmask: False.
@@ -558,10 +585,16 @@ inline namespace GlEs30
 		ScissorTest = 0x0C11, // GL_SCISSOR_TEST.
 		Texture2d = 0x0DE1, // GL_TEXTURE_2D.
 		PolygonOffsetFill = 0x8037, // GL_POLYGON_OFFSET_FILL.
+		VertexArray = 0x8074, // GL_VERTEX_ARRAY.
 		SampleAlphaToCoverage = 0x809E, // GL_SAMPLE_ALPHA_TO_COVERAGE.
 		SampleCoverage = 0x80A0, // GL_SAMPLE_COVERAGE.
+		DebugOutputSynchronous = 0x8242, // GL_DEBUG_OUTPUT_SYNCHRONOUS.
 		RasterizerDiscard = 0x8C89, // GL_RASTERIZER_DISCARD.
 		PrimitiveRestartFixedIndex = 0x8D69, // GL_PRIMITIVE_RESTART_FIXED_INDEX.
+		FetchPerSampleArm = 0x8F65, // GL_FETCH_PER_SAMPLE_ARM.
+		DebugOutput = 0x92E0, // GL_DEBUG_OUTPUT.
+		ShadingRateImagePerPrimitive = 0x95B1, // GL_SHADING_RATE_IMAGE_PER_PRIMITIVE_NV.
+		ShadingRatePreserveAspectRatio = 0x96A5, // GL_SHADING_RATE_PRESERVE_ASPECT_RATIO_QCOM.
 	};
 
 	// ErrorCode; bitmask: False.
@@ -571,6 +604,8 @@ inline namespace GlEs30
 		InvalidEnum = 0x0500, // GL_INVALID_ENUM.
 		InvalidValue = 0x0501, // GL_INVALID_VALUE.
 		InvalidOperation = 0x0502, // GL_INVALID_OPERATION.
+		StackOverflow = 0x0503, // GL_STACK_OVERFLOW.
+		StackUnderflow = 0x0504, // GL_STACK_UNDERFLOW.
 		OutOfMemory = 0x0505, // GL_OUT_OF_MEMORY.
 		InvalidFramebufferOperation = 0x0506, // GL_INVALID_FRAMEBUFFER_OPERATION.
 	};
@@ -654,6 +689,11 @@ inline namespace GlEs30
 		FramebufferAttachmentTextureLevel = 0x8CD2, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL.
 		FramebufferAttachmentTextureCubeMapFace = 0x8CD3, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE.
 		FramebufferAttachmentTextureLayer = 0x8CD4, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER.
+		FramebufferAttachmentTextureSamples = 0x8D6C, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_SAMPLES_EXT.
+		FramebufferAttachmentLayered = 0x8DA7, // GL_FRAMEBUFFER_ATTACHMENT_LAYERED_EXT.
+		FramebufferAttachmentTextureScale = 0x913F, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_SCALE_IMG.
+		FramebufferAttachmentTextureNumViewsOvr = 0x9630, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR.
+		FramebufferAttachmentTextureBaseViewIndexOvr = 0x9632, // GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR.
 	};
 
 	// FramebufferStatus; bitmask: False.
@@ -713,8 +753,12 @@ inline namespace GlEs30
 		StencilRef = 0x0B97, // GL_STENCIL_REF.
 		StencilWritemask = 0x0B98, // GL_STENCIL_WRITEMASK.
 		Viewport = 0x0BA2, // GL_VIEWPORT.
+		AlphaTest = 0x0BC0, // GL_ALPHA_TEST_QCOM.
+		AlphaTestFunc = 0x0BC1, // GL_ALPHA_TEST_FUNC_QCOM.
+		AlphaTestRef = 0x0BC2, // GL_ALPHA_TEST_REF_QCOM.
 		Dither = 0x0BD0, // GL_DITHER.
 		Blend = 0x0BE2, // GL_BLEND.
+		DrawBuffer = 0x0C01, // GL_DRAW_BUFFER_EXT.
 		ReadBuffer = 0x0C02, // GL_READ_BUFFER.
 		ScissorBox = 0x0C10, // GL_SCISSOR_BOX.
 		ScissorTest = 0x0C11, // GL_SCISSOR_TEST.
@@ -748,6 +792,7 @@ inline namespace GlEs30
 		UnpackSkipImages = 0x806D, // GL_UNPACK_SKIP_IMAGES.
 		UnpackImageHeight = 0x806E, // GL_UNPACK_IMAGE_HEIGHT.
 		Max3dTextureSize = 0x8073, // GL_MAX_3D_TEXTURE_SIZE.
+		VertexArray = 0x8074, // GL_VERTEX_ARRAY.
 		SampleBuffers = 0x80A8, // GL_SAMPLE_BUFFERS.
 		Samples = 0x80A9, // GL_SAMPLES.
 		SampleCoverageValue = 0x80AA, // GL_SAMPLE_COVERAGE_VALUE.
@@ -761,6 +806,9 @@ inline namespace GlEs30
 		MajorVersion = 0x821B, // GL_MAJOR_VERSION.
 		MinorVersion = 0x821C, // GL_MINOR_VERSION.
 		NumExtensions = 0x821D, // GL_NUM_EXTENSIONS.
+		MaxDebugGroupStackDepth = 0x826C, // GL_MAX_DEBUG_GROUP_STACK_DEPTH.
+		DebugGroupStackDepth = 0x826D, // GL_DEBUG_GROUP_STACK_DEPTH.
+		MaxLabelLength = 0x82E8, // GL_MAX_LABEL_LENGTH.
 		AliasedPointSizeRange = 0x846D, // GL_ALIASED_POINT_SIZE_RANGE.
 		AliasedLineWidthRange = 0x846E, // GL_ALIASED_LINE_WIDTH_RANGE.
 		ActiveTexture = 0x84E0, // GL_ACTIVE_TEXTURE.
@@ -813,6 +861,8 @@ inline namespace GlEs30
 		TransformFeedbackBufferStart = 0x8C84, // GL_TRANSFORM_FEEDBACK_BUFFER_START.
 		TransformFeedbackBufferSize = 0x8C85, // GL_TRANSFORM_FEEDBACK_BUFFER_SIZE.
 		TransformFeedbackBufferBinding = 0x8C8F, // GL_TRANSFORM_FEEDBACK_BUFFER_BINDING.
+		MotionEstimationSearchBlockX = 0x8C90, // GL_MOTION_ESTIMATION_SEARCH_BLOCK_X_QCOM.
+		MotionEstimationSearchBlockY = 0x8C91, // GL_MOTION_ESTIMATION_SEARCH_BLOCK_Y_QCOM.
 		StencilBackRef = 0x8CA3, // GL_STENCIL_BACK_REF.
 		StencilBackValueMask = 0x8CA4, // GL_STENCIL_BACK_VALUE_MASK.
 		StencilBackWritemask = 0x8CA5, // GL_STENCIL_BACK_WRITEMASK.
@@ -826,18 +876,31 @@ inline namespace GlEs30
 		MaxVertexUniformVectors = 0x8DFB, // GL_MAX_VERTEX_UNIFORM_VECTORS.
 		MaxVaryingVectors = 0x8DFC, // GL_MAX_VARYING_VECTORS.
 		MaxFragmentUniformVectors = 0x8DFD, // GL_MAX_FRAGMENT_UNIFORM_VECTORS.
+		FetchPerSampleArm = 0x8F65, // GL_FETCH_PER_SAMPLE_ARM.
+		FragmentShaderFramebufferFetchMrtArm = 0x8F66, // GL_FRAGMENT_SHADER_FRAMEBUFFER_FETCH_MRT_ARM.
 		MaxServerWaitTimeout = 0x9111, // GL_MAX_SERVER_WAIT_TIMEOUT.
 		MaxVertexOutputComponents = 0x9122, // GL_MAX_VERTEX_OUTPUT_COMPONENTS.
 		MaxFragmentInputComponents = 0x9125, // GL_MAX_FRAGMENT_INPUT_COMPONENTS.
+		NumDeviceUuids = 0x9596, // GL_NUM_DEVICE_UUIDS_EXT.
+		DeviceUuid = 0x9597, // GL_DEVICE_UUID_EXT.
+		DriverUuid = 0x9598, // GL_DRIVER_UUID_EXT.
+		DeviceLuid = 0x9599, // GL_DEVICE_LUID_EXT.
+		DeviceNodeMask = 0x959A, // GL_DEVICE_NODE_MASK_EXT.
+		ShadingRateImagePerPrimitive = 0x95B1, // GL_SHADING_RATE_IMAGE_PER_PRIMITIVE_NV.
+		ShadingRateImagePaletteCount = 0x95B2, // GL_SHADING_RATE_IMAGE_PALETTE_COUNT_NV.
+		MaxTimelineSemaphoreValueDifference = 0x95B6, // GL_MAX_TIMELINE_SEMAPHORE_VALUE_DIFFERENCE_NV.
+		ShadingRate = 0x96A4, // GL_SHADING_RATE_QCOM.
 	};
 
 	// GetTextureParameter; bitmask: False.
 	enum class GetTextureParameter : uint32_t
 	{
+		TextureBorderColor = 0x1004, // GL_TEXTURE_BORDER_COLOR_NV.
 		TextureMagFilter = 0x2800, // GL_TEXTURE_MAG_FILTER.
 		TextureMinFilter = 0x2801, // GL_TEXTURE_MIN_FILTER.
 		TextureWrapS = 0x2802, // GL_TEXTURE_WRAP_S.
 		TextureWrapT = 0x2803, // GL_TEXTURE_WRAP_T.
+		TextureUnnormalizedCoordinatesArm = 0x8F6A, // GL_TEXTURE_UNNORMALIZED_COORDINATES_ARM.
 	};
 
 	// GlslTypeToken; bitmask: False.
@@ -889,6 +952,9 @@ inline namespace GlEs30
 	enum class GraphicsResetStatus : uint32_t
 	{
 		NoError = 0, // GL_NO_ERROR.
+		GuiltyContextReset = 0x8253, // GL_GUILTY_CONTEXT_RESET.
+		InnocentContextReset = 0x8254, // GL_INNOCENT_CONTEXT_RESET.
+		UnknownContextReset = 0x8255, // GL_UNKNOWN_CONTEXT_RESET.
 	};
 
 	// HintMode; bitmask: False.
@@ -905,6 +971,7 @@ inline namespace GlEs30
 		GenerateMipmapHint = 0x8192, // GL_GENERATE_MIPMAP_HINT.
 		ProgramBinaryRetrievableHint = 0x8257, // GL_PROGRAM_BINARY_RETRIEVABLE_HINT.
 		FragmentShaderDerivativeHint = 0x8B8B, // GL_FRAGMENT_SHADER_DERIVATIVE_HINT.
+		BinningControlHint = 0x8FB0, // GL_BINNING_CONTROL_HINT_QCOM.
 	};
 
 	// IndexFunctionEXT; bitmask: False.
@@ -931,20 +998,32 @@ inline namespace GlEs30
 	// InternalFormat; bitmask: False.
 	enum class InternalFormat : uint32_t
 	{
+		StencilIndex = 0x1901, // GL_STENCIL_INDEX_OES.
 		DepthComponent = 0x1902, // GL_DEPTH_COMPONENT.
 		Red = 0x1903, // GL_RED.
 		Rgb = 0x1907, // GL_RGB.
 		Rgba = 0x1908, // GL_RGBA.
+		Alpha8 = 0x803C, // GL_ALPHA8_EXT.
+		Luminance8 = 0x8040, // GL_LUMINANCE8_EXT.
+		Luminance4Alpha4 = 0x8043, // GL_LUMINANCE4_ALPHA4_OES.
+		Luminance8Alpha8 = 0x8045, // GL_LUMINANCE8_ALPHA8_EXT.
 		Rgb8 = 0x8051, // GL_RGB8.
+		Rgb10 = 0x8052, // GL_RGB10_EXT.
+		Rgb16 = 0x8054, // GL_RGB16_EXT.
 		Rgba4 = 0x8056, // GL_RGBA4.
 		Rgb5A1 = 0x8057, // GL_RGB5_A1.
 		Rgba8 = 0x8058, // GL_RGBA8.
 		Rgb10A2 = 0x8059, // GL_RGB10_A2.
+		Rgba16 = 0x805B, // GL_RGBA16_EXT.
+		Bgra = 0x80E1, // GL_BGRA_EXT.
 		DepthComponent16 = 0x81A5, // GL_DEPTH_COMPONENT16.
 		DepthComponent24 = 0x81A6, // GL_DEPTH_COMPONENT24.
+		DepthComponent32 = 0x81A7, // GL_DEPTH_COMPONENT32_OES.
 		Rg = 0x8227, // GL_RG.
 		R8 = 0x8229, // GL_R8.
+		R16 = 0x822A, // GL_R16_EXT.
 		Rg8 = 0x822B, // GL_RG8.
+		Rg16 = 0x822C, // GL_RG16_EXT.
 		R16f = 0x822D, // GL_R16F.
 		R32f = 0x822E, // GL_R32F.
 		Rg16f = 0x822F, // GL_RG16F.
@@ -961,21 +1040,42 @@ inline namespace GlEs30
 		Rg16ui = 0x823A, // GL_RG16UI.
 		Rg32i = 0x823B, // GL_RG32I.
 		Rg32ui = 0x823C, // GL_RG32UI.
+		CompressedRgbS3tcDxt1 = 0x83F0, // GL_COMPRESSED_RGB_S3TC_DXT1_EXT.
+		CompressedRgbaS3tcDxt1 = 0x83F1, // GL_COMPRESSED_RGBA_S3TC_DXT1_EXT.
+		CompressedRgbaS3tcDxt3Angle = 0x83F2, // GL_COMPRESSED_RGBA_S3TC_DXT3_ANGLE.
+		CompressedRgbaS3tcDxt5Angle = 0x83F3, // GL_COMPRESSED_RGBA_S3TC_DXT5_ANGLE.
 		DepthStencil = 0x84F9, // GL_DEPTH_STENCIL.
+		AtcRgbaInterpolatedAlpha = 0x87EE, // GL_ATC_RGBA_INTERPOLATED_ALPHA_AMD.
+		Gl3dcX = 0x87F9, // GL_3DC_X_AMD.
+		Gl3dcXy = 0x87FA, // GL_3DC_XY_AMD.
 		Rgba32f = 0x8814, // GL_RGBA32F.
 		Rgb32f = 0x8815, // GL_RGB32F.
 		Rgba16f = 0x881A, // GL_RGBA16F.
 		Rgb16f = 0x881B, // GL_RGB16F.
 		Depth24Stencil8 = 0x88F0, // GL_DEPTH24_STENCIL8.
+		CompressedRgbPvrtc4bppv1 = 0x8C00, // GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG.
+		CompressedRgbPvrtc2bppv1 = 0x8C01, // GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG.
+		CompressedRgbaPvrtc4bppv1 = 0x8C02, // GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG.
+		CompressedRgbaPvrtc2bppv1 = 0x8C03, // GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG.
 		R11fG11fB10f = 0x8C3A, // GL_R11F_G11F_B10F.
 		Rgb9E5 = 0x8C3D, // GL_RGB9_E5.
 		Srgb = 0x8C40, // GL_SRGB.
 		Srgb8 = 0x8C41, // GL_SRGB8.
+		SrgbAlpha = 0x8C42, // GL_SRGB_ALPHA_EXT.
 		Srgb8Alpha8 = 0x8C43, // GL_SRGB8_ALPHA8.
+		CompressedSrgbS3tcDxt1 = 0x8C4C, // GL_COMPRESSED_SRGB_S3TC_DXT1_EXT.
+		CompressedSrgbAlphaS3tcDxt1 = 0x8C4D, // GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT.
+		CompressedSrgbAlphaS3tcDxt3 = 0x8C4E, // GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT.
+		CompressedSrgbAlphaS3tcDxt5 = 0x8C4F, // GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT.
+		AtcRgb = 0x8C92, // GL_ATC_RGB_AMD.
+		AtcRgbaExplicitAlpha = 0x8C93, // GL_ATC_RGBA_EXPLICIT_ALPHA_AMD.
 		DepthComponent32f = 0x8CAC, // GL_DEPTH_COMPONENT32F.
 		Depth32fStencil8 = 0x8CAD, // GL_DEPTH32F_STENCIL8.
+		StencilIndex1 = 0x8D46, // GL_STENCIL_INDEX1_OES.
+		StencilIndex4 = 0x8D47, // GL_STENCIL_INDEX4_OES.
 		StencilIndex8 = 0x8D48, // GL_STENCIL_INDEX8.
 		Rgb565 = 0x8D62, // GL_RGB565.
+		Etc1Rgb8 = 0x8D64, // GL_ETC1_RGB8_OES.
 		Rgba32ui = 0x8D70, // GL_RGBA32UI.
 		Rgb32ui = 0x8D71, // GL_RGB32UI.
 		Rgba16ui = 0x8D76, // GL_RGBA16UI.
@@ -988,11 +1088,27 @@ inline namespace GlEs30
 		Rgb16i = 0x8D89, // GL_RGB16I.
 		Rgba8i = 0x8D8E, // GL_RGBA8I.
 		Rgb8i = 0x8D8F, // GL_RGB8I.
+		CompressedRedRgtc1 = 0x8DBB, // GL_COMPRESSED_RED_RGTC1_EXT.
+		CompressedSignedRedRgtc1 = 0x8DBC, // GL_COMPRESSED_SIGNED_RED_RGTC1_EXT.
+		CompressedRedGreenRgtc2 = 0x8DBD, // GL_COMPRESSED_RED_GREEN_RGTC2_EXT.
+		CompressedSignedRedGreenRgtc2 = 0x8DBE, // GL_COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT.
+		CompressedRgbaBptcUnorm = 0x8E8C, // GL_COMPRESSED_RGBA_BPTC_UNORM_EXT.
+		CompressedSrgbAlphaBptcUnorm = 0x8E8D, // GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT.
+		CompressedRgbBptcSignedFloat = 0x8E8E, // GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT.
+		CompressedRgbBptcUnsignedFloat = 0x8E8F, // GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT.
 		R8Snorm = 0x8F94, // GL_R8_SNORM.
 		Rg8Snorm = 0x8F95, // GL_RG8_SNORM.
 		Rgb8Snorm = 0x8F96, // GL_RGB8_SNORM.
 		Rgba8Snorm = 0x8F97, // GL_RGBA8_SNORM.
+		R16Snorm = 0x8F98, // GL_R16_SNORM_EXT.
+		Rg16Snorm = 0x8F99, // GL_RG16_SNORM_EXT.
+		Rgb16Snorm = 0x8F9A, // GL_RGB16_SNORM_EXT.
+		Rgba16Snorm = 0x8F9B, // GL_RGBA16_SNORM_EXT.
+		Sr8 = 0x8FBD, // GL_SR8_EXT.
+		Srg8 = 0x8FBE, // GL_SRG8_EXT.
 		Rgb10A2ui = 0x906F, // GL_RGB10_A2UI.
+		CompressedRgbaPvrtc2bppv2 = 0x9137, // GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG.
+		CompressedRgbaPvrtc4bppv2 = 0x9138, // GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG.
 		CompressedR11Eac = 0x9270, // GL_COMPRESSED_R11_EAC.
 		CompressedSignedR11Eac = 0x9271, // GL_COMPRESSED_SIGNED_R11_EAC.
 		CompressedRg11Eac = 0x9272, // GL_COMPRESSED_RG11_EAC.
@@ -1003,6 +1119,55 @@ inline namespace GlEs30
 		CompressedSrgb8PunchthroughAlpha1Etc2 = 0x9277, // GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2.
 		CompressedRgba8Etc2Eac = 0x9278, // GL_COMPRESSED_RGBA8_ETC2_EAC.
 		CompressedSrgb8Alpha8Etc2Eac = 0x9279, // GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC.
+		Bgra8 = 0x93A1, // GL_BGRA8_EXT.
+		CompressedRgbaAstc4x4Khr = 0x93B0, // GL_COMPRESSED_RGBA_ASTC_4x4_KHR.
+		CompressedRgbaAstc5x4Khr = 0x93B1, // GL_COMPRESSED_RGBA_ASTC_5x4_KHR.
+		CompressedRgbaAstc5x5Khr = 0x93B2, // GL_COMPRESSED_RGBA_ASTC_5x5_KHR.
+		CompressedRgbaAstc6x5Khr = 0x93B3, // GL_COMPRESSED_RGBA_ASTC_6x5_KHR.
+		CompressedRgbaAstc6x6Khr = 0x93B4, // GL_COMPRESSED_RGBA_ASTC_6x6_KHR.
+		CompressedRgbaAstc8x5Khr = 0x93B5, // GL_COMPRESSED_RGBA_ASTC_8x5_KHR.
+		CompressedRgbaAstc8x6Khr = 0x93B6, // GL_COMPRESSED_RGBA_ASTC_8x6_KHR.
+		CompressedRgbaAstc8x8Khr = 0x93B7, // GL_COMPRESSED_RGBA_ASTC_8x8_KHR.
+		CompressedRgbaAstc10x5Khr = 0x93B8, // GL_COMPRESSED_RGBA_ASTC_10x5_KHR.
+		CompressedRgbaAstc10x6Khr = 0x93B9, // GL_COMPRESSED_RGBA_ASTC_10x6_KHR.
+		CompressedRgbaAstc10x8Khr = 0x93BA, // GL_COMPRESSED_RGBA_ASTC_10x8_KHR.
+		CompressedRgbaAstc10x10Khr = 0x93BB, // GL_COMPRESSED_RGBA_ASTC_10x10_KHR.
+		CompressedRgbaAstc12x10Khr = 0x93BC, // GL_COMPRESSED_RGBA_ASTC_12x10_KHR.
+		CompressedRgbaAstc12x12Khr = 0x93BD, // GL_COMPRESSED_RGBA_ASTC_12x12_KHR.
+		CompressedRgbaAstc3x3x3 = 0x93C0, // GL_COMPRESSED_RGBA_ASTC_3x3x3_OES.
+		CompressedRgbaAstc4x3x3 = 0x93C1, // GL_COMPRESSED_RGBA_ASTC_4x3x3_OES.
+		CompressedRgbaAstc4x4x3 = 0x93C2, // GL_COMPRESSED_RGBA_ASTC_4x4x3_OES.
+		CompressedRgbaAstc4x4x4 = 0x93C3, // GL_COMPRESSED_RGBA_ASTC_4x4x4_OES.
+		CompressedRgbaAstc5x4x4 = 0x93C4, // GL_COMPRESSED_RGBA_ASTC_5x4x4_OES.
+		CompressedRgbaAstc5x5x4 = 0x93C5, // GL_COMPRESSED_RGBA_ASTC_5x5x4_OES.
+		CompressedRgbaAstc5x5x5 = 0x93C6, // GL_COMPRESSED_RGBA_ASTC_5x5x5_OES.
+		CompressedRgbaAstc6x5x5 = 0x93C7, // GL_COMPRESSED_RGBA_ASTC_6x5x5_OES.
+		CompressedRgbaAstc6x6x5 = 0x93C8, // GL_COMPRESSED_RGBA_ASTC_6x6x5_OES.
+		CompressedRgbaAstc6x6x6 = 0x93C9, // GL_COMPRESSED_RGBA_ASTC_6x6x6_OES.
+		CompressedSrgb8Alpha8Astc4x4Khr = 0x93D0, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR.
+		CompressedSrgb8Alpha8Astc5x4Khr = 0x93D1, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR.
+		CompressedSrgb8Alpha8Astc5x5Khr = 0x93D2, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR.
+		CompressedSrgb8Alpha8Astc6x5Khr = 0x93D3, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR.
+		CompressedSrgb8Alpha8Astc6x6Khr = 0x93D4, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR.
+		CompressedSrgb8Alpha8Astc8x5Khr = 0x93D5, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR.
+		CompressedSrgb8Alpha8Astc8x6Khr = 0x93D6, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR.
+		CompressedSrgb8Alpha8Astc8x8Khr = 0x93D7, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR.
+		CompressedSrgb8Alpha8Astc10x5Khr = 0x93D8, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR.
+		CompressedSrgb8Alpha8Astc10x6Khr = 0x93D9, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR.
+		CompressedSrgb8Alpha8Astc10x8Khr = 0x93DA, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR.
+		CompressedSrgb8Alpha8Astc10x10Khr = 0x93DB, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR.
+		CompressedSrgb8Alpha8Astc12x10Khr = 0x93DC, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR.
+		CompressedSrgb8Alpha8Astc12x12Khr = 0x93DD, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR.
+		CompressedSrgb8Alpha8Astc3x3x3 = 0x93E0, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_3x3x3_OES.
+		CompressedSrgb8Alpha8Astc4x3x3 = 0x93E1, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x3x3_OES.
+		CompressedSrgb8Alpha8Astc4x4x3 = 0x93E2, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4x3_OES.
+		CompressedSrgb8Alpha8Astc4x4x4 = 0x93E3, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4x4_OES.
+		CompressedSrgb8Alpha8Astc5x4x4 = 0x93E4, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x4x4_OES.
+		CompressedSrgb8Alpha8Astc5x5x4 = 0x93E5, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5x4_OES.
+		CompressedSrgb8Alpha8Astc5x5x5 = 0x93E6, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5x5_OES.
+		CompressedSrgb8Alpha8Astc6x5x5 = 0x93E7, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x5x5_OES.
+		CompressedSrgb8Alpha8Astc6x6x5 = 0x93E8, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6x5_OES.
+		CompressedSrgb8Alpha8Astc6x6x6 = 0x93E9, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6x6_OES.
 	};
 
 	// InternalFormatPName; bitmask: False.
@@ -1087,6 +1252,8 @@ inline namespace GlEs30
 		MapInvalidateBuffer = 0x0008, // GL_MAP_INVALIDATE_BUFFER_BIT.
 		MapFlushExplicit = 0x0010, // GL_MAP_FLUSH_EXPLICIT_BIT.
 		MapUnsynchronized = 0x0020, // GL_MAP_UNSYNCHRONIZED_BIT.
+		MapPersistent = 0x0040, // GL_MAP_PERSISTENT_BIT_EXT.
+		MapCoherent = 0x0080, // GL_MAP_COHERENT_BIT_EXT.
 	};
 
 	// MapTypeNV; bitmask: False.
@@ -1130,6 +1297,13 @@ inline namespace GlEs30
 	enum class ObjectIdentifier : uint32_t
 	{
 		Texture = 0x1702, // GL_TEXTURE.
+		VertexArray = 0x8074, // GL_VERTEX_ARRAY.
+		Buffer = 0x82E0, // GL_BUFFER.
+		Shader = 0x82E1, // GL_SHADER.
+		Program = 0x82E2, // GL_PROGRAM.
+		Query = 0x82E3, // GL_QUERY.
+		ProgramPipeline = 0x82E4, // GL_PROGRAM_PIPELINE.
+		Sampler = 0x82E6, // GL_SAMPLER.
 		Framebuffer = 0x8D40, // GL_FRAMEBUFFER.
 		Renderbuffer = 0x8D41, // GL_RENDERBUFFER.
 		TransformFeedback = 0x8E22, // GL_TRANSFORM_FEEDBACK.
@@ -1150,11 +1324,16 @@ inline namespace GlEs30
 	enum class PathFillMode : uint32_t
 	{
 		Invert = 0x150A, // GL_INVERT.
+		PathFillMode = 0x9080, // GL_PATH_FILL_MODE_NV.
+		CountUp = 0x9088, // GL_COUNT_UP_NV.
+		CountDown = 0x9089, // GL_COUNT_DOWN_NV.
 	};
 
 	// PathFontStyle; bitmask: True.
 	enum class PathFontStyle : uint32_t
 	{
+		Bold = 0x01, // GL_BOLD_BIT_NV.
+		Italic = 0x02, // GL_ITALIC_BIT_NV.
 		None = 0, // GL_NONE.
 	};
 
@@ -1162,12 +1341,21 @@ inline namespace GlEs30
 	enum class PathGenMode : uint32_t
 	{
 		None = 0, // GL_NONE.
+		PathObjectBoundingBox = 0x908A, // GL_PATH_OBJECT_BOUNDING_BOX_NV.
 	};
 
 	// PathTransformType; bitmask: False.
 	enum class PathTransformType : uint32_t
 	{
 		None = 0, // GL_NONE.
+		TranslateX = 0x908E, // GL_TRANSLATE_X_NV.
+		TranslateY = 0x908F, // GL_TRANSLATE_Y_NV.
+		Translate2d = 0x9090, // GL_TRANSLATE_2D_NV.
+		Translate3d = 0x9091, // GL_TRANSLATE_3D_NV.
+		Affine2d = 0x9092, // GL_AFFINE_2D_NV.
+		Affine3d = 0x9094, // GL_AFFINE_3D_NV.
+		TransposeAffine2d = 0x9096, // GL_TRANSPOSE_AFFINE_2D_NV.
+		TransposeAffine3d = 0x9098, // GL_TRANSPOSE_AFFINE_3D_NV.
 	};
 
 	// PipelineParameterName; bitmask: False.
@@ -1268,6 +1456,12 @@ inline namespace GlEs30
 		Triangles = 0x0004, // GL_TRIANGLES.
 		TriangleStrip = 0x0005, // GL_TRIANGLE_STRIP.
 		TriangleFan = 0x0006, // GL_TRIANGLE_FAN.
+		Quads = 0x0007, // GL_QUADS_EXT.
+		LinesAdjacency = 0x000A, // GL_LINES_ADJACENCY_EXT.
+		LineStripAdjacency = 0x000B, // GL_LINE_STRIP_ADJACENCY_EXT.
+		TrianglesAdjacency = 0x000C, // GL_TRIANGLES_ADJACENCY_EXT.
+		TriangleStripAdjacency = 0x000D, // GL_TRIANGLE_STRIP_ADJACENCY_EXT.
+		Patches = 0x000E, // GL_PATCHES_EXT.
 	};
 
 	// ProgramInterface; bitmask: False.
@@ -1360,6 +1554,8 @@ inline namespace GlEs30
 		RenderbufferAlphaSize = 0x8D53, // GL_RENDERBUFFER_ALPHA_SIZE.
 		RenderbufferDepthSize = 0x8D54, // GL_RENDERBUFFER_DEPTH_SIZE.
 		RenderbufferStencilSize = 0x8D55, // GL_RENDERBUFFER_STENCIL_SIZE.
+		RenderbufferSamplesImg = 0x9133, // GL_RENDERBUFFER_SAMPLES_IMG.
+		RenderbufferStorageSamples = 0x91B2, // GL_RENDERBUFFER_STORAGE_SAMPLES_AMD.
 	};
 
 	// RenderbufferTarget; bitmask: False.
@@ -1381,6 +1577,7 @@ inline namespace GlEs30
 	{
 		TextureMinLod = 0x813A, // GL_TEXTURE_MIN_LOD.
 		TextureMaxLod = 0x813B, // GL_TEXTURE_MAX_LOD.
+		TextureUnnormalizedCoordinatesArm = 0x8F6A, // GL_TEXTURE_UNNORMALIZED_COORDINATES_ARM.
 	};
 
 	// SamplerParameterI; bitmask: False.
@@ -1393,6 +1590,7 @@ inline namespace GlEs30
 		TextureWrapR = 0x8072, // GL_TEXTURE_WRAP_R.
 		TextureCompareMode = 0x884C, // GL_TEXTURE_COMPARE_MODE.
 		TextureCompareFunc = 0x884D, // GL_TEXTURE_COMPARE_FUNC.
+		TextureUnnormalizedCoordinatesArm = 0x8F6A, // GL_TEXTURE_UNNORMALIZED_COORDINATES_ARM.
 	};
 
 	// ScalarType; bitmask: False.
@@ -1414,6 +1612,11 @@ inline namespace GlEs30
 	// ShaderBinaryFormat; bitmask: False.
 	enum class ShaderBinaryFormat : uint32_t
 	{
+		SgxBinary = 0x8C0A, // GL_SGX_BINARY_IMG.
+		MaliShaderBinaryArm = 0x8F60, // GL_MALI_SHADER_BINARY_ARM.
+		ShaderBinaryViv = 0x8FC4, // GL_SHADER_BINARY_VIV.
+		ShaderBinaryDmp = 0x9250, // GL_SHADER_BINARY_DMP.
+		GccsoShaderBinaryFj = 0x9260, // GL_GCCSO_SHADER_BINARY_FJ.
 	};
 
 	// ShaderParameterName; bitmask: False.
@@ -1436,15 +1639,25 @@ inline namespace GlEs30
 	// SizedInternalFormat; bitmask: False.
 	enum class SizedInternalFormat : uint32_t
 	{
+		Alpha8 = 0x803C, // GL_ALPHA8_EXT.
+		Luminance8 = 0x8040, // GL_LUMINANCE8_EXT.
+		Luminance4Alpha4 = 0x8043, // GL_LUMINANCE4_ALPHA4_OES.
+		Luminance8Alpha8 = 0x8045, // GL_LUMINANCE8_ALPHA8_EXT.
 		Rgb8 = 0x8051, // GL_RGB8.
+		Rgb10 = 0x8052, // GL_RGB10_EXT.
+		Rgb16 = 0x8054, // GL_RGB16_EXT.
 		Rgba4 = 0x8056, // GL_RGBA4.
 		Rgb5A1 = 0x8057, // GL_RGB5_A1.
 		Rgba8 = 0x8058, // GL_RGBA8.
 		Rgb10A2 = 0x8059, // GL_RGB10_A2.
+		Rgba16 = 0x805B, // GL_RGBA16_EXT.
 		DepthComponent16 = 0x81A5, // GL_DEPTH_COMPONENT16.
 		DepthComponent24 = 0x81A6, // GL_DEPTH_COMPONENT24.
+		DepthComponent32 = 0x81A7, // GL_DEPTH_COMPONENT32_OES.
 		R8 = 0x8229, // GL_R8.
+		R16 = 0x822A, // GL_R16_EXT.
 		Rg8 = 0x822B, // GL_RG8.
+		Rg16 = 0x822C, // GL_RG16_EXT.
 		R16f = 0x822D, // GL_R16F.
 		R32f = 0x822E, // GL_R32F.
 		Rg16f = 0x822F, // GL_RG16F.
@@ -1461,6 +1674,10 @@ inline namespace GlEs30
 		Rg16ui = 0x823A, // GL_RG16UI.
 		Rg32i = 0x823B, // GL_RG32I.
 		Rg32ui = 0x823C, // GL_RG32UI.
+		CompressedRgbS3tcDxt1 = 0x83F0, // GL_COMPRESSED_RGB_S3TC_DXT1_EXT.
+		CompressedRgbaS3tcDxt1 = 0x83F1, // GL_COMPRESSED_RGBA_S3TC_DXT1_EXT.
+		CompressedRgbaS3tcDxt3Angle = 0x83F2, // GL_COMPRESSED_RGBA_S3TC_DXT3_ANGLE.
+		CompressedRgbaS3tcDxt5Angle = 0x83F3, // GL_COMPRESSED_RGBA_S3TC_DXT5_ANGLE.
 		Rgba32f = 0x8814, // GL_RGBA32F.
 		Rgb32f = 0x8815, // GL_RGB32F.
 		Rgba16f = 0x881A, // GL_RGBA16F.
@@ -1470,10 +1687,17 @@ inline namespace GlEs30
 		Rgb9E5 = 0x8C3D, // GL_RGB9_E5.
 		Srgb8 = 0x8C41, // GL_SRGB8.
 		Srgb8Alpha8 = 0x8C43, // GL_SRGB8_ALPHA8.
+		CompressedSrgbS3tcDxt1 = 0x8C4C, // GL_COMPRESSED_SRGB_S3TC_DXT1_EXT.
+		CompressedSrgbAlphaS3tcDxt1 = 0x8C4D, // GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT.
+		CompressedSrgbAlphaS3tcDxt3 = 0x8C4E, // GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT.
+		CompressedSrgbAlphaS3tcDxt5 = 0x8C4F, // GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT.
 		DepthComponent32f = 0x8CAC, // GL_DEPTH_COMPONENT32F.
 		Depth32fStencil8 = 0x8CAD, // GL_DEPTH32F_STENCIL8.
+		StencilIndex1 = 0x8D46, // GL_STENCIL_INDEX1_OES.
+		StencilIndex4 = 0x8D47, // GL_STENCIL_INDEX4_OES.
 		StencilIndex8 = 0x8D48, // GL_STENCIL_INDEX8.
 		Rgb565 = 0x8D62, // GL_RGB565.
+		Etc1Rgb8 = 0x8D64, // GL_ETC1_RGB8_OES.
 		Rgba32ui = 0x8D70, // GL_RGBA32UI.
 		Rgb32ui = 0x8D71, // GL_RGB32UI.
 		Rgba16ui = 0x8D76, // GL_RGBA16UI.
@@ -1486,10 +1710,22 @@ inline namespace GlEs30
 		Rgb16i = 0x8D89, // GL_RGB16I.
 		Rgba8i = 0x8D8E, // GL_RGBA8I.
 		Rgb8i = 0x8D8F, // GL_RGB8I.
+		CompressedRedRgtc1 = 0x8DBB, // GL_COMPRESSED_RED_RGTC1_EXT.
+		CompressedSignedRedRgtc1 = 0x8DBC, // GL_COMPRESSED_SIGNED_RED_RGTC1_EXT.
+		CompressedRedGreenRgtc2 = 0x8DBD, // GL_COMPRESSED_RED_GREEN_RGTC2_EXT.
+		CompressedSignedRedGreenRgtc2 = 0x8DBE, // GL_COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT.
+		CompressedRgbaBptcUnorm = 0x8E8C, // GL_COMPRESSED_RGBA_BPTC_UNORM_EXT.
+		CompressedSrgbAlphaBptcUnorm = 0x8E8D, // GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT.
+		CompressedRgbBptcSignedFloat = 0x8E8E, // GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT.
+		CompressedRgbBptcUnsignedFloat = 0x8E8F, // GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT.
 		R8Snorm = 0x8F94, // GL_R8_SNORM.
 		Rg8Snorm = 0x8F95, // GL_RG8_SNORM.
 		Rgb8Snorm = 0x8F96, // GL_RGB8_SNORM.
 		Rgba8Snorm = 0x8F97, // GL_RGBA8_SNORM.
+		R16Snorm = 0x8F98, // GL_R16_SNORM_EXT.
+		Rg16Snorm = 0x8F99, // GL_RG16_SNORM_EXT.
+		Rgb16Snorm = 0x8F9A, // GL_RGB16_SNORM_EXT.
+		Rgba16Snorm = 0x8F9B, // GL_RGBA16_SNORM_EXT.
 		Rgb10A2ui = 0x906F, // GL_RGB10_A2UI.
 		CompressedR11Eac = 0x9270, // GL_COMPRESSED_R11_EAC.
 		CompressedSignedR11Eac = 0x9271, // GL_COMPRESSED_SIGNED_R11_EAC.
@@ -1501,6 +1737,54 @@ inline namespace GlEs30
 		CompressedSrgb8PunchthroughAlpha1Etc2 = 0x9277, // GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2.
 		CompressedRgba8Etc2Eac = 0x9278, // GL_COMPRESSED_RGBA8_ETC2_EAC.
 		CompressedSrgb8Alpha8Etc2Eac = 0x9279, // GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC.
+		CompressedRgbaAstc4x4Khr = 0x93B0, // GL_COMPRESSED_RGBA_ASTC_4x4_KHR.
+		CompressedRgbaAstc5x4Khr = 0x93B1, // GL_COMPRESSED_RGBA_ASTC_5x4_KHR.
+		CompressedRgbaAstc5x5Khr = 0x93B2, // GL_COMPRESSED_RGBA_ASTC_5x5_KHR.
+		CompressedRgbaAstc6x5Khr = 0x93B3, // GL_COMPRESSED_RGBA_ASTC_6x5_KHR.
+		CompressedRgbaAstc6x6Khr = 0x93B4, // GL_COMPRESSED_RGBA_ASTC_6x6_KHR.
+		CompressedRgbaAstc8x5Khr = 0x93B5, // GL_COMPRESSED_RGBA_ASTC_8x5_KHR.
+		CompressedRgbaAstc8x6Khr = 0x93B6, // GL_COMPRESSED_RGBA_ASTC_8x6_KHR.
+		CompressedRgbaAstc8x8Khr = 0x93B7, // GL_COMPRESSED_RGBA_ASTC_8x8_KHR.
+		CompressedRgbaAstc10x5Khr = 0x93B8, // GL_COMPRESSED_RGBA_ASTC_10x5_KHR.
+		CompressedRgbaAstc10x6Khr = 0x93B9, // GL_COMPRESSED_RGBA_ASTC_10x6_KHR.
+		CompressedRgbaAstc10x8Khr = 0x93BA, // GL_COMPRESSED_RGBA_ASTC_10x8_KHR.
+		CompressedRgbaAstc10x10Khr = 0x93BB, // GL_COMPRESSED_RGBA_ASTC_10x10_KHR.
+		CompressedRgbaAstc12x10Khr = 0x93BC, // GL_COMPRESSED_RGBA_ASTC_12x10_KHR.
+		CompressedRgbaAstc12x12Khr = 0x93BD, // GL_COMPRESSED_RGBA_ASTC_12x12_KHR.
+		CompressedRgbaAstc3x3x3 = 0x93C0, // GL_COMPRESSED_RGBA_ASTC_3x3x3_OES.
+		CompressedRgbaAstc4x3x3 = 0x93C1, // GL_COMPRESSED_RGBA_ASTC_4x3x3_OES.
+		CompressedRgbaAstc4x4x3 = 0x93C2, // GL_COMPRESSED_RGBA_ASTC_4x4x3_OES.
+		CompressedRgbaAstc4x4x4 = 0x93C3, // GL_COMPRESSED_RGBA_ASTC_4x4x4_OES.
+		CompressedRgbaAstc5x4x4 = 0x93C4, // GL_COMPRESSED_RGBA_ASTC_5x4x4_OES.
+		CompressedRgbaAstc5x5x4 = 0x93C5, // GL_COMPRESSED_RGBA_ASTC_5x5x4_OES.
+		CompressedRgbaAstc5x5x5 = 0x93C6, // GL_COMPRESSED_RGBA_ASTC_5x5x5_OES.
+		CompressedRgbaAstc6x5x5 = 0x93C7, // GL_COMPRESSED_RGBA_ASTC_6x5x5_OES.
+		CompressedRgbaAstc6x6x5 = 0x93C8, // GL_COMPRESSED_RGBA_ASTC_6x6x5_OES.
+		CompressedRgbaAstc6x6x6 = 0x93C9, // GL_COMPRESSED_RGBA_ASTC_6x6x6_OES.
+		CompressedSrgb8Alpha8Astc4x4Khr = 0x93D0, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR.
+		CompressedSrgb8Alpha8Astc5x4Khr = 0x93D1, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR.
+		CompressedSrgb8Alpha8Astc5x5Khr = 0x93D2, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR.
+		CompressedSrgb8Alpha8Astc6x5Khr = 0x93D3, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR.
+		CompressedSrgb8Alpha8Astc6x6Khr = 0x93D4, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR.
+		CompressedSrgb8Alpha8Astc8x5Khr = 0x93D5, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR.
+		CompressedSrgb8Alpha8Astc8x6Khr = 0x93D6, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR.
+		CompressedSrgb8Alpha8Astc8x8Khr = 0x93D7, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR.
+		CompressedSrgb8Alpha8Astc10x5Khr = 0x93D8, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR.
+		CompressedSrgb8Alpha8Astc10x6Khr = 0x93D9, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR.
+		CompressedSrgb8Alpha8Astc10x8Khr = 0x93DA, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR.
+		CompressedSrgb8Alpha8Astc10x10Khr = 0x93DB, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR.
+		CompressedSrgb8Alpha8Astc12x10Khr = 0x93DC, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR.
+		CompressedSrgb8Alpha8Astc12x12Khr = 0x93DD, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR.
+		CompressedSrgb8Alpha8Astc3x3x3 = 0x93E0, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_3x3x3_OES.
+		CompressedSrgb8Alpha8Astc4x3x3 = 0x93E1, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x3x3_OES.
+		CompressedSrgb8Alpha8Astc4x4x3 = 0x93E2, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4x3_OES.
+		CompressedSrgb8Alpha8Astc4x4x4 = 0x93E3, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_4x4x4_OES.
+		CompressedSrgb8Alpha8Astc5x4x4 = 0x93E4, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x4x4_OES.
+		CompressedSrgb8Alpha8Astc5x5x4 = 0x93E5, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5x4_OES.
+		CompressedSrgb8Alpha8Astc5x5x5 = 0x93E6, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_5x5x5_OES.
+		CompressedSrgb8Alpha8Astc6x5x5 = 0x93E7, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x5x5_OES.
+		CompressedSrgb8Alpha8Astc6x6x5 = 0x93E8, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6x5_OES.
+		CompressedSrgb8Alpha8Astc6x6x6 = 0x93E9, // GL_COMPRESSED_SRGB8_ALPHA8_ASTC_6x6x6_OES.
 	};
 
 	// StencilFaceDirection; bitmask: False.
@@ -1641,6 +1925,7 @@ inline namespace GlEs30
 	// TextureParameterName; bitmask: False.
 	enum class TextureParameterName : uint32_t
 	{
+		TextureBorderColor = 0x1004, // GL_TEXTURE_BORDER_COLOR_NV.
 		TextureMagFilter = 0x2800, // GL_TEXTURE_MAG_FILTER.
 		TextureMinFilter = 0x2801, // GL_TEXTURE_MIN_FILTER.
 		TextureWrapS = 0x2802, // GL_TEXTURE_WRAP_S.
@@ -1656,6 +1941,9 @@ inline namespace GlEs30
 		TextureSwizzleG = 0x8E43, // GL_TEXTURE_SWIZZLE_G.
 		TextureSwizzleB = 0x8E44, // GL_TEXTURE_SWIZZLE_B.
 		TextureSwizzleA = 0x8E45, // GL_TEXTURE_SWIZZLE_A.
+		TextureUnnormalizedCoordinatesArm = 0x8F6A, // GL_TEXTURE_UNNORMALIZED_COORDINATES_ARM.
+		TextureTiling = 0x9580, // GL_TEXTURE_TILING_EXT.
+		TextureFoveatedCutoffDensity = 0x96A0, // GL_TEXTURE_FOVEATED_CUTOFF_DENSITY_QCOM.
 	};
 
 	// TextureSwizzle; bitmask: False.
@@ -1683,6 +1971,9 @@ inline namespace GlEs30
 		TextureCubeMapNegativeZ = 0x851A, // GL_TEXTURE_CUBE_MAP_NEGATIVE_Z.
 		Texture2dArray = 0x8C1A, // GL_TEXTURE_2D_ARRAY.
 		Renderbuffer = 0x8D41, // GL_RENDERBUFFER.
+		TextureCubeMapArray = 0x9009, // GL_TEXTURE_CUBE_MAP_ARRAY_OES.
+		Texture2dMultisample = 0x9100, // GL_TEXTURE_2D_MULTISAMPLE.
+		Texture2dMultisampleArray = 0x9102, // GL_TEXTURE_2D_MULTISAMPLE_ARRAY.
 	};
 
 	// TextureUnit; bitmask: False.
@@ -1727,6 +2018,7 @@ inline namespace GlEs30
 	{
 		LinearMipmapLinear = 0x2703, // GL_LINEAR_MIPMAP_LINEAR.
 		Repeat = 0x2901, // GL_REPEAT.
+		ClampToBorder = 0x812D, // GL_CLAMP_TO_BORDER_NV.
 		ClampToEdge = 0x812F, // GL_CLAMP_TO_EDGE.
 		MirroredRepeat = 0x8370, // GL_MIRRORED_REPEAT.
 	};
@@ -1873,6 +2165,8 @@ inline namespace GlEs30
 		Float = 0x1406, // GL_FLOAT.
 		HalfFloat = 0x140B, // GL_HALF_FLOAT.
 		Fixed = 0x140C, // GL_FIXED.
+		Int64 = 0x140E, // GL_INT64_NV.
+		UnsignedInt64 = 0x140F, // GL_UNSIGNED_INT64_NV.
 		UnsignedInt2101010Rev = 0x8368, // GL_UNSIGNED_INT_2_10_10_10_REV.
 		UnsignedInt10f11f11fRev = 0x8C3B, // GL_UNSIGNED_INT_10F_11F_11F_REV.
 		Int2101010Rev = 0x8D9F, // GL_INT_2_10_10_10_REV.

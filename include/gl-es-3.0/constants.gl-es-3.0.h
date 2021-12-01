@@ -16,12 +16,6 @@ inline namespace GlEs30
 	// GL_TEXTURE_IMMUTABLE_LEVELS
 	inline constexpr int32_t TEXTURE_IMMUTABLE_LEVELS = 0x82DF;
 
-	// GL_UNSIGNED_SHORT_5_6_5
-	inline constexpr int32_t UNSIGNED_SHORT_5_6_5 = 0x8363;
-
-	// GL_UNSIGNED_INT_24_8
-	inline constexpr int32_t UNSIGNED_INT_24_8 = 0x84FA;
-
 	// GL_DRAW_BUFFER0
 	inline constexpr int32_t DRAW_BUFFER0 = 0x8825;
 
@@ -73,9 +67,6 @@ inline namespace GlEs30
 	// GL_UNSIGNED_NORMALIZED
 	inline constexpr int32_t UNSIGNED_NORMALIZED = 0x8C17;
 
-	// GL_UNSIGNED_INT_5_9_9_9_REV
-	inline constexpr int32_t UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
-
 	// GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS
 	inline constexpr int32_t MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS = 0x8C80;
 
@@ -96,9 +87,6 @@ inline namespace GlEs30
 
 	// GL_MAX_SAMPLES
 	inline constexpr int32_t MAX_SAMPLES = 0x8D57;
-
-	// GL_FLOAT_32_UNSIGNED_INT_24_8_REV
-	inline constexpr int32_t FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
 
 	// GL_TRANSFORM_FEEDBACK_BINDING
 	inline constexpr int32_t TRANSFORM_FEEDBACK_BINDING = 0x8E25;
@@ -1433,6 +1421,12 @@ inline namespace GlEs30
 		Float = 0x1406, // GL_FLOAT.
 		UnsignedShort4444 = 0x8033, // GL_UNSIGNED_SHORT_4_4_4_4.
 		UnsignedShort5551 = 0x8034, // GL_UNSIGNED_SHORT_5_5_5_1.
+		UnsignedShort565 = 0x8363, // GL_UNSIGNED_SHORT_5_6_5.
+		UnsignedInt2101010Rev = 0x8368, // GL_UNSIGNED_INT_2_10_10_10_REV.
+		UnsignedInt248 = 0x84FA, // GL_UNSIGNED_INT_24_8.
+		UnsignedInt10f11f11fRev = 0x8C3B, // GL_UNSIGNED_INT_10F_11F_11F_REV.
+		UnsignedInt5999Rev = 0x8C3E, // GL_UNSIGNED_INT_5_9_9_9_REV.
+		Float32UnsignedInt248Rev = 0x8DAD, // GL_FLOAT_32_UNSIGNED_INT_24_8_REV.
 	};
 
 	// PrecisionType; bitmask: False.

@@ -377,7 +377,7 @@ namespace
 		LoadFunctionAddress( swap_layer_buffers, "wglSwapLayerBuffers", connection );
 		LoadFunctionAddress( use_font_bitmaps, "wglUseFontBitmapsW", connection );
 		LoadFunctionAddress( use_font_bitmaps_a, "wglUseFontBitmapsA", connection );
-		LoadFunctionAddress( use_font_bitmaps_w, "wglUseFontBitmapsA", connection );
+		LoadFunctionAddress( use_font_bitmaps_w, "wglUseFontBitmapsW", connection );
 		LoadFunctionAddress( use_font_outlines, "wglUseFontOutlinesW", connection );
 		LoadFunctionAddress( use_font_outlines_a, "wglUseFontOutlinesA", connection );
 		LoadFunctionAddress( use_font_outlines_w, "wglUseFontOutlinesW", connection );

@@ -50,6 +50,9 @@ namespace PlatformSpecific
 		void Finalize();
 
 
+		// Perform the swap of surface buffers.
+		void SwapBuffers( const Black::EglDisplay& display, const Black::EglSurface& surface );
+
 		// Get the address of function by given name. May return `nullptr` for unknown function names.
 		RegularFunction GetFunctionAddress( std::string_view function_name ) const;
 

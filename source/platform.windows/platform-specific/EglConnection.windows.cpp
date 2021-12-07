@@ -50,6 +50,19 @@ namespace
 		BLACK_LOG_INFO( LOG_CHANNEL, "Connection is finalized." );
 	}
 
+	void EglConnection<Black::PlatformType::WindowsDesktop>::SwapBuffers( const Black::EglDisplay& display, const Black::EglSurface& surface )
+	{
+		BLACK_NON_RELEASE_CODE( CRETE( !IsInitialized(), , LOG_CHANNEL, "Connection should be initialized first." ) );
+		BLACK_NON_RELEASE_CODE( CRETE( !display.IsConnected(), , LOG_CHANNEL, "Given display should be connected first." ) );
+		BLACK_NON_RELEASE_CODE( CRETE( !surface.IsConnected(), , LOG_CHANNEL, "Given surface should be connected first." ) );
+
+		const bool is_succeeded = ::SwapBuffers( surface.GetSurfaceContext() ) == TRUE;
+		if( !is_succeeded )
+		{
+			BLACK_LOG_WARNING( LOG_CHANNEL, "Failed to swap buffers for given surface, error: 0x{:08X}.", ::GetLastError() );
+		}
+	}
+
 	EglConnection<Black::PlatformType::WindowsDesktop>::RegularFunction EglConnection<Black::PlatformType::WindowsDesktop>::GetFunctionAddress(
 		std::string_view function_name
 	) const

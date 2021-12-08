@@ -11,7 +11,7 @@ inline namespace OpenGl
 {
 inline namespace Platform
 {
-// Core Windows desktop platform definitions.
+// Platform-related definitions for Windows desktop platform.
 inline namespace WindowsDesktop
 {
 

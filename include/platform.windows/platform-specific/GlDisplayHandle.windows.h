@@ -49,7 +49,6 @@ namespace PlatformSpecific
 		// Get the ordinal index of GPU adapter, where the display is connected.
 		inline const size32_t GetAdapterIndex() const					{ return m_adapter_index; };
 
-
 	// Platform-agnostic interface.
 	public:
 
@@ -71,7 +70,6 @@ namespace PlatformSpecific
 
 		// Fill the `m_display_info` with valid information.
 		const bool ReadDisplayInfo();
-
 
 	// Private state.
 	private:

@@ -16,12 +16,12 @@ namespace
 }
 
 
-	GlDisplayVideoMode<Black::PlatformType::WindowsDesktop>::GlDisplayVideoMode( const ConstructionInfo& info )
+	GlDisplayVideoMode<Black::PlatformType::Android>::GlDisplayVideoMode( const ConstructionInfo& info )
 		: m_index{ std::get<0>( info ) }
 	{
 	}
 
-	void GlDisplayVideoMode<Black::PlatformType::WindowsDesktop>::Swap( GlDisplayVideoMode<Black::PlatformType::WindowsDesktop>& other )
+	void GlDisplayVideoMode<Black::PlatformType::Android>::Swap( GlDisplayVideoMode<Black::PlatformType::Android>& other )
 	{
 		using std::swap;
 

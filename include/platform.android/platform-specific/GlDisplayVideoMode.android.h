@@ -10,16 +10,13 @@ inline namespace Platform
 namespace PlatformSpecific
 {
 	/**
-		@brief	Platform-specific implementation of Display Video mode in term of Windows Desktop platform.
-
-		On Windows Desktop platform the Video Mode is implemented via DXGI library.
-		This type carries only the description and the most basic metrics.
+		@brief	Platform-specific implementation of Display Video mode in term of Android platform.
 
 		Implements the second layer of platform-agnostic Display Video Mode type.
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class GlDisplayVideoMode<Black::PlatformType::WindowsDesktop> : public Internal::BasicGlDisplayVideoMode
+	class GlDisplayVideoMode<Black::PlatformType::Android> : public Internal::BasicGlDisplayVideoMode
 	{
 	// Public inner types.
 	public:
@@ -43,7 +40,7 @@ namespace PlatformSpecific
 	// Heirs interface.
 	protected:
 		// Swap the state with given instance.
-		void Swap( GlDisplayVideoMode<Black::PlatformType::WindowsDesktop>& other );
+		void Swap( GlDisplayVideoMode<Black::PlatformType::Android>& other );
 
 	// Private state.
 	private:

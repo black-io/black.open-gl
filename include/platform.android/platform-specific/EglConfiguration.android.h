@@ -30,7 +30,7 @@ namespace PlatformSpecific
 		// Get the corresponded EGL display.
 		inline ::EGLDisplay GetDisplay() const									{ return m_display; };
 
-		// Get the corresponded EGL config.
+		// Get the corresponded EGL configuration.
 		inline const ::EGLConfig GetConfig() const								{ return m_config; };
 
 		// Get the ordinal index of WGL pixel format.

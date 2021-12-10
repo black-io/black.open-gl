@@ -27,11 +27,17 @@ namespace PlatformSpecific
 
 	// Platform-specific interface.
 	public:
-		//
-		inline const ::EGLConfig GetDescription()		{ return m_config; };
+		// Get the corresponded EGL display.
+		inline ::EGLDisplay GetDisplay() const									{ return m_display; };
+
+		// Get the corresponded EGL config.
+		inline const ::EGLConfig GetConfig() const								{ return m_config; };
 
 		// Get the ordinal index of WGL pixel format.
-		inline const size32_t GetIndex() const			{ return m_index; };
+		inline const size32_t GetIndex() const									{ return m_index; };
+
+		// Get the properties of this configuration.
+		inline const Internal::ConfigurationProperties& GetProperties() const	{ return m_properties; };
 
 	// Platform-agnostic interface.
 	public:

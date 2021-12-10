@@ -92,7 +92,7 @@ namespace
 }
 
 
-	EglConfiguration<Black::PlatformType::WindowsDesktop>::EglConfiguration( const ConstructionInfo& info )
+	EglConfiguration<Black::PlatformType::Android>::EglConfiguration( const ConstructionInfo& info )
 		: m_display{ std::get<0>( info ) }
 		, m_config{ std::get<1>( info ) }
 		, m_index{ std::get<2>( info ) }
@@ -100,7 +100,7 @@ namespace
 		ReadProperties();
 	}
 
-	void EglConfiguration<Black::PlatformType::WindowsDesktop>::ReadProperties()
+	void EglConfiguration<Black::PlatformType::Android>::ReadProperties()
 	{
 		for( const auto& [ attribute_id, property_ptr ] : EGL_ATTRIBUTE_ASSOCIATION )
 		{

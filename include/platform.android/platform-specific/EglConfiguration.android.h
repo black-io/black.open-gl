@@ -18,7 +18,7 @@ namespace PlatformSpecific
 		This type is strictly internal and should never been used outside of subsystem.
 	*/
 	template<>
-	class EglConfiguration<Black::PlatformType::WindowsDesktop> : public Internal::BasicEglConfiguration
+	class EglConfiguration<Black::PlatformType::Android> : public Internal::BasicEglConfiguration
 	{
 	// Public inner types.
 	public:

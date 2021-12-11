@@ -461,7 +461,7 @@ namespace
 		return pixel_formats;
 	}
 
-	std::vector<::PIXELFORMATDESCRIPTOR*> SortPixelFormats( Black::PlainView<::PIXELFORMATDESCRIPTOR> pixel_formats )
+	std::vector<::PIXELFORMATDESCRIPTOR*> SortPixelFormats( const Black::PlainView<::PIXELFORMATDESCRIPTOR> pixel_formats )
 	{
 		std::vector<::PIXELFORMATDESCRIPTOR*> sorted_pixel_formats;
 
@@ -496,7 +496,6 @@ namespace
 					return left_stencil > right_stencil;
 				}
 			}
-
 
 			return false;
 		};

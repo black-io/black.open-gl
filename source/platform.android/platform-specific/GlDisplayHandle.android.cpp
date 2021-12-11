@@ -17,8 +17,9 @@ namespace
 
 
 	GlDisplayHandle<Black::PlatformType::Android>::GlDisplayHandle( const ConstructionInfo& info )
-		: m_adapter_index{ std::get<0>( info ) }
-		, m_index{ std::get<1>( info ) }
+		: m_handle{ std::get<0>( info ) }
+		, m_adapter_index{ std::get<1>( info ) }
+		, m_index{ std::get<2>( info ) }
 	{
 	}
 }

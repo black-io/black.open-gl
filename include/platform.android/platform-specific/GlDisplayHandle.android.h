@@ -25,11 +25,14 @@ namespace PlatformSpecific
 
 	// Platform-specific interface.
 	public:
+		// Get the native display handle.
+		inline const ::EGLNativeDisplayType GetHandle() const	{ return m_handle; };
+
 		// Get the ordinal index of display.
-		inline const size32_t GetIndex() const			{ return m_index; };
+		inline const size32_t GetIndex() const					{ return m_index; };
 
 		// Get the ordinal index of GPU adapter, where the display is connected.
-		inline const size32_t GetAdapterIndex() const	{ return m_adapter_index; };
+		inline const size32_t GetAdapterIndex() const			{ return m_adapter_index; };
 
 	// Platform-agnostic interface.
 	public:
@@ -44,8 +47,10 @@ namespace PlatformSpecific
 
 	// Private state.
 	private:
-		size32_t	m_adapter_index;	// Ordinal index of GPU adapter the display connected.
-		size32_t	m_index;			// Ordinal index of display.
+		::EGLNativeDisplayType	m_handle;	// Corresponded handle of native display.
+
+		size32_t	m_adapter_index;		// Ordinal index of GPU adapter the display connected.
+		size32_t	m_index;				// Ordinal index of display.
 	};
 }
 }

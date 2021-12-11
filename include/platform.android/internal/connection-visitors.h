@@ -42,7 +42,7 @@ namespace Internal
 	// Public inner types.
 	public:
 		// Information of display.
-		using DisplayInfo = std::tuple<size32_t, size32_t>;
+		using DisplayInfo = std::tuple<::EGLNativeDisplayType, size32_t, size32_t>;
 
 	// Public virtual interface.
 	public:

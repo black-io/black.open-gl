@@ -104,6 +104,7 @@ namespace
 
 		auto configurations_begin	= configurations.begin();
 		auto configurations_end		= configurations.end();
+		ENSURES_DEBUG( configurations_end > configurations_begin );
 
 		// Keep only configurations that support OpenGL, allow drawing to window, provide bit-depth of desktop along with depth/stencil buffers.
 		configurations_end = std::copy_if(
@@ -122,6 +123,8 @@ namespace
 				return ( pixel_format.cDepthBits > 0 ) && ( pixel_format.cStencilBits > 0 );
 			}
 		);
+
+		ENSURES_DEBUG( configurations_end > configurations_begin );
 
 		// Sort the configurations by complex criteria. The best match will be stored first.
 		std::sort(
@@ -205,13 +208,14 @@ namespace
 
 		auto configurations_begin	= configurations.begin();
 		auto configurations_end		= configurations.end();
+		ENSURES_DEBUG( configurations_end > configurations_begin );
 
 		// Keep only configurations that correlate with original configuration.
 		configurations_end = std::copy_if(
 			configurations_begin,
 			configurations_end,
 			configurations_begin,
-			[&window_configuration, &extensions]( const Black::EglConfiguration* configuration ) -> const bool
+			[&window_configuration]( const Black::EglConfiguration* configuration ) -> const bool
 			{
 				constexpr ::DWORD required_flags = PFD_SUPPORT_OPENGL;
 				const ::PIXELFORMATDESCRIPTOR& current_format = configuration->GetDescription();
@@ -233,6 +237,8 @@ namespace
 				return true;
 			}
 		);
+
+		ENSURES_DEBUG( configurations_end > configurations_begin );
 
 		// Sort the configurations by complex criteria. The best match will be stored first.
 		std::sort(

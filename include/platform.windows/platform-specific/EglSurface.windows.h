@@ -41,7 +41,10 @@ namespace PlatformSpecific
 
 
 		// Get the surface context.
-		inline const ::HDC GetSurfaceContext() const { return m_surface_context; };
+		inline const ::HDC GetSurfaceContext() const	{ return m_surface_context; };
+
+		// Get the type of surface.
+		inline const SurfaceType GetType() const		{ return m_type; };
 
 	// Platform-agnostic interface.
 	public:
@@ -51,9 +54,6 @@ namespace PlatformSpecific
 
 		// Whether the surface object is connected.
 		inline const bool IsConnected() const		{ return m_surface_context != nullptr; };
-
-		// Get the type of surface.
-		inline const SurfaceType GetType() const	{ return m_type; };
 
 	// Heirs construction and initialization.
 	protected:

@@ -56,9 +56,9 @@ namespace PlatformSpecific
 
 	// private state.
 	private:
-		::EGLDisplay	m_display;	// Corresponded EGL display.
-		::EGLConfig		m_config;	// Corresponded EGL configuration.
-		size32_t		m_index;	// Ordinal number of configuration.
+		::EGLDisplay	m_display	= EGL_NO_DISPLAY;	// Corresponded EGL display.
+		::EGLConfig		m_config	= {};				// Corresponded EGL configuration.
+		size32_t		m_index		= 0;				// Ordinal number of configuration.
 
 		Internal::ConfigurationProperties m_properties; // Properties of stored configuration.
 	};

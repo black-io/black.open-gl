@@ -29,6 +29,7 @@ namespace
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to window." );
 
 		CRETE( IsConnected(), false, LOG_CHANNEL, "The surface is already connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display should be connected first." );
 		CRETE( ( configuration.GetDescription().dwFlags & PFD_DRAW_TO_WINDOW ) == 0, false, LOG_CHANNEL, "Configuration does not support windows." );
 
 		m_type		= SurfaceType::Window;
@@ -56,6 +57,7 @@ namespace
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to pixel buffer." );
 
 		CRETE( IsConnected(), false, LOG_CHANNEL, "The surface is already connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display should be connected first." );
 		CRETE( !configuration.GetPixelBufferSettings().is_supported, false, LOG_CHANNEL, "Given configuration does not support pixel buffers." );
 		CRETE( int32_t( width ) > configuration.GetPixelBufferSettings().maximum_width, false, LOG_CHANNEL, "Width limit exceeded." );
 		CRETE( int32_t( height ) > configuration.GetPixelBufferSettings().maximum_height, false, LOG_CHANNEL, "Height limit exceeded." );

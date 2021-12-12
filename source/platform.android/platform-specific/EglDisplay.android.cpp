@@ -245,7 +245,7 @@ namespace
 		{
 			BLACK_LOG_INFO( LOG_CHANNEL, "Unable to connect the display via platform-oriented API. Connecting via the regular EGL API." );
 			m_handle = ::eglGetDisplay( native_handle );
-			CRETE( m_handle == EGL_NO_DISPLAY, false, LOG_CHANNEL, "Failed to connect display #{:X}.", uintptr_t( native_handle ) );
+			CRETE( m_handle == EGL_NO_DISPLAY, false, LOG_CHANNEL, "Failed to connect display, error: 0x{:08X}.", ::eglGetError() );
 		}
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display connection #{:X} is established.", uintptr_t( native_handle ) );

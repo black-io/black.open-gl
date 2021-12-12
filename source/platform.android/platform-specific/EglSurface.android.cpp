@@ -24,6 +24,19 @@ namespace
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to window." );
 
+		CRETE( IsConnected(), false, LOG_CHANNEL, "The surface is already connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display should be connected first." );
+		CRETE( !configuration.GetProperties().is_winwow_surface_compatible, false, LOG_CHANNEL, "Configuration does not support windows." );
+
+		m_display_handle	= display.GetHandle();
+		m_handle			= ::eglCreatePlatformWindowSurface( m_display_handle, configuration.GetHandle(), window_surface.GetNativeWindow(), nullptr );
+		if( m_handle == EGL_NO_SURFACE )
+		{
+			BLACK_LOG_INFO( LOG_CHANNEL, "Unable to create the window surface via platform-oriented EGL API. Try to create via regular EGL API." );
+			m_handle = ::eglCreateWindowSurface( m_display_handle, configuration.GetHandle(), window_surface.GetNativeWindow(), nullptr );
+			CRETE( m_handle == EGL_NO_SURFACE, false, LOG_CHANNEL, "Failed to create window surface, error: 0x{:08X}.", ::eglGetError() );
+		}
+
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Surface successfully connected to window." );
 		return true;
 	}
@@ -36,6 +49,22 @@ namespace
 	)
 	{
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Connecting the surface to pixel buffer." );
+
+		CRETE( IsConnected(), false, LOG_CHANNEL, "The surface is already connected." );
+		CRETE( !display.IsConnected(), false, LOG_CHANNEL, "Display should be connected first." );
+		CRETE( !configuration.GetProperties().is_pbuffer_surface_compatible, false, LOG_CHANNEL, "Given configuration does not support pixel buffers." );
+		CRETE( int32_t( width ) > configuration.GetProperties().maximum_pbuffer_width, false, LOG_CHANNEL, "Width limit exceeded." );
+		CRETE( int32_t( height ) > configuration.GetProperties().maximum_pbuffer_height, false, LOG_CHANNEL, "Height limit exceeded." );
+
+		const int32_t surface_attributes[]{
+			EGL_WIDTH,	width,
+			EGL_HEIGHT,	height,
+			EGL_NONE,	EGL_NONE
+		};
+
+		m_display_handle	= display.GetHandle();
+		m_handle			= ::eglCreatePbufferSurface( m_display_handle, configuration.GetHandle(), surface_attributes );
+		CRETE( m_handle == EGL_NO_SURFACE, false, LOG_CHANNEL, "Failed to create pixel buffer surface, error: 0x{:08X}.", ::eglGetError() );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Surface successfully connected to pixel buffer." );
 		return true;

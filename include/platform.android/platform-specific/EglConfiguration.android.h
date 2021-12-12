@@ -28,10 +28,10 @@ namespace PlatformSpecific
 	// Platform-specific interface.
 	public:
 		// Get the corresponded EGL display.
-		inline ::EGLDisplay GetDisplay() const									{ return m_display; };
+		inline ::EGLDisplay GetDisplayHandle() const							{ return m_display_handle; };
 
 		// Get the corresponded EGL configuration.
-		inline const ::EGLConfig GetConfig() const								{ return m_config; };
+		inline const ::EGLConfig GetHandle() const								{ return m_handle; };
 
 		// Get the ordinal index of WGL pixel format.
 		inline const size32_t GetIndex() const									{ return m_index; };
@@ -56,11 +56,11 @@ namespace PlatformSpecific
 
 	// private state.
 	private:
-		::EGLDisplay	m_display	= EGL_NO_DISPLAY;	// Corresponded EGL display.
-		::EGLConfig		m_config	= {};				// Corresponded EGL configuration.
-		size32_t		m_index		= 0;				// Ordinal number of configuration.
+		::EGLDisplay	m_display_handle	= EGL_NO_DISPLAY;	// Corresponded EGL display.
+		::EGLConfig		m_handle			= {};				// Corresponded EGL configuration.
+		size32_t		m_index				= 0;				// Ordinal number of configuration.
 
-		Internal::ConfigurationProperties m_properties; // Properties of stored configuration.
+		Internal::ConfigurationProperties m_properties;			// Properties of stored configuration.
 	};
 }
 }

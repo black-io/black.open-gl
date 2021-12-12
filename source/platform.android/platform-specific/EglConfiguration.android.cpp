@@ -93,8 +93,8 @@ namespace
 
 
 	EglConfiguration<Black::PlatformType::Android>::EglConfiguration( const ConstructionInfo& info )
-		: m_display{ std::get<0>( info ) }
-		, m_config{ std::get<1>( info ) }
+		: m_display_handle{ std::get<0>( info ) }
+		, m_handle{ std::get<1>( info ) }
 		, m_index{ std::get<2>( info ) }
 	{
 		ReadProperties();
@@ -104,14 +104,14 @@ namespace
 	{
 		for( const auto& [ attribute_id, property_ptr ] : EGL_ATTRIBUTE_ASSOCIATION )
 		{
-			const bool is_succeeded = ::eglGetConfigAttrib( m_display, m_config, attribute_id, &(m_properties.*property_ptr) ) == EGL_TRUE;
+			const bool is_succeeded = ::eglGetConfigAttrib( m_display_handle, m_handle, attribute_id, &(m_properties.*property_ptr) ) == EGL_TRUE;
 			ENSURES_DEBUG( is_succeeded );
 		}
 
 		for( const auto& [ attribute_id, property_function ] : EGL_ATTRIBUTE_PREDICATES )
 		{
 			int32_t value = 0;
-			const bool is_succeeded = ::eglGetConfigAttrib( m_display, m_config, attribute_id, &value ) == EGL_TRUE;
+			const bool is_succeeded = ::eglGetConfigAttrib( m_display_handle, m_handle, attribute_id, &value ) == EGL_TRUE;
 			ENSURES_DEBUG( is_succeeded );
 			property_function( m_properties, value );
 		}

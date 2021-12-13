@@ -91,18 +91,18 @@ namespace
 		const ::Wgl::ExtensionsState& extensions = ::Wgl::GetExtensionsState();
 		if( extensions.has_wgl_ext_make_current_read )
 		{
-			const bool	is_succeeded = ::Wgl::make_context_current_ext( nullptr, nullptr, nullptr ) == TRUE;
-			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to make context current, error: 0x{:08X}.", ::GetLastError() );
+			const bool is_succeeded = ::Wgl::make_context_current_ext( nullptr, nullptr, nullptr ) == TRUE;
+			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to reset current context, error: 0x{:08X}.", ::GetLastError() );
 		}
 		else if( extensions.has_wgl_arb_make_current_read )
 		{
-			const bool	is_succeeded = ::Wgl::make_context_current_arb( nullptr, nullptr, nullptr ) == TRUE;
-			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to make context current, error: 0x{:08X}.", ::GetLastError() );
+			const bool is_succeeded = ::Wgl::make_context_current_arb( nullptr, nullptr, nullptr ) == TRUE;
+			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to reset current context, error: 0x{:08X}.", ::GetLastError() );
 		}
 		else
 		{
 			const bool is_succeeded = ::Wgl::make_current( nullptr, nullptr ) == TRUE;
-			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to make context current, error: 0x{:08X}.", ::GetLastError() );
+			CRETE( !is_succeeded, false, LOG_CHANNEL, "Failed to reset current context, error: 0x{:08X}.", ::GetLastError() );
 		}
 
 		m_is_current		= false;

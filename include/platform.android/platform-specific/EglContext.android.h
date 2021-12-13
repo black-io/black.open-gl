@@ -61,6 +61,8 @@ namespace PlatformSpecific
 
 	// Private interface.
 	private:
+		// Perform the actual OpenGL context creation.
+		const bool AcquireContextHandle( const ::EGLConfig configuration, const ::EGLContext host_context );
 
 	// Private state.
 	private:

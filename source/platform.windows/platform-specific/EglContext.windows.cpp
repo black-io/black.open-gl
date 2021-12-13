@@ -72,6 +72,8 @@ namespace
 	{
 		CRET( !IsConnected() );
 
+		EXPECTS( !IsCurrent() );
+
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Context will be finalized." );
 		if( ::Wgl::delete_context( m_rendering_context ) != TRUE )
 		{

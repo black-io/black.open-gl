@@ -56,13 +56,13 @@ namespace PlatformSpecific
 
 	// Private interface.
 	private:
-		//
+		// Perform the actual OpenGL context creation.
 		const bool AcquireRenderingContext( const ::HDC device_context, const ::HGLRC host_context );
 
-		//
+		// Build the bit-mask of context flags.
 		const int32_t BuildContextFlags() const;
 
-		//
+		// Build the bit-mask of context profile flags.
 		const int32_t BuildProfileMask() const;
 
 	// Private state.

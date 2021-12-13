@@ -76,8 +76,7 @@ namespace
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Surface will be disconnected." );
 
-		const bool is_succeeded = ::eglDestroySurface( m_display_handle, m_handle ) == EGL_TRUE;
-		if( !is_succeeded )
+		if( ::eglDestroySurface( m_display_handle, m_handle ) == EGL_FALSE )
 		{
 			BLACK_LOG_WARNING( LOG_CHANNEL, "Destruction of EGL surface goes wrong, error: 0x{:08X}.", ::eglGetError() );
 		}

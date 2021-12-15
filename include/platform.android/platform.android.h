@@ -5,7 +5,9 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 
-#include <black/jni/android/view/Surface.h>
+#include <black/jni/android/view/WindowManager.h>
+#include <black/jni/android/content/Context.h>
+#include <black/jni/android/view/SurfaceHolder.h>
 
 
 namespace Black

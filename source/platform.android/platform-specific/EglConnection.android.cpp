@@ -125,7 +125,8 @@ namespace
 				display_metrics.GetHeight(),
 				pixel_format_info.GetBitsPerPixel(),
 				current_display.GetRefreshRate(),
-				current_display.GetPixelFormat()
+				current_display.GetPixelFormat(),
+				0
 			}
 		);
 
@@ -135,7 +136,8 @@ namespace
 				display_metrics.GetWidth(),
 				pixel_format_info.GetBitsPerPixel(),
 				current_display.GetRefreshRate(),
-				current_display.GetPixelFormat()
+				current_display.GetPixelFormat(),
+				1
 			}
 		);
 

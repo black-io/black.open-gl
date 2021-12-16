@@ -45,6 +45,10 @@ namespace PlatformSpecific
 		explicit GlDisplayHandle( const ConstructionInfo& info );
 		~GlDisplayHandle() = default;
 
+
+		inline GlDisplayHandle& operator = ( const GlDisplayHandle& )	= default;
+		inline GlDisplayHandle& operator = ( GlDisplayHandle&& )		= default;
+
 	// Private state.
 	private:
 		::EGLNativeDisplayType	m_handle;	// Corresponded handle of native display.

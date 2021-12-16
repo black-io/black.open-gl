@@ -26,6 +26,10 @@ namespace Internal
 		BasicGlDisplayHandle( const BasicGlDisplayHandle& )	= default;
 		BasicGlDisplayHandle( BasicGlDisplayHandle&& )		= default;
 		~BasicGlDisplayHandle()								= default;
+
+
+		inline BasicGlDisplayHandle& operator = ( const BasicGlDisplayHandle& )	= default;
+		inline BasicGlDisplayHandle& operator = ( BasicGlDisplayHandle&& )		= default;
 	};
 }
 }

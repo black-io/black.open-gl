@@ -60,6 +60,10 @@ namespace PlatformSpecific
 		explicit GlDisplayHandle( const ConstructionInfo& info );
 		~GlDisplayHandle() = default;
 
+
+		inline GlDisplayHandle& operator = ( const GlDisplayHandle& )	= default;
+		inline GlDisplayHandle& operator = ( GlDisplayHandle&& )		= default;
+
 	// Private interface.
 	private:
 		// Fill the `m_desktop_settings` with valid information.

@@ -44,7 +44,9 @@ namespace PlatformSpecific
 
 	// Private state.
 	private:
-		size32_t m_index = 0; // Ordinal index of adapter.
+		::Jni::PixelFormatCode	m_pixel_format	= ::Jni::PixelFormatCode::Unknon;	// Used pixel format.
+
+		size32_t				m_index			= 0;								// Ordinal index of adapter.
 	};
 }
 }

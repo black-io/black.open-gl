@@ -29,13 +29,8 @@ namespace
 		CRETE( !configuration.GetProperties().is_winwow_surface_compatible, false, LOG_CHANNEL, "Configuration does not support windows." );
 
 		m_display_handle	= display.GetHandle();
-		m_handle			= ::eglCreatePlatformWindowSurface( m_display_handle, configuration.GetHandle(), window_surface.GetNativeWindow(), nullptr );
-		if( m_handle == EGL_NO_SURFACE )
-		{
-			BLACK_LOG_INFO( LOG_CHANNEL, "Unable to create the window surface via platform-oriented EGL API. Try to create via regular EGL API." );
-			m_handle = ::eglCreateWindowSurface( m_display_handle, configuration.GetHandle(), window_surface.GetNativeWindow(), nullptr );
-			CRETE( m_handle == EGL_NO_SURFACE, false, LOG_CHANNEL, "Failed to create window surface, error: 0x{:08X}.", ::eglGetError() );
-		}
+		m_handle			= ::eglCreateWindowSurface( m_display_handle, configuration.GetHandle(), window_surface.GetNativeWindow(), nullptr );
+		CRETE( m_handle == EGL_NO_SURFACE, false, LOG_CHANNEL, "Failed to create window surface, error: 0x{:08X}.", ::eglGetError() );
 
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Surface successfully connected to window." );
 		return true;
@@ -57,8 +52,8 @@ namespace
 		CRETE( int32_t( height ) > configuration.GetProperties().maximum_pbuffer_height, false, LOG_CHANNEL, "Height limit exceeded." );
 
 		const int32_t surface_attributes[]{
-			EGL_WIDTH,	width,
-			EGL_HEIGHT,	height,
+			EGL_WIDTH,	int32_t( width ),
+			EGL_HEIGHT,	int32_t( height ),
 			EGL_NONE,	EGL_NONE
 		};
 

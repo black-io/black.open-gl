@@ -43,7 +43,14 @@ namespace
 
 	void EglDisplay<Black::PlatformType::Android>::Finalize()
 	{
+		CRET( !IsConnected() );
+
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Starting the display finalization." );
+
+		if( ::eglTerminate( m_handle ) == EGL_FALSE )
+		{
+			BLACK_LOG_WARNING( LOG_CHANNEL, "Termination of EGL goes wrong, error: 0x{:08X}.", ::eglGetError() );
+		}
 
 		m_handle = EGL_NO_DISPLAY;
 		m_configurations.clear();
@@ -242,7 +249,12 @@ namespace
 		m_handle = ::eglGetDisplay( native_handle );
 		CRETE( m_handle == EGL_NO_DISPLAY, false, LOG_CHANNEL, "Failed to connect display, error: 0x{:08X}.", ::eglGetError() );
 
-		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display connection #{:X} is established.", uintptr_t( native_handle ) );
+		int32_t major_version		= 0;
+		int32_t minor_version		= 0;
+		const bool is_initialized	= ::eglInitialize( m_handle, &major_version, &minor_version ) == EGL_TRUE;
+		CRETE( !is_initialized, false, LOG_CHANNEL, "Failed to initialize the EGL, error: 0x{:08X}.", ::eglGetError() );
+
+		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display connection #{:X} is established using EGL {}.{}.", uintptr_t( native_handle ), major_version, minor_version );
 		return true;
 	}
 }

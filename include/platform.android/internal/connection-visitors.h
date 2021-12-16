@@ -65,7 +65,7 @@ namespace Internal
 	// Public inner types.
 	public:
 		// Information of display video mode.
-		using VideoModeInfo = std::tuple<int32_t, int32_t, int32_t, int32_t, ::Jni::PixelFormatCode>;
+		using VideoModeInfo = std::tuple<int32_t, int32_t, int32_t, int32_t, ::Jni::PixelFormatCode, size32_t>;
 
 	// Public virtual interface.
 	public:

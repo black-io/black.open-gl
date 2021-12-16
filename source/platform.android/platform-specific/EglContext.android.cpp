@@ -130,12 +130,8 @@ namespace
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Try to acquire the OpenGL context." );
 
 		const int32_t context_attributes[] {
-			EGL_CONTEXT_MAJOR_VERSION,				m_major_version,
-			EGL_CONTEXT_MINOR_VERSION,				m_minor_version,
-			EGL_CONTEXT_OPENGL_PROFILE_MASK,		EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT,
-			EGL_CONTEXT_OPENGL_DEBUG,				( m_is_debugable )? EGL_TRUE : EGL_FALSE,
-			EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE,	( m_is_forward_compatible )? EGL_TRUE : EGL_FALSE,
-			EGL_NONE,								EGL_NONE
+			EGL_CONTEXT_MAJOR_VERSION,	m_major_version,
+			EGL_NONE,					EGL_NONE
 		};
 
 		CRETE( API_PROFILES_MAPPING[ Black::GetEnumValue( m_api_profile ) ] == EGL_NONE, false, LOG_CHANNEL, "Requested API profile does not supported." );

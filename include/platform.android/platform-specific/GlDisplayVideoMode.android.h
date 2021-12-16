@@ -33,7 +33,9 @@ namespace PlatformSpecific
 
 	// Heirs construction and initialization.
 	protected:
-		using BasicGlDisplayVideoMode::BasicGlDisplayVideoMode;
+		GlDisplayVideoMode()							= default;
+		GlDisplayVideoMode( const GlDisplayVideoMode& )	= default;
+		GlDisplayVideoMode( GlDisplayVideoMode&& )		= default;
 		explicit GlDisplayVideoMode( const ConstructionInfo& info );
 		~GlDisplayVideoMode() = default;
 

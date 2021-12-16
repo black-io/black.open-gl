@@ -29,6 +29,10 @@ namespace Internal
 		BasicGlDisplayVideoMode( BasicGlDisplayVideoMode&& )		= default;
 		~BasicGlDisplayVideoMode()									= default;
 
+
+		inline BasicGlDisplayVideoMode& operator = ( const BasicGlDisplayVideoMode& )	= default;
+		inline BasicGlDisplayVideoMode& operator = ( BasicGlDisplayVideoMode&& )		= default;
+
 	// Heirs interface.
 	protected:
 		// Swap the state with given instance.

@@ -37,6 +37,10 @@ namespace PlatformSpecific
 		explicit GlDisplayVideoMode( const ConstructionInfo& info );
 		~GlDisplayVideoMode() = default;
 
+
+		inline GlDisplayVideoMode& operator = ( const GlDisplayVideoMode& )	= default;
+		inline GlDisplayVideoMode& operator = ( GlDisplayVideoMode&& )		= default;
+
 	// Heirs interface.
 	protected:
 		// Swap the state with given instance.

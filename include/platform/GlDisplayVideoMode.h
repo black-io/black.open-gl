@@ -22,11 +22,15 @@ inline namespace Platform
 
 	// Construction and initialization.
 	public:
-		GlDisplayVideoMode()						= delete;
+		GlDisplayVideoMode()							= delete;
 		GlDisplayVideoMode( const GlDisplayVideoMode& )	= default;
 		GlDisplayVideoMode( GlDisplayVideoMode&& )		= default;
 		explicit GlDisplayVideoMode( const ConstructionInfo& info );
 		~GlDisplayVideoMode() = default;
+
+
+		inline GlDisplayVideoMode& operator = ( const GlDisplayVideoMode& )	= default;
+		inline GlDisplayVideoMode& operator = ( GlDisplayVideoMode&& )		= default;
 
 	// Contracts of public API.
 	public:

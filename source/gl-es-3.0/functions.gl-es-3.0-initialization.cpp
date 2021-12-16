@@ -1,7 +1,5 @@
 #include <black/open-gl/gl-es-3.0.h>
 
-#include <gl/GL.h>
-
 #include "gles/bindings.gl-es-3.0.h"
 
 

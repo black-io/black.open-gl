@@ -25,6 +25,10 @@ namespace Internal
 		BasicGlAdapterHandle( const BasicGlAdapterHandle& )	= default;
 		BasicGlAdapterHandle( BasicGlAdapterHandle&& )		= default;
 		~BasicGlAdapterHandle()								= default;
+
+
+		inline BasicGlAdapterHandle& operator = ( const BasicGlAdapterHandle& )	= default;
+		inline BasicGlAdapterHandle& operator = ( BasicGlAdapterHandle&& )		= default;
 	};
 }
 }

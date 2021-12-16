@@ -39,6 +39,10 @@ namespace PlatformSpecific
 		explicit GlAdapterHandle( const ConstructionInfo& info );
 		~GlAdapterHandle() = default;
 
+
+		inline GlAdapterHandle& operator = ( const GlAdapterHandle& )	= default;
+		inline GlAdapterHandle& operator = ( GlAdapterHandle&& )		= default;
+
 	// Private state.
 	private:
 		size32_t m_index = 0; // Ordinal index of adapter.

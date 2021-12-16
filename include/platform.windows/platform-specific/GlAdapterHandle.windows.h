@@ -45,6 +45,10 @@ namespace PlatformSpecific
 		explicit GlAdapterHandle( const ConstructionInfo& info );
 		~GlAdapterHandle() = default;
 
+
+		inline GlAdapterHandle& operator = ( const GlAdapterHandle& )	= default;
+		inline GlAdapterHandle& operator = ( GlAdapterHandle&& )		= default;
+
 	// Private state.
 	private:
 		::DXGI_ADAPTER_DESC1	m_description;			// Internal description of adapter.

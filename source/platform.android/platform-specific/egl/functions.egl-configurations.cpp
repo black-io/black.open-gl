@@ -89,15 +89,7 @@ namespace
 				}
 			}
 
-			{
-				const size_t left_stencil	= left_properties.stencil_bit_rate;
-				const size_t right_stencil	= right_properties.stencil_bit_rate;
-				if( left_stencil != right_stencil )
-				{
-					// The wider stencil buffer, the better.
-					return left_stencil > right_stencil;
-				}
-			}
+			return left_properties.stencil_bit_rate > right_properties.stencil_bit_rate;
 		};
 
 		auto properties_collector = [&display_handle]( const ::EGLConfig configuration ) -> CachedConfigurationProperties

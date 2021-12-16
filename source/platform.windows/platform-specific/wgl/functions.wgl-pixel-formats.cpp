@@ -487,17 +487,7 @@ namespace
 				}
 			}
 
-			{
-				const size_t left_stencil	= left->cStencilBits;
-				const size_t right_stencil	= right->cStencilBits;
-				if( left_stencil != right_stencil )
-				{
-					// The wider stencil buffer, the better.
-					return left_stencil > right_stencil;
-				}
-			}
-
-			return false;
+			return left->cStencilBits > right->cStencilBits;
 		};
 
 		sorted_pixel_formats.resize( pixel_formats.size() );

@@ -31,6 +31,7 @@ inline namespace Android
 #include "internal/connection-visitors.h"
 
 // Include related platform-specific stuff.
+#include "macros.h"
 #include "generic-types.h"
 
 // Second layer of platform-agnostic types. Platform-specific declarations.

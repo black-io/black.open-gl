@@ -1,7 +1,15 @@
+# Propagate the global settings.
 __include__:
   - '.black-settings'
+
+# The most valuable settings.
+__include__:
   - '../platform.android.black-settings'
   - '../properties.android.black-settings'
+
+# Source code settings.
+__include__:
+  - 'c++.black-settings'
 
 # Other components this one depends on. Only component names allowed.
 references:

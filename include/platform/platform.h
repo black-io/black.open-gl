@@ -48,20 +48,8 @@ namespace PlatformSpecific
 // Second layer of platform-agnostic types. Platform-specific declarations.
 #include "platform-specific/forwards.h"
 
-// Select the definitions of platform-specific code for second layer.
-#if( BLACK_WINDOWS_DESKTOP_PLATFORM )
-	#include "../platform.windows/platform.windows.h"
-#elif( BLACK_MAC_OS_PLATFORM )
-	#include "../platform.macos/platform.macos.h"
-#elif( BLACK_LINUX_PLATFORM )
-	#include "../platform.linux/platform.linux.h"
-#elif( BLACK_ANDROID_PLATFORM )
-	#include "../platform.android/platform.android.h"
-#elif( BLACK_IOS_PLATFORM )
-	#include "../platform.ios/platform.ios.h"
-#else
-	#error Current platform is unspecified or not defined
-#endif
+// Include the platform-specific code.
+#include BLACK_CURRENT_PLATFORM_HEADER
 
 // Third layer of platform-agnostic types. Public platform-agnostic definitions.
 #include "GlAdapterHandle.h"

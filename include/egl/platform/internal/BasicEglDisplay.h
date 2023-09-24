@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace Internal
@@ -26,6 +28,7 @@ namespace Internal
 	protected:
 		std::vector<Black::EglConfiguration> m_configurations; // List of Available configurations for display.
 	};
+}
 }
 }
 }

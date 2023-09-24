@@ -5,7 +5,7 @@ namespace Black
 {
 inline namespace OpenGl
 {
-inline namespace Platform
+inline namespace Egl
 {
 	// Platform-specific code is allowed to use the type as incomplete.
 	class GlAdapterHandle;

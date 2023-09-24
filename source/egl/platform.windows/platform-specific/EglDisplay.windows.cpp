@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 #include "dxgi/functions.dxgi-pointters.h"
 #include "dxgi/functions.dxgi-video-modes.h"
@@ -12,6 +12,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -379,6 +381,7 @@ namespace
 		m_is_pixel_format_set	= false;
 		m_device_context		= nullptr;
 	}
+}
 }
 }
 }

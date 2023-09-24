@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace Internal
@@ -19,9 +21,6 @@ namespace Internal
 	*/
 	class BasicGlDisplayVideoMode
 	{
-	// Public interface.
-	public:
-
 	// Heirs construction and initialization.
 	protected:
 		BasicGlDisplayVideoMode()									= default;
@@ -58,6 +57,7 @@ namespace Internal
 			};
 		};
 	};
+}
 }
 }
 }

@@ -9,12 +9,15 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
-// Platform-related definitions for Windows desktop platform.
+// Microsoft Windows Desktop platform definitions.
 inline namespace WindowsDesktop
 {
 
+}
 }
 }
 }

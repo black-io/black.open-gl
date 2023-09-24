@@ -7,6 +7,8 @@ inline namespace OpenGl
 {
 inline namespace Egl
 {
+inline namespace Platform
+{
 namespace Internal
 {
 	// Available API profiles.
@@ -16,6 +18,7 @@ namespace Internal
 		OpenGlEs,	// OpenGL ES API.
 		OpenGlSc,	// OpenGL SC API.
 	};
+}
 }
 }
 }

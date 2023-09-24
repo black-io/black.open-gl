@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 #include "functions.dxgi-pointters.h"
 
@@ -6,6 +6,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -67,6 +69,7 @@ namespace
 		BLACK_LOG_ERROR( LOG_CHANNEL, "Failed to access the version 1 of adapter interface, result: 0x{:08X}.", access_result );
 		return nullptr;
 	}
+}
 }
 }
 }

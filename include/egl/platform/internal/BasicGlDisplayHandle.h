@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace Internal
@@ -31,6 +33,7 @@ namespace Internal
 		inline BasicGlDisplayHandle& operator = ( const BasicGlDisplayHandle& )	= default;
 		inline BasicGlDisplayHandle& operator = ( BasicGlDisplayHandle&& )		= default;
 	};
+}
 }
 }
 }

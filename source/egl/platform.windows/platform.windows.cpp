@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 // Link the required static libraries.

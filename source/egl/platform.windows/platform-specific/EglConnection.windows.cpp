@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 #include <black/core/algorithms.h>
 
 #include "dxgi/functions.dxgi-pointters.h"
@@ -13,6 +13,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -486,6 +488,7 @@ namespace
 		BLACK_LOG_VERBOSE( LOG_CHANNEL, "Manual loading of OpenGL library finished with error: 0x{:08X}.", ::GetLastError() );
 		BLACK_LOG_CRITICAL( LOG_CHANNEL, "Failed to load OpenGL library." );
 	}
+}
 }
 }
 }

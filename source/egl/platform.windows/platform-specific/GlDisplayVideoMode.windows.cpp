@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 #include "dxgi/functions.dxgi-video-modes.h"
@@ -7,6 +7,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -40,6 +42,7 @@ namespace
 		BasicGlDisplayVideoMode::Swap( other );
 		swap( m_mode_desc, other.m_mode_desc );
 	}
+}
 }
 }
 }

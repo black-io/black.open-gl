@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 #include "wgl/bindings.wgl.h"
 #include "wgl/bindings.wgl-extensions.h"
@@ -8,6 +8,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -219,6 +221,7 @@ namespace
 
 		return result;
 	}
+}
 }
 }
 }

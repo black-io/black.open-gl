@@ -5,7 +5,7 @@ namespace Black
 {
 inline namespace OpenGl
 {
-inline namespace Platform
+inline namespace Egl
 {
 	/**
 		@brief	Video Mode object for Display.

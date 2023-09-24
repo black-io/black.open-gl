@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -17,6 +19,7 @@ namespace PlatformSpecific
 
 	// Query the version 1 of adapter interface.
 	::IDXGIAdapter1* QueryAdapterV1Interface( ::IDXGIAdapter& adapter );
+}
 }
 }
 }

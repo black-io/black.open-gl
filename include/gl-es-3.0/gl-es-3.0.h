@@ -1,7 +1,8 @@
 #pragma once
 
 
-// Fundamental external dependencies.
+// External dependencies.
+#include <black/open-gl/egl.h>
 
 
 namespace Black

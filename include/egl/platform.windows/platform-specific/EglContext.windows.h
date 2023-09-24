@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -69,6 +71,7 @@ namespace PlatformSpecific
 	private:
 		::HGLRC m_rendering_context = nullptr; // Owned handle of rendering context.
 	};
+}
 }
 }
 }

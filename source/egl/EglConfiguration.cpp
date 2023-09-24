@@ -1,11 +1,11 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 namespace Black
 {
 inline namespace OpenGl
 {
-inline namespace Platform
+inline namespace Egl
 {
 namespace
 {

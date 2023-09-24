@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -80,6 +82,7 @@ namespace PlatformSpecific
 		SurfaceState	m_state				{ std::monostate{} };		// Composition of internal state.
 		SurfaceType		m_type				= SurfaceType::Undefined;	// Type of surface connection.
 	};
+}
 }
 }
 }

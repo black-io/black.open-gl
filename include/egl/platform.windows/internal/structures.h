@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace Internal
@@ -40,6 +42,7 @@ namespace Internal
 	{
 		void* owned_pixel_buffer = nullptr; // Storage for owned pixel buffer.
 	};
+}
 }
 }
 }

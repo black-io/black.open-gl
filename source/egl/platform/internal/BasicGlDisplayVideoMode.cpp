@@ -1,9 +1,11 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -20,6 +22,7 @@ namespace Internal
 		swap( m_aspect, other.m_aspect );
 		swap( m_boolean_bits, other.m_boolean_bits );
 	}
+}
 }
 }
 }

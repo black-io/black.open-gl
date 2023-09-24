@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -122,6 +124,7 @@ namespace PlatformSpecific
 	private:
 		mutable bool m_is_pixel_format_set = false; // Whether the pixel format is set for device context.
 	};
+}
 }
 }
 }

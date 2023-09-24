@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -52,6 +54,7 @@ namespace PlatformSpecific
 		Internal::PixelBufferSettings	m_pixel_buffer_settings;	// Pixel buffer settings for this format.
 		size32_t						m_index;					// Ordinal number of configuration.
 	};
+}
 }
 }
 }

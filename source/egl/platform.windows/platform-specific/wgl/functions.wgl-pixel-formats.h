@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -17,6 +19,7 @@ namespace PlatformSpecific
 
 	// Read the pixel format settings related to pixel buffers.
 	Internal::PixelBufferSettings ReadPixelBufferSettings( const EglDisplay<Black::PlatformType::WindowsDesktop>& display, const int32_t format_index );
+}
 }
 }
 }

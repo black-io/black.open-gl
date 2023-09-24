@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace Internal
@@ -30,6 +32,7 @@ namespace Internal
 		inline BasicGlAdapterHandle& operator = ( const BasicGlAdapterHandle& )	= default;
 		inline BasicGlAdapterHandle& operator = ( BasicGlAdapterHandle&& )		= default;
 	};
+}
 }
 }
 }

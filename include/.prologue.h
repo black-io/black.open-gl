@@ -10,6 +10,3 @@
 
 // Global types.
 #include ".global/types/generic-types.h"
-
-// Platform-specific definitions.
-#include "platform/platform.h"

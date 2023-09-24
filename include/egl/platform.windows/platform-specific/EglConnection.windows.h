@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -143,6 +145,7 @@ namespace PlatformSpecific
 
 		UniqueLibraryHandle	m_opengl_handle{ nullptr, []( ::HMODULE ){} };	// Owned handle to 'opengl32.dll'.
 	};
+}
 }
 }
 }

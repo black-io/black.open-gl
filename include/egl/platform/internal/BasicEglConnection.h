@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace Internal
@@ -27,6 +29,7 @@ namespace Internal
 		BasicEglConnection()	= default;
 		~BasicEglConnection()	= default;
 	};
+}
 }
 }
 }

@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -72,6 +74,7 @@ namespace PlatformSpecific
 	*/
 	template< Black::PlatformType PLATFORM_TYPE >
 	class EglConnection;
+}
 }
 }
 }

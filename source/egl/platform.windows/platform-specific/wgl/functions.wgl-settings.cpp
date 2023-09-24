@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 #include <black/core/algorithms.h>
 
 #include "functions.wgl-settings.h"

@@ -1,9 +1,11 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -21,6 +23,7 @@ namespace
 		, m_index{ std::get<1>( info ) }
 	{
 	}
+}
 }
 }
 }

@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -47,6 +49,7 @@ namespace PlatformSpecific
 	private:
 		size32_t m_index = 0; // Ordinal index of adapter.
 	};
+}
 }
 }
 }

@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 #include "egl/functions.egl-configurations.h"
 
@@ -6,6 +6,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -257,6 +259,7 @@ namespace
 		BLACK_LOG_DEBUG( LOG_CHANNEL, "Display connection #{:X} is established using EGL {}.{}.", uintptr_t( native_handle ), major_version, minor_version );
 		return true;
 	}
+}
 }
 }
 }

@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -56,6 +58,7 @@ namespace PlatformSpecific
 		size32_t	m_adapter_index;		// Ordinal index of GPU adapter the display connected.
 		size32_t	m_index;				// Ordinal index of display.
 	};
+}
 }
 }
 }

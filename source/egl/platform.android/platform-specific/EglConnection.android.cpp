@@ -1,9 +1,11 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -311,6 +313,7 @@ namespace
 			BLACK_LOG_WARNING( LOG_CHANNEL, "Failed to bind API profile for EGL, error: 0x{:08X}.", ::eglGetError() );
 		}
 	}
+}
 }
 }
 }

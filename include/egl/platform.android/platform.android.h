@@ -14,12 +14,15 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
-// Platform-related definitions for Android platform.
+// Google Android platform definitions.
 inline namespace Android
 {
 
+}
 }
 }
 }

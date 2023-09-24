@@ -1,9 +1,11 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -79,6 +81,7 @@ namespace
 		m_handle			= EGL_NO_SURFACE;
 		m_display_handle	= EGL_NO_DISPLAY;
 	}
+}
 }
 }
 }

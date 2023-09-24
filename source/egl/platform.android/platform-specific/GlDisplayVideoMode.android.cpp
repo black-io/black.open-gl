@@ -1,9 +1,11 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -39,6 +41,7 @@ namespace
 		swap( m_pixel_format, other.m_pixel_format );
 		swap( m_index, other.m_index );
 	}
+}
 }
 }
 }

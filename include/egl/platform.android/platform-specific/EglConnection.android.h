@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -127,6 +129,7 @@ namespace PlatformSpecific
 
 		bool			m_is_api_profile_set	= false;	// Whether the API profile was set.
 	};
+}
 }
 }
 }

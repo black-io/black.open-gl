@@ -1,4 +1,4 @@
-#include <black/open-gl.h>
+#include <black/open-gl/egl.h>
 
 #include "functions.egl-configurations.h"
 
@@ -6,6 +6,8 @@
 namespace Black
 {
 inline namespace OpenGl
+{
+inline namespace Egl
 {
 inline namespace Platform
 {
@@ -112,6 +114,7 @@ namespace
 
 		return sorted_configurations;
 	}
+}
 }
 }
 }

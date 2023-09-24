@@ -5,6 +5,8 @@ namespace Black
 {
 inline namespace OpenGl
 {
+inline namespace Egl
+{
 inline namespace Platform
 {
 namespace PlatformSpecific
@@ -59,6 +61,7 @@ namespace PlatformSpecific
 		::EGLDisplay	m_display_handle	= EGL_NO_DISPLAY;	// EGL display that hosts the surface.
 		::EGLSurface	m_handle			= EGL_NO_SURFACE;	// Corresponded EGL surface.
 	};
+}
 }
 }
 }

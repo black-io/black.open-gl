@@ -37,10 +37,8 @@ namespace
 
 	void GlDisplayVideoMode<Black::PlatformType::WindowsDesktop>::Swap( GlDisplayVideoMode<Black::PlatformType::WindowsDesktop>& other )
 	{
-		using std::swap;
-
 		BasicGlDisplayVideoMode::Swap( other );
-		swap( m_mode_desc, other.m_mode_desc );
+		Black::Swap( m_mode_desc, other.m_mode_desc );
 	}
 }
 }

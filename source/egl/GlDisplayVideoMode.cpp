@@ -21,8 +21,6 @@ namespace
 
 	void GlDisplayVideoMode::Swap( GlDisplayVideoMode& other )
 	{
-		using std::swap;
-
 		PlatformSpecific::GlDisplayVideoMode<Black::BUILD_PLATFORM>::Swap( other );
 	}
 }

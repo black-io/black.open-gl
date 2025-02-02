@@ -35,11 +35,9 @@ namespace
 
 	void GlDisplayVideoMode<Black::PlatformType::Android>::Swap( GlDisplayVideoMode<Black::PlatformType::Android>& other )
 	{
-		using std::swap;
-
 		BasicGlDisplayVideoMode::Swap( other );
-		swap( m_pixel_format, other.m_pixel_format );
-		swap( m_index, other.m_index );
+		Black::Swap( m_pixel_format, other.m_pixel_format );
+		Black::Swap( m_index, other.m_index );
 	}
 }
 }

@@ -13,14 +13,12 @@ namespace Internal
 {
 	void BasicGlDisplayVideoMode::Swap( BasicGlDisplayVideoMode& other )
 	{
-		using std::swap;
-
-		swap( m_width, other.m_width );
-		swap( m_height, other.m_height );
-		swap( m_bit_rate, other.m_bit_rate );
-		swap( m_refresh_rate, other.m_refresh_rate );
-		swap( m_aspect, other.m_aspect );
-		swap( m_boolean_bits, other.m_boolean_bits );
+		Black::Swap( m_width, other.m_width );
+		Black::Swap( m_height, other.m_height );
+		Black::Swap( m_bit_rate, other.m_bit_rate );
+		Black::Swap( m_refresh_rate, other.m_refresh_rate );
+		Black::Swap( m_aspect, other.m_aspect );
+		Black::Swap( m_boolean_bits, other.m_boolean_bits );
 	}
 }
 }

@@ -4,6 +4,15 @@
 #include "functions.dxgi-video-modes.h"
 
 
+// ::DXGI_FORMAT to string representation function.
+static std::string_view format_as( const DXGI_FORMAT format )
+{
+	static char buffer[64] {};
+
+	return Black::FormatArguments( { buffer, std::size( buffer ) }, "DXGI_FORMAT{%d}", Black::GetEnumValue( format ) );
+}
+
+
 namespace Black
 {
 inline namespace OpenGl
